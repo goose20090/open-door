@@ -18,6 +18,9 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Using bcrypt for has_secure_password macro and auth
 gem 'bcrypt', '~> 3.1.7'
 
+# Use faker to seed database
+gem 'faker', '~> 3.2'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 
