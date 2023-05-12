@@ -2,12 +2,14 @@
 
 import React from "react";
 import styled from "styled-components";
+import LoginForm from "./Form";
 
 function Login() {
   return (
     <ContainingBlock>
       <Wrapper>
-        <h1>Login Page</h1>
+        <h2>Login Page</h2>
+        <LoginForm />
       </Wrapper>
     </ContainingBlock>
   );
@@ -23,7 +25,8 @@ const Wrapper = styled.div`
   position: absolute;
   top: 50px;
   bottom: 50px;
-  left: 33%;
-  right: 33%;
+  left: 25%;
+  right: 25%;
   border: 1px solid black;
+  padding: 8px;
 `;
