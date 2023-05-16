@@ -2,15 +2,15 @@
 
 import React from "react";
 import FormWrapper from "../../components/FormWrapper";
-import SignupForm from "../Signup/SignupForm";
+import SignupForm from "./SignupForm";
 
-function Login() {
+function Signup() {
   return (
     <FormWrapper>
-      <h2>Login Page</h2>
-      <LoginForm />
+      <h2>Signup Page</h2>
+      <SignupForm />
     </FormWrapper>
   );
 }
 
-export default Login;
+export default Signup;

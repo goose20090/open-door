@@ -1,13 +1,11 @@
 /** @format */
 
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import NavBar from "./components/NavBar";
-// import "./assets/App.css";
 import { Route, Switch } from "react-router-dom";
 import GlobalStyles from "./assets/GlobalStyles.js";
 import styled from "styled-components";
+import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
 
 function App() {
@@ -23,6 +21,9 @@ function App() {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/signup">
+          <Signup />
         </Route>
         <Route path="/">
           <h1>Home</h1>

@@ -1,42 +1,50 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import * as Form from "@radix-ui/react-form";
 import styled from "styled-components";
 
 export default function LoginForm() {
-  const formData = {
-    test: "hello",
-  };
+  const [formData, setFormData] = useState({ username: "", password: "" });
 
-  function fetchLoginAttempt(formData) {
-    return (
-      fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-        // .then((r) => r.json())
-        .then((r) => console.log(r))
-    );
+  function attemptLogin(formData) {
+    return fetch("api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    }).then((r) => console.log(r));
+  }
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
   return (
     <RadixForm
       onSubmit={(e) => {
         e.preventDefault();
-        fetchLoginAttempt(formData);
-        // console.log(JSON.stringify(formData));
+        attemptLogin(formData);
       }}
     >
       <InputWrapper>
         <InputLabel>Username</InputLabel>
-        <Input />
+        <Input
+          name={"username"}
+          value={formData.username}
+          onChange={handleChange}
+        />
       </InputWrapper>
       <InputWrapper>
         <InputLabel>Password</InputLabel>
-        <Input />
+        <Input
+          name={"password"}
+          value={formData.password}
+          onChange={handleChange}
+        />
       </InputWrapper>
       <SubmitButton>Submit</SubmitButton>
     </RadixForm>
