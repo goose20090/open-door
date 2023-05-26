@@ -39,6 +39,9 @@ function App() {
         <Route path="/signup">
           <Signup />
         </Route>
+        <Route path="/bookings">
+          <h1>Bookings Page</h1>
+        </Route>
         <Route path="/">
           <h1>Home</h1>
         </Route>

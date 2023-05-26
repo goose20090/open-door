@@ -4,7 +4,6 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import LoginModal from "../pages/Login/LoginModal";
 
 function NavBar({ user, setUser }) {
   function handleLogout() {
@@ -31,11 +30,12 @@ function NavBar({ user, setUser }) {
         {user ? (
           <>
             <h2>Welcome {user.name}!</h2>
+            <Link to="/bookings">Book a Session</Link>
             <LogoutBtn onClick={logoutMutation.mutate}>Logout</LogoutBtn>
           </>
         ) : (
           <>
-            <LoginModal />
+            <Link to="/login">Login</Link>
             <Link to="/signup">Signup</Link>
           </>
         )}
