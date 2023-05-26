@@ -3,16 +3,42 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import LoginModal from "../pages/Login/LoginModal";
 
-function NavBar() {
+function NavBar({ user, setUser }) {
+  function handleLogout() {
+    fetch("/api/logout", {
+      method: "DELETE",
+    });
+  }
+
+  const queryClient = useQueryClient();
+
+  const logoutMutation = useMutation(handleLogout, {
+    onSuccess: () => {
+      setUser(false);
+      queryClient.setQueryData(["user", "authorisation"], () => null);
+    },
+  });
+
   return (
     <Wrapper>
       <Heading>Open Door Therapy</Heading>
       <LinkWrapper>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Signup</Link>
+        {user ? (
+          <>
+            <h2>Welcome {user.name}!</h2>
+            <LogoutBtn onClick={logoutMutation.mutate}>Logout</LogoutBtn>
+          </>
+        ) : (
+          <>
+            <LoginModal />
+            <Link to="/signup">Signup</Link>
+          </>
+        )}
       </LinkWrapper>
     </Wrapper>
   );
@@ -44,6 +70,11 @@ const Heading = styled.h1`
 `;
 
 const Link = styled(NavLink)`
+  padding: 8px;
+  border: 1px solid black;
+`;
+
+const LogoutBtn = styled.button`
   padding: 8px;
   border: 1px solid black;
 `;

@@ -2,7 +2,7 @@
 
 import React from "react";
 import FormWrapper from "../../components/FormWrapper";
-import SignupForm from "../Signup/SignupForm";
+import LoginForm from "./LoginForm";
 
 function Login() {
   return (

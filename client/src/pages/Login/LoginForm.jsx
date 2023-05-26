@@ -1,21 +1,34 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import * as Form from "@radix-ui/react-form";
 import styled from "styled-components";
+import { UserContext } from "../../context/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import fetchWithError from "../../helpers/fetchWithError";
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const { setUser } = useContext(UserContext);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const queryClient = useQueryClient();
 
   function attemptLogin(formData) {
-    return fetch("api/login", {
+    return fetchWithError("api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
-    }).then((r) => console.log(r));
+    });
   }
+
+  const loginMutation = useMutation(attemptLogin, {
+    onSuccess: (r) => {
+      setUser(r);
+      queryClient.setQueryData(["user", "authorisation"], () => r);
+    },
+    onError: (r) => console.log(r),
+  });
 
   function handleChange(e) {
     setFormData({
@@ -24,30 +37,34 @@ export default function LoginForm() {
     });
   }
   return (
-    <RadixForm
-      onSubmit={(e) => {
-        e.preventDefault();
-        attemptLogin(formData);
-      }}
-    >
-      <InputWrapper>
-        <InputLabel>Username</InputLabel>
-        <Input
-          name={"username"}
-          value={formData.username}
-          onChange={handleChange}
-        />
-      </InputWrapper>
-      <InputWrapper>
-        <InputLabel>Password</InputLabel>
-        <Input
-          name={"password"}
-          value={formData.password}
-          onChange={handleChange}
-        />
-      </InputWrapper>
-      <SubmitButton>Submit</SubmitButton>
-    </RadixForm>
+    <>
+      {loginMutation.isLoading ? <p>Loading...</p> : null}
+      {loginMutation.isError ? <p>{loginMutation.error.message}</p> : null}
+      <RadixForm
+        onSubmit={(e) => {
+          e.preventDefault();
+          loginMutation.mutate(formData);
+        }}
+      >
+        <InputWrapper>
+          <InputLabel>Email</InputLabel>
+          <Input
+            name={"email"}
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <InputLabel>Password</InputLabel>
+          <Input
+            name={"password"}
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </InputWrapper>
+        <SubmitButton>Submit</SubmitButton>
+      </RadixForm>
+    </>
   );
 }
 

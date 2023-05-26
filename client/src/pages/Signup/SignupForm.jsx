@@ -1,24 +1,33 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import * as Form from "@radix-ui/react-form";
 import styled from "styled-components";
+import { UserContext } from "../../context/user";
 
 export default function SignupForm() {
+  const { setUser } = useContext(UserContext);
+
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
+    name: "",
     password: "",
     passwordConfirmation: "",
   });
 
   function attemptSignup(formData) {
-    return fetch("api/login", {
+    return fetch("api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
-    }).then((r) => console.log(r));
+    })
+      .then((r) => r.json())
+      .then((r) => {
+        console.log(r);
+        setUser(r.name);
+      });
   }
 
   function handleChange(e) {
@@ -35,12 +44,12 @@ export default function SignupForm() {
       }}
     >
       <InputWrapper>
-        <InputLabel>Username</InputLabel>
-        <Input
-          name={"username"}
-          value={formData.username}
-          onChange={handleChange}
-        />
+        <InputLabel>Email</InputLabel>
+        <Input name={"email"} value={formData.email} onChange={handleChange} />
+      </InputWrapper>
+      <InputWrapper>
+        <InputLabel>Name</InputLabel>
+        <Input name={"name"} value={formData.name} onChange={handleChange} />
       </InputWrapper>
       <InputWrapper>
         <InputLabel>Password</InputLabel>
@@ -70,7 +79,11 @@ const RadixForm = styled(Form.Root)`
   height: 100%;
 `;
 
-const InputWrapper = styled(Form.Field)``;
+const InputWrapper = styled(Form.Field)`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
 
 const InputLabel = styled(Form.Label)`
   padding-right: 16px;
