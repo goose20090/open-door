@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../context/user";
 import styled from "styled-components";
+import { relativeDate } from "../../helpers/relativeDate";
+import { isFutureDate } from "../../helpers/isFutureDate";
 
 export default function BookingHub() {
+  const { user, setUser } = useContext(UserContext);
+
+  const { appointments } = user;
   return (
     <Wrapper>
       <Grid>
         <aside>Aside</aside>
-        <ComingAppointments>Coming Appointments</ComingAppointments>
-        <PastAppointments>Past Appointments</PastAppointments>
+        <ComingAppointments>
+          <>
+            <h2>Future Appointments</h2>
+            {appointments.map((appointment) =>
+              isFutureDate(appointment.start_time) ? (
+                <p key={appointment.id}>
+                  Appointment id: {appointment.id}, date:
+                  {relativeDate(appointment.start_time)}
+                </p>
+              ) : null
+            )}
+          </>
+        </ComingAppointments>
+        <PastAppointments>
+          <>
+            <h2>Past Appointments</h2>
+            {appointments.map((appointment) =>
+              !isFutureDate(appointment.start_time) ? (
+                <p key={appointment.id}>
+                  Appointment id: {appointment.id}, date:
+                  {relativeDate(appointment.start_time)}
+                </p>
+              ) : null
+            )}
+          </>
+        </PastAppointments>
         <NewAppointments>Create A New Appointment</NewAppointments>
       </Grid>
     </Wrapper>

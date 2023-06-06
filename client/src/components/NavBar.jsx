@@ -29,8 +29,8 @@ function NavBar({ user, setUser }) {
         <Link to="/about">About</Link>
         {user ? (
           <>
-            <h2>Welcome {user.name}!</h2>
             <Link to="/bookings">Book a Session</Link>
+            <p>Logged in as: {user.name}</p>
             <LogoutBtn onClick={logoutMutation.mutate}>Logout</LogoutBtn>
           </>
         ) : (
@@ -57,6 +57,10 @@ const LinkWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+  p {
+    font-weight: bold;
+  }
 `;
 
 const Heading = styled.h1`
