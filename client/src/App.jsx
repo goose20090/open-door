@@ -10,6 +10,7 @@ import Login from "./pages/Login/Login";
 import { UserContext } from "./context/user";
 import { useQuery } from "@tanstack/react-query";
 import fetchWithError from "./helpers/fetchWithError";
+import BookingHub from "./pages/BookingHub/BookingHub";
 
 function App() {
   const { user, setUser } = useContext(UserContext);
@@ -40,7 +41,7 @@ function App() {
           <Signup />
         </Route>
         <Route path="/bookings">
-          <h1>Bookings Page</h1>
+          <BookingHub />
         </Route>
         <Route path="/">
           <h1>Home</h1>
