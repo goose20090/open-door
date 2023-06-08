@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
         client = Client.find_by(email: params[:email])
         if client&.authenticate(params[:password])
             session[:client_id] = client.id
-            render json: client, status: :created
+            render json: client, include: ['appointments', 'appointments.therapist'], status: :created
         else
             render json: {error: "Invalid username or password"}, status: :unauthorized
         end

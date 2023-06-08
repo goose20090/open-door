@@ -3,7 +3,7 @@ class ClientsController < ApplicationController
     def show
         client = Client.find_by(id: session[:client_id])
         if client
-            render json: client
+            render json: client, include: ['appointments', 'appointments.therapist']
         else
             render json: {error: "Not authorised"}, status: :unauthorized
         end
