@@ -10,7 +10,8 @@ import Login from "./pages/Login/Login";
 import { UserContext } from "./context/user";
 import { useQuery } from "@tanstack/react-query";
 import fetchWithError from "./helpers/fetchWithError";
-import BookingHub from "./pages/BookingHub/BookingHub";
+import AppointmentsHub from "./pages/AppointmentsHub/AppointmentsHub";
+import About from "./pages/About/About";
 
 function App() {
   const { user, setUser } = useContext(UserContext);
@@ -32,7 +33,7 @@ function App() {
       <NavBar user={user} setUser={setUser} />
       <Switch>
         <Route path="/about">
-          <h1>About page</h1>
+          <About />
         </Route>
         <Route path="/login">
           <Login />
@@ -40,8 +41,8 @@ function App() {
         <Route path="/signup">
           <Signup />
         </Route>
-        <Route path="/bookings">
-          <BookingHub />
+        <Route path="/appointments">
+          <AppointmentsHub />
         </Route>
         <Route path="/">
           <h1>Home</h1>

@@ -6,8 +6,9 @@ import { relativeDate } from "../../helpers/relativeDate";
 import { isFutureDate } from "../../helpers/isFutureDate";
 import { formatDate } from "../../helpers/formatDate";
 import AppointmentCapsule from "../../components/AppointmentCapsule";
+import DialogDemo from "../About/DialogDemo";
 
-export default function BookingHub() {
+export default function AppointmentsHub() {
   const { user, setUser } = useContext(UserContext);
 
   const authQuery = useQuery(["user", "authorisation"], () => null, {
@@ -21,9 +22,15 @@ export default function BookingHub() {
     <Wrapper>
       <Grid>
         <UserSidebar>
-          <h2>{user.name}</h2>
-          <p>Total appointments: {appointments.length}</p>
-          <button>Book a New Appointment</button>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              <h2>{user.name}</h2>
+              <p>Total appointments: {appointments.length}</p>
+              <DialogDemo />
+            </>
+          )}
         </UserSidebar>
         <ComingAppointmentsHeader>Future Appointments</ComingAppointmentsHeader>
         <ComingAppointments>

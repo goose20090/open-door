@@ -29,7 +29,7 @@ function NavBar({ user, setUser }) {
         <Link to="/about">About</Link>
         {user ? (
           <>
-            <Link to="/bookings">Book a Session</Link>
+            <Link to="/appointments">My Appointments</Link>
             <p>Logged in as: {user.name}</p>
             <LogoutBtn onClick={logoutMutation.mutate}>Logout</LogoutBtn>
           </>

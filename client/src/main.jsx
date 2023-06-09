@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import "./assets/index.css";
@@ -11,7 +11,7 @@ import { UserProvider } from "./context/user.jsx";
 
 const queryClient = new QueryClient();
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
@@ -21,5 +21,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <ReactQueryDevtools />
       </QueryClientProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
