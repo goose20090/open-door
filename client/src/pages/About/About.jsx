@@ -1,5 +1,4 @@
 import React from "react";
-import DialogDemo from "./DialogDemo";
 
 export default function About() {
   return (

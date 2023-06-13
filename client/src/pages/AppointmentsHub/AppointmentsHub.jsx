@@ -6,7 +6,7 @@ import { relativeDate } from "../../helpers/relativeDate";
 import { isFutureDate } from "../../helpers/isFutureDate";
 import { formatDate } from "../../helpers/formatDate";
 import AppointmentCapsule from "../../components/AppointmentCapsule";
-import DialogDemo from "../About/DialogDemo";
+import BookingDialog from "./BookingDialog";
 
 export default function AppointmentsHub() {
   const { user, setUser } = useContext(UserContext);
@@ -28,7 +28,7 @@ export default function AppointmentsHub() {
             <>
               <h2>{user.name}</h2>
               <p>Total appointments: {appointments.length}</p>
-              <DialogDemo />
+              <BookingDialog />
             </>
           )}
         </UserSidebar>
