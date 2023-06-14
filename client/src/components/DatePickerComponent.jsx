@@ -4,9 +4,12 @@ import { getFridayNextWeek } from "../helpers/getNextFriday";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function DatePickerComponent({ therapistSelected }) {
-  const [startDate, setStartDate] = useState(new Date());
-
+export default function DatePickerComponent({
+  therapistSelected,
+  startDate,
+  setStartDate,
+  setWeekDay,
+}) {
   const today = new Date();
 
   const minDate = therapistSelected ? new Date() : today;
@@ -22,7 +25,12 @@ export default function DatePickerComponent({ therapistSelected }) {
     <DatePicker
       inline
       selected={therapistSelected ? startDate : null}
-      onChange={(date) => setStartDate(date)}
+      onChange={(date) => {
+        setStartDate(date);
+        setWeekDay(
+          date.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase()
+        );
+      }}
       filterDate={isWeekday}
       minDate={minDate}
       maxDate={maxDate}

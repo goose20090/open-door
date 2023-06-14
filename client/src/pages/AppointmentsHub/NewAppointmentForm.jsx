@@ -8,7 +8,7 @@ import { useState } from "react";
 import DatePickerComponent from "../../components/DatePickerComponent";
 import { useTherapists } from "../../helpers/useTherapists";
 import TherapistSelect from "../../components/TherapistSelect";
-import TimeSelect from "./TimeSelect";
+import TimeSelect from "../../components/TimeSelect";
 import {
   FormWrapper,
   HeaderWrapper,
@@ -26,10 +26,21 @@ export default function NewAppointmentForm() {
 
   const selectPlaceHolder = "please select a therapist";
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const [weekDay, setWeekDay] = useState("wednesday");
+
   const [therapistSelected, setTherapistSelected] = useState(false);
+
+  const [therapist, setTherapist] = useState(null);
+
   const { isLoading, data: therapists } = useTherapists();
+
   function handleChange(e) {
+    const therapistObj = therapists.find(
+      (therapist) => therapist.name == e.target.value
+    );
+    setTherapist(therapistObj);
     setTherapistSelected(e.target.value !== selectPlaceHolder);
   }
 
@@ -45,19 +56,26 @@ export default function NewAppointmentForm() {
         <TherapistSelect
           isLoading={isLoading}
           therapists={therapists}
+          setTherapist={setTherapist}
           handleChange={handleChange}
           selectPlaceHolder={selectPlaceHolder}
         />
         <DatePickerWrapper>
           <DatePickerComponent
             therapistSelected={therapistSelected}
-            startDate={startDate}
-            setStartDate={setStartDate}
+            startDate={selectedDate}
+            setStartDate={setSelectedDate}
+            setWeekDay={setWeekDay}
           />
         </DatePickerWrapper>
       </DateSelectWrapper>
       <TimeSubmitWrapper>
-        <TimeSelect testTimeOptArr={testTimeOptArr} />
+        <TimeSelect
+          testTimeOptArr={testTimeOptArr}
+          therapist={therapist}
+          therapistSelected={therapistSelected}
+          weekDay={weekDay}
+        />
         <Dialog.Close asChild>
           <GreenButton>Request Appointment</GreenButton>
         </Dialog.Close>

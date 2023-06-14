@@ -4,6 +4,7 @@ export default function TherapistSelect({
   therapists,
   handleChange,
   selectPlaceHolder,
+  setTherapist,
 }) {
   return (
     <select
