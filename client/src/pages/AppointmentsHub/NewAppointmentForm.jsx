@@ -22,25 +22,15 @@ import {
 } from "../../assets/NewAppointmentStyles";
 
 export default function NewAppointmentForm() {
-  const testTimeOptArr = ["1", "2", "3", "4", "5"];
-
   const selectPlaceHolder = "please select a therapist";
-
+  const [therapistSelected, setTherapistSelected] = useState(false);
+  const { isLoading, data: therapists } = useTherapists();
+  const [currentTherapistId, setCurrentTherapistId] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
   const [weekDay, setWeekDay] = useState("wednesday");
 
-  const [therapistSelected, setTherapistSelected] = useState(false);
-
-  const [therapist, setTherapist] = useState(null);
-
-  const { isLoading, data: therapists } = useTherapists();
-
   function handleChange(e) {
-    const therapistObj = therapists.find(
-      (therapist) => therapist.name == e.target.value
-    );
-    setTherapist(therapistObj);
+    setCurrentTherapistId(e.target.value);
     setTherapistSelected(e.target.value !== selectPlaceHolder);
   }
 
@@ -56,7 +46,6 @@ export default function NewAppointmentForm() {
         <TherapistSelect
           isLoading={isLoading}
           therapists={therapists}
-          setTherapist={setTherapist}
           handleChange={handleChange}
           selectPlaceHolder={selectPlaceHolder}
         />
@@ -71,8 +60,7 @@ export default function NewAppointmentForm() {
       </DateSelectWrapper>
       <TimeSubmitWrapper>
         <TimeSelect
-          testTimeOptArr={testTimeOptArr}
-          therapist={therapist}
+          currentTherapistId={currentTherapistId}
           therapistSelected={therapistSelected}
           weekDay={weekDay}
         />

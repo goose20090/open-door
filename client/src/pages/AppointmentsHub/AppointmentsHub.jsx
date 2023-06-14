@@ -109,7 +109,7 @@ const Grid = styled.div`
 const UserSidebar = styled.aside`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `;
 const ComingAppointments = styled.section`
   background-color: lightblue;

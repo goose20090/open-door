@@ -16,7 +16,9 @@ export default function TherapistSelect({
       {isLoading
         ? null
         : therapists.map((therapist) => (
-            <option key={therapist.id}>{therapist.name}</option>
+            <option key={therapist.id} value={therapist.id}>
+              {therapist.name}
+            </option>
           ))}
     </select>
   );
