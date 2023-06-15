@@ -27,30 +27,30 @@ therapists = 5.times.map do
 end
 
 # Create appointments
-appointments = 30.times.map do
-  start_time = Faker::Time.between(from: 1.month.ago, to: 1.month.from_now)
-  status = ['confirmed', 'pending', 'cancelled'].sample
+# appointments = 30.times.map do
+#   start_time = Faker::Time.between(from: 1.month.ago, to: 1.month.from_now)
+#   status = ['confirmed', 'pending', 'cancelled'].sample
 
-  Appointment.create!(
-    client: clients.sample,
-    therapist: therapists.sample,
-    start_time: start_time,
-    status: status,
-    created_at: start_time - 1.day,
-    updated_at: start_time - 1.day
-  )
-end
+#   Appointment.create!(
+#     client: clients.sample,
+#     therapist: therapists.sample,
+#     start_time: start_time,
+#     status: status,
+#     created_at: start_time - 1.day,
+#     updated_at: start_time - 1.day
+#   )
+# end
 
-# Create feedbacks
-30.times do
-  content = Faker::Lorem.sentence(word_count: 10)
-  rating = rand(1..5)
+# # Create feedbacks
+# 30.times do
+#   content = Faker::Lorem.sentence(word_count: 10)
+#   rating = rand(1..5)
 
-  Feedback.create!(
-    appointment: appointments.sample,
-    content: content,
-    rating: rating,
-    created_at: Faker::Time.between(from: 6.months.ago, to: Date.today),
-    updated_at: Faker::Time.between(from: 6.months.ago, to: Date.today)
-  )
-end
+#   Feedback.create!(
+#     appointment: appointments.sample,
+#     content: content,
+#     rating: rating,
+#     created_at: Faker::Time.between(from: 6.months.ago, to: Date.today),
+#     updated_at: Faker::Time.between(from: 6.months.ago, to: Date.today)
+#   )
+# end

@@ -28,7 +28,7 @@ export const DateSelectWrapper = styled.div`
 
 export const DatePickerWrapper = styled.div``;
 
-export const TimeSubmitWrapper = styled.div`
+export const BookingSubmitterWrapper = styled.div`
   grid-area: time;
   display: flex;
   flex-direction: column;

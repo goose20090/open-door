@@ -8,12 +8,12 @@ import { useState } from "react";
 import DatePickerComponent from "../../components/DatePickerComponent";
 import { useTherapists } from "../../helpers/useTherapists";
 import TherapistSelect from "../../components/TherapistSelect";
-import TimeSelect from "../../components/TimeSelect";
+import BookingSubmitter from "../../components/BookingSubmitter";
 import {
   FormWrapper,
   HeaderWrapper,
   DateSelectWrapper,
-  TimeSubmitWrapper,
+  BookingSubmitterWrapper,
   GreenButton,
   IconButton,
   DialogTitle,
@@ -21,17 +21,16 @@ import {
   DatePickerWrapper,
 } from "../../assets/NewAppointmentStyles";
 
-export default function NewAppointmentForm() {
-  const selectPlaceHolder = "please select a therapist";
+export default function BookingDialogContent() {
+  const today = new Date().toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
   const [therapistSelected, setTherapistSelected] = useState(false);
   const { isLoading, data: therapists } = useTherapists();
   const [currentTherapistId, setCurrentTherapistId] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [weekDay, setWeekDay] = useState("wednesday");
 
   function handleChange(e) {
     setCurrentTherapistId(e.target.value);
-    setTherapistSelected(e.target.value !== selectPlaceHolder);
+    setTherapistSelected(e.target.value !== "please select a therapist");
   }
 
   return (
@@ -47,27 +46,23 @@ export default function NewAppointmentForm() {
           isLoading={isLoading}
           therapists={therapists}
           handleChange={handleChange}
-          selectPlaceHolder={selectPlaceHolder}
         />
         <DatePickerWrapper>
           <DatePickerComponent
             therapistSelected={therapistSelected}
             startDate={selectedDate}
             setStartDate={setSelectedDate}
-            setWeekDay={setWeekDay}
           />
         </DatePickerWrapper>
       </DateSelectWrapper>
-      <TimeSubmitWrapper>
-        <TimeSelect
+      <BookingSubmitterWrapper>
+        <BookingSubmitter
           currentTherapistId={currentTherapistId}
           therapistSelected={therapistSelected}
-          weekDay={weekDay}
+          today={today}
+          selectedDate={selectedDate}
         />
-        <Dialog.Close asChild>
-          <GreenButton>Request Appointment</GreenButton>
-        </Dialog.Close>
-      </TimeSubmitWrapper>
+      </BookingSubmitterWrapper>
       <Dialog.Close asChild>
         <IconButton className="IconButton" aria-label="Close">
           <Cross2Icon />

@@ -27,9 +27,6 @@ export default function DatePickerComponent({
       selected={therapistSelected ? startDate : null}
       onChange={(date) => {
         setStartDate(date);
-        setWeekDay(
-          date.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase()
-        );
       }}
       filterDate={isWeekday}
       minDate={minDate}

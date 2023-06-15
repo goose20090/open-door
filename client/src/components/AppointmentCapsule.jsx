@@ -12,6 +12,7 @@ export default function AppointmentCapsule({ appointment }) {
     cancelled: "salmon",
     confirmed: "goldenrod",
   };
+  console.log(appointment);
   return (
     <Wrapper style={{ "--color": COLORS[appointment.status] }}>
       <h4>{therapist.name}</h4>
