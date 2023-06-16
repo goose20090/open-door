@@ -1,11 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { useContext } from "react";
-import { UserContext } from "../context/user";
 import { formatDate } from "../helpers/formatDate";
 
 export default function AppointmentCapsule({ appointment }) {
-  const { user } = useContext(UserContext);
   const { therapist } = appointment;
   const COLORS = {
     pending: "white",
@@ -15,7 +12,7 @@ export default function AppointmentCapsule({ appointment }) {
   return (
     <Wrapper style={{ "--color": COLORS[appointment.status] }}>
       <h4>{therapist.name}</h4>
-      <span>{formatDate(appointment.start_time)}</span>
+      <span>{formatDate(appointment.start_time, appointment.date)}</span>
       <br />
       <span>Status: {appointment.status}</span>
     </Wrapper>

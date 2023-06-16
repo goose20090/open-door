@@ -5,11 +5,11 @@ import { useScheduleQuery } from "../hooks/useScheduleQuery";
 import { handleRadioChange } from "../helpers/handleRadioChange";
 import { getAvailableHours } from "../helpers/getAvailableHours";
 import fetchWithError from "../helpers/fetchWithError";
-function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate, today }) {
+function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate, nextWorkingDay }) {
   const { isLoading, isSuccess, data: schedule } = useScheduleQuery(currentTherapistId);
 
   const [formData, setFormData] = useState({
-    week_day: today,
+    week_day: nextWorkingDay,
     date: selectedDate,
     start_time: "",
     appointment_type: "recurring",

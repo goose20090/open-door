@@ -38,11 +38,8 @@ export default function AppointmentsHub() {
             <p>Loading...</p>
           ) : (
             appointments.map((appointment) =>
-              isFutureDate(appointment.start_time) ? (
-                <AppointmentCapsule
-                  key={appointment.id}
-                  appointment={appointment}
-                />
+              isFutureDate(appointment.start_time, appointment.date) ? (
+                <AppointmentCapsule key={appointment.id} appointment={appointment} />
               ) : null
             )
           )}
@@ -54,11 +51,8 @@ export default function AppointmentsHub() {
               <p>Loading...</p>
             ) : (
               appointments.map((appointment) =>
-                !isFutureDate(appointment.start_time) ? (
-                  <AppointmentCapsule
-                    key={appointment.id}
-                    appointment={appointment}
-                  />
+                !isFutureDate(appointment.start_time, appointment.date) ? (
+                  <AppointmentCapsule key={appointment.id} appointment={appointment} />
                 ) : null
               )
             )}

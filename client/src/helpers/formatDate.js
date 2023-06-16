@@ -1,13 +1,5 @@
-export function formatDate(dateString) {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+export function formatDate(startTime, date) {
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const months = [
     "January",
     "February",
@@ -23,17 +15,17 @@ export function formatDate(dateString) {
     "December",
   ];
 
-  const date = new Date(dateString);
+  const appointmentDate = new Date(date);
 
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
+  let hours = startTime;
+  let minutes = appointmentDate.getMinutes();
   const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
   const strTime = hours + "." + minutes + " " + ampm;
 
-  const day = date.getDate();
+  const day = appointmentDate.getDate();
   let daySuffix;
   if (day > 3 && day < 21) daySuffix = "th";
   switch (day % 10) {
@@ -51,5 +43,5 @@ export function formatDate(dateString) {
       break;
   }
 
-  return strTime + ", " + day + daySuffix + " " + months[date.getMonth()];
+  return strTime + ", " + day + daySuffix + " " + months[appointmentDate.getMonth()];
 }

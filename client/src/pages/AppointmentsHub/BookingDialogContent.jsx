@@ -9,6 +9,7 @@ import DatePickerComponent from "../../components/DatePickerComponent";
 import { useTherapists } from "../../helpers/useTherapists";
 import TherapistSelect from "../../components/TherapistSelect";
 import BookingSubmitter from "../../components/BookingSubmitter";
+import { getNextWorkingDay } from "../../helpers/getNextWorkingDay";
 import {
   FormWrapper,
   HeaderWrapper,
@@ -22,11 +23,11 @@ import {
 } from "../../assets/NewAppointmentStyles";
 
 export default function BookingDialogContent() {
-  const today = new Date().toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
+  const nextWorkingDay = getNextWorkingDay();
   const [therapistSelected, setTherapistSelected] = useState(false);
   const { isLoading, data: therapists } = useTherapists();
   const [currentTherapistId, setCurrentTherapistId] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(nextWorkingDay);
 
   function handleChange(e) {
     setCurrentTherapistId(e.target.value);
@@ -59,7 +60,7 @@ export default function BookingDialogContent() {
         <BookingSubmitter
           currentTherapistId={currentTherapistId}
           therapistSelected={therapistSelected}
-          today={today}
+          nextWorkingDay={nextWorkingDay}
           selectedDate={selectedDate}
         />
       </BookingSubmitterWrapper>

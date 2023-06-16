@@ -1,6 +1,7 @@
-export function isFutureDate(dateString) {
-  const dateToCheck = new Date(dateString);
-  const now = new Date();
+export function isFutureDate(start_time, date) {
+  const currentTime = new Date();
+  const appointmentTime = new Date(date);
+  appointmentTime.setHours(start_time, 0, 0, 0);
 
-  return dateToCheck.getTime() > now.getTime();
+  return appointmentTime > currentTime;
 }

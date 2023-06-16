@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { getFridayNextWeek } from "../helpers/getNextFriday";
+import { isSameDay } from "date-fns";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -11,14 +12,16 @@ export default function DatePickerComponent({
   setWeekDay,
 }) {
   const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const minDate = therapistSelected ? new Date() : today;
+  const minDate = today;
 
   const maxDate = therapistSelected ? getFridayNextWeek() : today;
 
   const isWeekday = (date) => {
     const day = date.getDay();
-    return day !== 0 && day !== 6;
+    return day !== 0 && day !== 6 && !isSameDay(date, today);
   };
 
   return (
