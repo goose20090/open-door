@@ -1,7 +1,6 @@
 class AppointmentsController < ApplicationController
 
     def create
-        debugger
         client_id = session[:client_id]
 
         start_date = Date.parse(params[:date])
