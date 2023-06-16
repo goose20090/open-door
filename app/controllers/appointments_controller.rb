@@ -11,7 +11,8 @@ class AppointmentsController < ApplicationController
                 client_id: client_id,
                 therapist_id: params[:therapist_id],
                 start_time: params[:start_time].to_i,
-                recurring: true
+                date: Date.parse(params[:date]),
+                recurring: true,
                 status: 'pending'
             )
             render json: appointment, status: :created

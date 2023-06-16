@@ -16,6 +16,15 @@ function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate,
     therapist_id: currentTherapistId,
   });
 
+  useEffect(() => {
+    const newWeekDay = selectedDate.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
+    setFormData((prevState) => ({ ...prevState, date: selectedDate, week_day: newWeekDay }));
+  }, [selectedDate]);
+
+  useEffect(() => {
+    setFormData((prevState) => ({ ...prevState, therapist_id: currentTherapistId }));
+  }, [currentTherapistId]);
+
   let availableHours;
 
   if (isSuccess) {
