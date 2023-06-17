@@ -27,7 +27,9 @@ export default function BookingDialogContent() {
   const [therapistSelected, setTherapistSelected] = useState(false);
   const { isLoading, data: therapists } = useTherapists();
   const [currentTherapistId, setCurrentTherapistId] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(nextWorkingDay);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(nextWorkingDay.getFullYear(), nextWorkingDay.getMonth(), nextWorkingDay.getDate())
+  );
 
   function handleChange(e) {
     setCurrentTherapistId(e.target.value);

@@ -15,8 +15,16 @@ class AppointmentsController < ApplicationController
                 status: 'pending'
             )
             render json: appointment, status: :created
-        elsif params [:appointment_type] == 'single'
-            # book single appointment
+        elsif params[:appointment_type] == 'single'
+            appointment = Appointment.create!(
+                client_id: client_id,
+                therapist_id: params[:therapist_id],
+                start_time: params[:start_time].to_i,
+                date: Date.parse(params[:date]),
+                recurring: false,
+                status: 'pending'
+            )
+            render json: appointment, status: :created
         end
     end
 

@@ -6,7 +6,11 @@ import { handleRadioChange } from "../helpers/handleRadioChange";
 import { getAvailableHours } from "../helpers/getAvailableHours";
 import fetchWithError from "../helpers/fetchWithError";
 function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate, nextWorkingDay }) {
-  const { isLoading, isSuccess, data: schedule } = useScheduleQuery(currentTherapistId);
+  const {
+    isLoading,
+    isSuccess,
+    data: schedule,
+  } = useScheduleQuery(currentTherapistId, selectedDate);
 
   const [formData, setFormData] = useState({
     week_day: nextWorkingDay,
@@ -17,6 +21,7 @@ function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate,
   });
 
   useEffect(() => {
+    console.log(selectedDate);
     const newWeekDay = selectedDate.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
     setFormData((prevState) => ({ ...prevState, date: selectedDate, week_day: newWeekDay }));
   }, [selectedDate]);

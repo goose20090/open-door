@@ -1,16 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 
-export function useScheduleQuery(therapistId) {
-  async function fetchTherapistSchedule(therapistId) {
-    const res = await fetch(`/api/schedules/${therapistId}`);
+export function useScheduleQuery(therapistId, selectedDate) {
+  let dateString = selectedDate.toISOString().split("T")[0];
+
+  async function fetchTherapistSchedule(therapistId, selectedDate) {
+    console.log(dateString);
+    const res = await fetch(`/api/schedules/${therapistId}?date=${dateString}`);
     if (!res.ok) {
       throw new Error("Network response was not ok");
     }
     return res.json();
   }
   return useQuery(
-    ["therapist", therapistId, "schedule"],
-    () => fetchTherapistSchedule(therapistId),
+    ["therapist", "availability", therapistId, dateString],
+    () => fetchTherapistSchedule(therapistId, selectedDate),
     {
       enabled: !!therapistId,
     }
