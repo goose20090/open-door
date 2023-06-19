@@ -1,5 +1,5 @@
 class Therapist < ApplicationRecord
-  has_secure_password
+  has_one :user, as: :userable
 
   has_one :schedule, dependent: :destroy
   has_many :appointments
