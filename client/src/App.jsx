@@ -1,36 +1,22 @@
 /** @format */
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./components/NavBar";
 import { Route, Switch } from "react-router-dom";
 import GlobalStyles from "./assets/GlobalStyles.js";
 import styled from "styled-components";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
-import { UserContext } from "./context/user";
-import { useQuery } from "@tanstack/react-query";
-import fetchWithError from "./helpers/fetchWithError";
 import AppointmentsHub from "./pages/AppointmentsHub/AppointmentsHub";
 import About from "./pages/About/About";
+import { useAuthQuery } from "./hooks/useAuthQuery";
 
 function App() {
-  const { user, setUser } = useContext(UserContext);
-
-  function checkSession() {
-    return fetchWithError("api/me");
-  }
-
-  const authQuery = useQuery(["user", "authorisation"], checkSession, {
-    onSuccess: (r) => {
-      setUser(r);
-    },
-    retry: 0,
-  });
-
+  useAuthQuery();
   return (
     <Wrapper>
       <GlobalStyles />
-      <NavBar user={user} setUser={setUser} />
+      <NavBar />
       <Switch>
         <Route path="/about">
           <About />

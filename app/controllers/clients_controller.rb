@@ -9,15 +9,24 @@ class ClientsController < ApplicationController
         end
     end
 
-    def create 
-        client = Client.create client_params
-        if client.valid?
-            session[:client_id] = client.id
-            render json: client, status: :created
+    def create
+        client = Client.new(name: params[:name])
+    
+        if client.save
+          user = User.create!(userable: client, email: params[:email], password: params[:password])
+          session[:user_id] = user.id
+          render json: client, status: :created
         else
-            render json: {errors: client.errors.full_messages}, status: :unprocessable_entity
+          render json: client.errors, status: :unprocessable_entity
         end
-    end
+      end
+    
+      private
+    
+      def client_params
+        params.require(:client).permit(:name, :email, :password)
+      end
+    
 end
 
 private 

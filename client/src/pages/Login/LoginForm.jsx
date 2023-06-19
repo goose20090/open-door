@@ -8,7 +8,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchWithError from "../../helpers/fetchWithError";
 
 export default function LoginForm() {
-  const { setUser } = useContext(UserContext);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const queryClient = useQueryClient();
 
@@ -24,7 +23,6 @@ export default function LoginForm() {
 
   const loginMutation = useMutation(attemptLogin, {
     onSuccess: (r) => {
-      setUser(r);
       queryClient.setQueryData(["user", "authorisation"], () => r);
     },
     onError: (r) => console.log(r),
@@ -48,19 +46,11 @@ export default function LoginForm() {
       >
         <InputWrapper>
           <InputLabel>Email</InputLabel>
-          <Input
-            name={"email"}
-            value={formData.email}
-            onChange={handleChange}
-          />
+          <Input name={"email"} value={formData.email} onChange={handleChange} />
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Password</InputLabel>
-          <Input
-            name={"password"}
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <Input name={"password"} value={formData.password} onChange={handleChange} />
         </InputWrapper>
         <SubmitButton>Submit</SubmitButton>
       </RadixForm>

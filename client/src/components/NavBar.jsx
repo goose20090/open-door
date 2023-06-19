@@ -4,22 +4,11 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuthQuery } from "../hooks/useAuthQuery";
+import LogoutButton from "./LogoutBtn";
 
-function NavBar({ user, setUser }) {
-  function handleLogout() {
-    fetch("/api/logout", {
-      method: "DELETE",
-    });
-  }
-
-  const queryClient = useQueryClient();
-
-  const logoutMutation = useMutation(handleLogout, {
-    onSuccess: () => {
-      setUser(false);
-      queryClient.setQueryData(["user", "authorisation"], () => null);
-    },
-  });
+function NavBar() {
+  const { data: user } = useAuthQuery();
 
   return (
     <Wrapper>
@@ -28,11 +17,7 @@ function NavBar({ user, setUser }) {
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
         {user ? (
-          <>
-            <Link to="/appointments">My Appointments</Link>
-            <p>Logged in as: {user.name}</p>
-            <LogoutBtn onClick={logoutMutation.mutate}>Logout</LogoutBtn>
-          </>
+          <UserSpecificLinks user={user} />
         ) : (
           <>
             <Link to="/login">Login</Link>
@@ -44,6 +29,24 @@ function NavBar({ user, setUser }) {
   );
 }
 
+function UserSpecificLinks({ user }) {
+  if (user.user_type === "Client") {
+    return (
+      <>
+        <Link to="/appointments">My Appointments</Link>
+        <p>Logged in as: {user.name}</p>
+        <LogoutButton />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Link to="/therapist-appointments">Therapists!!</Link>
+        <LogoutButton />
+      </>
+    );
+  }
+}
 const Wrapper = styled.header`
   background-color: white;
   overflow: hidden;
@@ -74,11 +77,6 @@ const Heading = styled.h1`
 `;
 
 const Link = styled(NavLink)`
-  padding: 8px;
-  border: 1px solid black;
-`;
-
-const LogoutBtn = styled.button`
   padding: 8px;
   border: 1px solid black;
 `;

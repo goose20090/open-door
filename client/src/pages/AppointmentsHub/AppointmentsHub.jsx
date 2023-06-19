@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { UserContext } from "../../context/user";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { relativeDate } from "../../helpers/relativeDate";
@@ -10,15 +9,13 @@ import AppointmentCapsule from "../../components/AppointmentCapsule";
 import BookingDialog from "./BookingDialog";
 
 export default function AppointmentsHub() {
-  const { user, setUser } = useContext(UserContext);
-
-  if (!user) return <Redirect to="/" />;
-
   const authQuery = useQuery(["user", "authorisation"], () => null, {
     enabled: false,
   });
 
-  const { isLoading, isError } = authQuery;
+  const { data: user, isLoading, isError } = authQuery;
+
+  if (!authQuery.data) return <Redirect to="/" />;
 
   const { appointments } = user;
   return (

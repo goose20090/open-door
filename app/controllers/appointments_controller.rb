@@ -1,8 +1,8 @@
 class AppointmentsController < ApplicationController
 
     def create
-        client_id = session[:client_id]
-
+        user = User.includes(:userable).find_by(id: session[:user_id])
+        client_id = user.userable.id
         start_date = Date.parse(params[:date])
         
         if params[:appointment_type] == 'recurring'

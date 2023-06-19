@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   post 'login', to: "sessions#create"
   post 'signup', to: "clients#create"
 
-  get 'me', to: "clients#show"
+  get 'me', to: "users#show"
   delete 'logout', to: "sessions#destroy"
   get '/schedules/:therapist_id', to: 'schedules#show'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
