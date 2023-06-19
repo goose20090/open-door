@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Button } from "../components/Button";
 import * as Dialog from "@radix-ui/react-dialog";
+import { UpdateIcon } from "@radix-ui/react-icons";
 export const HeaderWrapper = styled.header`
   grid-area: header;
 `;
@@ -121,4 +122,23 @@ export const DialogDescription = styled(Dialog.Description)`
   color: var(--mauve11);
   font-size: 15px;
   line-height: 1.5;
+`;
+
+export const StyledUpdateIcon = styled(UpdateIcon)`
+  animation-name: spin;
+  animation-duration: 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  position: fixed;
+  top: 15px;
+  right: 50px;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;

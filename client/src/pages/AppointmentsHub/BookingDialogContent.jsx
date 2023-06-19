@@ -2,14 +2,15 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import * as Dialog from "@radix-ui/react-dialog";
 import styled from "styled-components";
 import { Button } from "../../components/Button";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useIsFetching } from "@tanstack/react-query";
 import fetchWithError from "../../helpers/fetchWithError";
 import { useState } from "react";
 import DatePickerComponent from "../../components/DatePickerComponent";
-import { useTherapists } from "../../helpers/useTherapists";
+import { useTherapists } from "../../hooks/useTherapists";
 import TherapistSelect from "../../components/TherapistSelect";
 import BookingSubmitter from "../../components/BookingSubmitter";
 import { getNextWorkingDay } from "../../helpers/getNextWorkingDay";
+import { StyledUpdateIcon } from "../../assets/NewAppointmentStyles";
 import {
   FormWrapper,
   HeaderWrapper,
@@ -35,6 +36,8 @@ export default function BookingDialogContent() {
     setCurrentTherapistId(e.target.value);
     setTherapistSelected(e.target.value !== "please select a therapist");
   }
+
+  const isFetching = useIsFetching(["therapist", "schedule"]);
 
   return (
     <FormWrapper>
@@ -71,6 +74,7 @@ export default function BookingDialogContent() {
           <Cross2Icon />
         </IconButton>
       </Dialog.Close>
+      {isFetching ? <StyledUpdateIcon /> : null}
     </FormWrapper>
   );
 }
