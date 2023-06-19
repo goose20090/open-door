@@ -1,17 +1,23 @@
 class SessionsController < ApplicationController
-
     def create
-        client = Client.find_by(email: params[:email])
-        if client&.authenticate(params[:password])
-            session[:client_id] = client.id
-            render json: client, include: ['appointments', 'appointments.therapist'], status: :created
+        user = User.includes(:userable).find_by(email: params[:email])
+        if user&.authenticate(params[:password])
+            session[:user_id] = user.id
+
+            if user.userable_type == 'Client'
+                client = user.userable
+                render json: client, include: ['appointments', 'appointments.therapist'], status: :created
+            else # the userable is a Therapist
+                therapist = user.userable
+                render json: therapist, include: ['appointments', 'appointments.clients'], status: :created
+            end
         else
             render json: {error: "Invalid username or password"}, status: :unauthorized
         end
     end
 
     def destroy
-        session.delete :client_id
+        session.delete :user_id 
         head :no_content
     end
 end
