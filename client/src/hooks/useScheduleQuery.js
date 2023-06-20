@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import fetchWithError from "../helpers/fetchWithError";
 
 export function useScheduleQuery(therapistId, selectedDate) {
+  selectedDate.setUTCHours(12);
   let dateString = selectedDate.toISOString().split("T")[0];
 
   // async function fetchTherapistSchedule(therapistId, dateString) {

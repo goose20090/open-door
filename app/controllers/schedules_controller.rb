@@ -1,5 +1,6 @@
 class SchedulesController < ApplicationController
   def show
+    # debugger
     schedule = Schedule.find_by(therapist_id: params[:therapist_id])
     if schedule
       recurring_appointments = Appointment.where(therapist_id: params[:therapist_id], recurring: true)

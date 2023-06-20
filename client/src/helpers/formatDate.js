@@ -1,4 +1,4 @@
-export function formatDate(startTime, date) {
+export function formatDate(start_time, date) {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const months = [
     "January",
@@ -17,15 +17,15 @@ export function formatDate(startTime, date) {
 
   const appointmentDate = new Date(date);
 
-  let hours = startTime;
-  let minutes = appointmentDate.getMinutes();
+  let hours = start_time;
+  let minutes = appointmentDate.getUTCMinutes();
   const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
   const strTime = hours + "." + minutes + " " + ampm;
 
-  const day = appointmentDate.getDate();
+  const day = appointmentDate.getUTCDate();
   let daySuffix;
   if (day > 3 && day < 21) daySuffix = "th";
   switch (day % 10) {
@@ -43,5 +43,5 @@ export function formatDate(startTime, date) {
       break;
   }
 
-  return strTime + ", " + day + daySuffix + " " + months[appointmentDate.getMonth()];
+  return strTime + ", " + day + daySuffix + " " + months[appointmentDate.getUTCMonth()];
 }
