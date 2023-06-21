@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useIsFetching, useQuery } from "@tanstack/react-query";
+import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 import { useScheduleQuery } from "../hooks/useScheduleQuery";
 import fetchWithError from "../helpers/fetchWithError";
@@ -9,7 +9,14 @@ import { handleRadioChange } from "../helpers/handleRadioChange";
 import { GreenButton } from "../assets/NewAppointmentStyles";
 import { ScheduleQueryError } from "./ScheduleQueryError";
 
-function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate, nextWorkingDay }) {
+function BookingSubmitter({
+  therapistSelected,
+  currentTherapistId,
+  selectedDate,
+  nextWorkingDay,
+  setOpen,
+}) {
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     week_day: nextWorkingDay,
     date: selectedDate,
@@ -18,8 +25,11 @@ function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate,
     therapist_id: currentTherapistId,
   });
   useEffect(() => {
-    const newWeekDay = selectedDate.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
-    setFormData((prevState) => ({ ...prevState, date: selectedDate, week_day: newWeekDay }));
+    setFormData((prevState) => ({
+      ...prevState,
+      date: selectedDate,
+      week_day: selectedDate.getDay(),
+    }));
   }, [selectedDate]);
 
   useEffect(() => {
@@ -34,7 +44,10 @@ function BookingSubmitter({ therapistSelected, currentTherapistId, selectedDate,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
-    }).then((r) => console.log(r));
+    }).then((r) => {
+      queryClient.invalidateQueries(["user"]);
+      setOpen(false);
+    });
   }
 
   return (

@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchWithError from "../../helpers/fetchWithError";
 
 export default function LoginForm() {
+  const { setUser } = useContext(UserContext);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const queryClient = useQueryClient();
 
@@ -24,6 +25,7 @@ export default function LoginForm() {
   const loginMutation = useMutation(attemptLogin, {
     onSuccess: (r) => {
       queryClient.setQueryData(["user", "authorisation"], () => r);
+      setUser(r);
     },
     onError: (r) => console.log(r),
   });

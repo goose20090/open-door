@@ -11,6 +11,7 @@ class AppointmentsController < ApplicationController
                 therapist_id: params[:therapist_id],
                 start_time: params[:start_time].to_i,
                 date: Date.parse(params[:date]),
+                week_day: params[:week_day],
                 recurring: true,
                 status: 'pending'
             )
@@ -21,6 +22,7 @@ class AppointmentsController < ApplicationController
                 therapist_id: params[:therapist_id],
                 start_time: params[:start_time].to_i,
                 date: Date.parse(params[:date]),
+                week_day: nil,
                 recurring: false,
                 status: 'pending'
             )

@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   get 'me', to: "users#show"
   delete 'logout', to: "sessions#destroy"
   get '/schedules/:therapist_id', to: 'schedules#show'
+
+  
+  patch '/:therapist_id/schedule/availability', to: 'schedules#update_availability'
+  get '/:therapist_id/schedule/availability', to: 'schedules#availability'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

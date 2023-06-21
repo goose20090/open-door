@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import styled from "styled-components";
@@ -9,19 +9,22 @@ import "@radix-ui/colors/violet.css";
 import BookingDialogContent from "./BookingDialogContent";
 import { Button } from "../../components/Button";
 
-const BookingDialog = () => (
-  <Dialog.Root>
-    <Dialog.Trigger asChild>
-      <VioletButton>Book an Appointment</VioletButton>
-    </Dialog.Trigger>
-    <Dialog.Portal>
-      <DialogOverlay />
-      <DialogContent>
-        <BookingDialogContent />
-      </DialogContent>
-    </Dialog.Portal>
-  </Dialog.Root>
-);
+function BookingDialog() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+        <VioletButton>Book an Appointment</VioletButton>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <DialogOverlay />
+        <DialogContent>
+          <BookingDialogContent setOpen={setOpen} />
+        </DialogContent>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}
 
 export default BookingDialog;
 

@@ -23,14 +23,12 @@ import {
   DatePickerWrapper,
 } from "../../assets/NewAppointmentStyles";
 
-export default function BookingDialogContent() {
+export default function BookingDialogContent({ setOpen }) {
   const nextWorkingDay = getNextWorkingDay();
   const [therapistSelected, setTherapistSelected] = useState(false);
   const { isLoading, data: therapists } = useTherapists();
   const [currentTherapistId, setCurrentTherapistId] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(nextWorkingDay.getFullYear(), nextWorkingDay.getMonth(), nextWorkingDay.getDate())
-  );
+  const [selectedDate, setSelectedDate] = useState(nextWorkingDay);
 
   function handleChange(e) {
     setCurrentTherapistId(e.target.value);
@@ -65,8 +63,9 @@ export default function BookingDialogContent() {
         <BookingSubmitter
           currentTherapistId={currentTherapistId}
           therapistSelected={therapistSelected}
-          nextWorkingDay={nextWorkingDay}
+          nextWorkingDay={nextWorkingDay.getDay}
           selectedDate={selectedDate}
+          setOpen={setOpen}
         />
       </BookingSubmitterWrapper>
       <Dialog.Close asChild>

@@ -1,6 +1,7 @@
-export function getAvailableHours(schedule, weekDay) {
+export function getAvailableHours(schedule, weekDayInt) {
+  const weekDayArr = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
   let availableHours = [];
-  let hours = schedule[weekDay];
+  let hours = schedule[weekDayArr[weekDayInt]];
 
   hours.forEach((hour) => {
     for (let key in hour) {

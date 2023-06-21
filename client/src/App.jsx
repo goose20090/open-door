@@ -10,6 +10,7 @@ import Login from "./pages/Login/Login";
 import AppointmentsHub from "./pages/AppointmentsHub/AppointmentsHub";
 import About from "./pages/About/About";
 import { useAuthQuery } from "./hooks/useAuthQuery";
+import TherapistsHub from "./pages/TherapistsHub/TherapistsHub";
 
 function App() {
   useAuthQuery();
@@ -29,6 +30,9 @@ function App() {
         </Route>
         <Route path="/appointments">
           <AppointmentsHub />
+        </Route>
+        <Route path="/therapist-appointments">
+          <TherapistsHub />
         </Route>
         <Route path="/">
           <h1>Home</h1>

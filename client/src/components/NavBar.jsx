@@ -1,14 +1,15 @@
 /** @format */
 
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuthQuery } from "../hooks/useAuthQuery";
-import LogoutButton from "./LogoutBtn";
+import { UserContext } from "../context/user";
+import LogoutButton from "./LogoutButton";
 
 function NavBar() {
-  const { data: user } = useAuthQuery();
+  const { user } = useContext(UserContext);
+  console.log(user);
 
   return (
     <Wrapper>

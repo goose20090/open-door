@@ -26,7 +26,7 @@ export default function SignupForm() {
       .then((r) => r.json())
       .then((r) => {
         console.log(r);
-        setUser(r.name);
+        setUser(r);
       });
   }
 
@@ -53,11 +53,7 @@ export default function SignupForm() {
       </InputWrapper>
       <InputWrapper>
         <InputLabel>Password</InputLabel>
-        <Input
-          name={"password"}
-          value={formData.password}
-          onChange={handleChange}
-        />
+        <Input name={"password"} value={formData.password} onChange={handleChange} />
       </InputWrapper>
       <InputWrapper>
         <InputLabel>Password Confirmation</InputLabel>
