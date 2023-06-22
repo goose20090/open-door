@@ -1,22 +1,51 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { formatDate } from "../helpers/formatDate";
+import { UserContext } from "../context/user";
+import fetchWithError from "../helpers/fetchWithError";
 
 export default function AppointmentCapsule({ appointment }) {
-  const { therapist } = appointment;
+  const { user } = useContext(UserContext);
+  // const { therapist } = appointment;
   const COLORS = {
     pending: "white",
-    cancelled: "salmon",
+    rejected: "hsl(360, 100%, 82%, 1)",
     confirmed: "goldenrod",
   };
+
+  function handleAppointmentUpdate() {}
+  console.log(appointment.status);
   return (
     <Wrapper style={{ "--color": COLORS[appointment.status] }}>
-      <h4>{therapist.name}</h4>
-      <span>{formatDate(appointment.start_time, appointment.date)}</span>
+      <h4>{user.user_type === "Client" ? appointment.therapist.name : appointment.client.name}</h4>
+      <span>
+        <b>Date:</b>
+        {formatDate(appointment.start_time, appointment.date)}
+      </span>
       <br />
       <span>Status: {appointment.status}</span>
+      {user.user_type === "Therapist" && appointment.status === "pending" ? (
+        <>
+          <ActionButton buttonAction={"confirm"} appointment={appointment} />
+          <ActionButton buttonAction={"reject"} appointment={appointment} />
+        </>
+      ) : null}
     </Wrapper>
   );
+}
+
+function ActionButton({ buttonAction, appointment }) {
+  function handleClick() {
+    // console.log(action);
+    fetchWithError(`/api/appointments/${appointment.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ button_action: buttonAction }),
+    });
+  }
+  return <button onClick={handleClick}>{buttonAction}</button>;
 }
 
 const Wrapper = styled.section`
@@ -30,5 +59,6 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  width: fit-content;
   padding: 8px;
 `;

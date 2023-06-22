@@ -1,15 +1,16 @@
 import React, { useContext } from "react";
-import { TherapistScheduler } from "./TherapistScheduler";
+import { TherapistWeeklyAv } from "./Tabs/TherapistWeeklyAv";
 import { useAuthQuery } from "../../hooks/useAuthQuery";
 import { UserContext } from "../../context/user";
 import * as Tabs from "@radix-ui/react-tabs";
 import styled from "styled-components";
-import AppointmentRequests from "./AppointmentRequests";
+import AppointmentRequests from "./Tabs/AppointmentRequests";
 import DateRangePickerComponent from "./DateRangePicker";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import TherapistAppointments from "./Tabs/TherapistAppointments";
 
 function TherapistsHub() {
-  const { isLoading } = useAuthQuery();
+  const { isLoading } = useAuthQuery(false);
   const { user } = useContext(UserContext);
   if (isLoading) return <p>Loading...</p>;
   if (!user) return <Redirect to="/" />;
@@ -19,20 +20,24 @@ function TherapistsHub() {
         <OrientationRow>
           <TabsList>
             <TabsTrigger value="tab1">Appointment Requests</TabsTrigger>
-            <TabsTrigger value="tab2">Weekly Availability</TabsTrigger>
-            <TabsTrigger value="tab3">Book a Holiday</TabsTrigger>
+            <TabsTrigger value="tab2">Appointments</TabsTrigger>
+            <TabsTrigger value="tab3">Weekly Availability</TabsTrigger>
+            <TabsTrigger value="tab4">Book a Holiday</TabsTrigger>
           </TabsList>
         </OrientationRow>
         <Content>
-          <Tabs.Content value="tab1">
+          <TabsContent value="tab1">
             <AppointmentRequests />
-          </Tabs.Content>
-          <Tabs.Content value="tab2">
-            <TherapistScheduler />
-          </Tabs.Content>
-          <Tabs.Content value="tab3">
+          </TabsContent>
+          <TabsContent value="tab2">
+            <TherapistAppointments />
+          </TabsContent>
+          <TabsContent value="tab3">
+            <TherapistWeeklyAv />
+          </TabsContent>
+          <TabsContent value="tab4">
             <DateRangePickerComponent />
-          </Tabs.Content>
+          </TabsContent>
         </Content>
       </HubGrid>
     </TabsRoot>
@@ -76,6 +81,11 @@ const Content = styled.div`
   grid-area: content;
   background-color: lightblue;
   overflow: auto;
+  height: 100%;
+`;
+
+const TabsContent = styled(Tabs.Content)`
+  height: 100%;
 `;
 
 const TabsRoot = styled(Tabs.Root)`

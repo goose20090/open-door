@@ -9,7 +9,6 @@ import LogoutButton from "./LogoutButton";
 
 function NavBar() {
   const { user } = useContext(UserContext);
-  console.log(user);
 
   return (
     <Wrapper>
@@ -18,7 +17,11 @@ function NavBar() {
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
         {user ? (
-          <UserSpecificLinks user={user} />
+          <>
+            <UserSpecificLinks user={user} />
+            <p>Logged in as: {user.name}</p>
+            <LogoutButton />
+          </>
         ) : (
           <>
             <Link to="/login">Login</Link>
@@ -35,15 +38,12 @@ function UserSpecificLinks({ user }) {
     return (
       <>
         <Link to="/appointments">My Appointments</Link>
-        <p>Logged in as: {user.name}</p>
-        <LogoutButton />
       </>
     );
   } else {
     return (
       <>
-        <Link to="/therapist-appointments">Therapists!!</Link>
-        <LogoutButton />
+        <Link to="/therapist-appointments">Therapist Hub</Link>
       </>
     );
   }

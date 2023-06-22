@@ -30,6 +30,19 @@ class AppointmentsController < ApplicationController
         end
     end
 
+    def update
+
+        statuses = {
+            confirm: 'confirmed',
+            reject: 'rejected'
+        }
+        debugger
+        appointment = Appointment.find_by(id: params[:id])
+        appointment[:status] = statuses[params[:button_action].to_sym]
+        appointment.save!
+        render json: appointment
+    end
+
     private
 
     def appointment_params

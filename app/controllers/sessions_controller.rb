@@ -8,8 +8,9 @@ class SessionsController < ApplicationController
                 client = user.userable
                 render json: client, include: ['appointments', 'appointments.therapist'], status: :created
             else # the userable is a Therapist
+                debugger
                 therapist = user.userable
-                render json: therapist, include: ['appointments', 'appointments.clients'], status: :created
+                render json: therapist, include: ['appointments', 'appointments.client'], status: :created
             end
         else
             render json: {error: "Invalid username or password"}, status: :unauthorized

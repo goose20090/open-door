@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import { GreenButton } from "../../assets/NewAppointmentStyles";
-import { UserContext } from "../../context/user";
-import { useAvailabilityQuery } from "../../hooks/useAvailabilityQuery";
-import fetchWithError from "../../helpers/fetchWithError";
+import { GreenButton } from "../../../assets/NewAppointmentStyles";
+import { UserContext } from "../../../context/user";
+import { useAvailabilityQuery } from "../../../hooks/useAvailabilityQuery";
+import fetchWithError from "../../../helpers/fetchWithError";
 
-export function TherapistScheduler() {
+export function TherapistWeeklyAv() {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const hours = [9, 10, 11, 12, 13, 14, 15, 16];
   const { user } = useContext(UserContext);

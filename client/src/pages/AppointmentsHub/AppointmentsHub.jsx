@@ -7,13 +7,13 @@ import { isFutureDate } from "../../helpers/isFutureDate";
 import { formatDate } from "../../helpers/formatDate";
 import AppointmentCapsule from "../../components/AppointmentCapsule";
 import BookingDialog from "./BookingDialog";
+import { useAuthQuery } from "../../hooks/useAuthQuery";
+import { UserContext } from "../../context/user";
 
 export default function AppointmentsHub() {
-  const authQuery = useQuery(["user", "authorisation"], () => null, {
-    enabled: false,
-  });
+  const { isLoading, isError } = useAuthQuery(false);
 
-  const { data: user, isLoading, isError } = authQuery;
+  const user = useContext(UserContext);
 
   if (!authQuery.data) return <Redirect to="/" />;
 

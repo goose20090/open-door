@@ -2,6 +2,7 @@ class SchedulesController < ApplicationController
   DAYS_OF_WEEK = %w[sunday monday tuesday wednesday thursday friday saturday]
 
    def show
+
     schedule = Schedule.find_by(therapist_id: params[:therapist_id])
     if schedule
       # Select the user availability if it exists; otherwise, use the default.
@@ -42,7 +43,6 @@ class SchedulesController < ApplicationController
   end
 
   def update_availability
-    debugger
     schedule = Schedule.find_by(therapist_id: params[:therapist_id])
   
     if schedule.update(availability: params[:availability])
