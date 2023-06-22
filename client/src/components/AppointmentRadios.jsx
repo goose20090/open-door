@@ -1,5 +1,5 @@
 import React from "react";
-import { GreenButton } from "../assets/NewAppointmentStyles";
+import { GreenButton } from "../assets/Buttons";
 import { UpdateIcon } from "@radix-ui/react-icons";
 import { handleRadioChange } from "../helpers/handleRadioChange";
 import { useScheduleQuery } from "../hooks/useScheduleQuery";

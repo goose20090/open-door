@@ -1,7 +1,6 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import * as Dialog from "@radix-ui/react-dialog";
 import styled from "styled-components";
-import { Button } from "../../components/Button";
 import { useQuery, useIsFetching } from "@tanstack/react-query";
 import fetchWithError from "../../helpers/fetchWithError";
 import { useState } from "react";
@@ -11,13 +10,12 @@ import TherapistSelect from "../../components/TherapistSelect";
 import BookingSubmitter from "../../components/BookingSubmitter";
 import { getNextWorkingDay } from "../../helpers/getNextWorkingDay";
 import { StyledUpdateIcon } from "../../assets/NewAppointmentStyles";
+import { IconButton, GreenButton, Button } from "../../assets/Buttons";
 import {
   FormWrapper,
   HeaderWrapper,
   DateSelectWrapper,
   BookingSubmitterWrapper,
-  GreenButton,
-  IconButton,
   DialogTitle,
   DialogDescription,
   DatePickerWrapper,

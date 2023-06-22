@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import { GreenButton } from "../../../assets/NewAppointmentStyles";
+import { GreenButton } from "../../../assets/Buttons";
 import { UserContext } from "../../../context/user";
 import { useAvailabilityQuery } from "../../../hooks/useAvailabilityQuery";
 import fetchWithError from "../../../helpers/fetchWithError";

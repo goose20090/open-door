@@ -6,7 +6,7 @@ import { useScheduleQuery } from "../hooks/useScheduleQuery";
 import fetchWithError from "../helpers/fetchWithError";
 import { AppointmentRadios } from "./AppointmentRadios";
 import { handleRadioChange } from "../helpers/handleRadioChange";
-import { GreenButton } from "../assets/NewAppointmentStyles";
+import { GreenButton } from "../assets/Buttons";
 import { ScheduleQueryError } from "./ScheduleQueryError";
 
 function BookingSubmitter({

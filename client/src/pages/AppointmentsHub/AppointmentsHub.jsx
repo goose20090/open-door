@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { relativeDate } from "../../helpers/relativeDate";
 import { isFutureDate } from "../../helpers/isFutureDate";
-import { formatDate } from "../../helpers/formatDate";
 import AppointmentCapsule from "../../components/AppointmentCapsule";
 import BookingDialog from "./BookingDialog";
 import { useAuthQuery } from "../../hooks/useAuthQuery";

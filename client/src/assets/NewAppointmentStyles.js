@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Button } from "../components/Button";
 import * as Dialog from "@radix-ui/react-dialog";
 import { UpdateIcon } from "@radix-ui/react-icons";
 export const HeaderWrapper = styled.header`
@@ -35,44 +34,6 @@ export const BookingSubmitterWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-`;
-
-export const GreenButton = styled(Button)`
-  background-color: var(--green4);
-  color: var(--green11);
-  width: fit-content;
-  align-self: flex-end;
-
-  &:hover {
-    background-color: var(--green5);
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px var(--green7);
-  }
-`;
-
-export const IconButton = styled.button`
-  all: unset;
-  font-family: inherit;
-  border-radius: 100%;
-  height: 25px;
-  width: 25px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--violet11);
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  &:hover {
-    background-color: var(--violet4);
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px var(--violet7);
-  }
 `;
 
 export const Fieldset = styled.fieldset`

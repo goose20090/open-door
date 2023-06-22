@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { formatDate } from "../helpers/formatDate";
 import { UserContext } from "../context/user";
 import fetchWithError from "../helpers/fetchWithError";
+import { formatSingleDate } from "../helpers/formatSingleDate";
 
 export default function AppointmentCapsule({ appointment }) {
   const { user } = useContext(UserContext);
@@ -20,7 +20,7 @@ export default function AppointmentCapsule({ appointment }) {
       <h4>{user.user_type === "Client" ? appointment.therapist.name : appointment.client.name}</h4>
       <span>
         <b>Date:</b>
-        {formatDate(appointment.start_time, appointment.date)}
+        {formatSingleDate(appointment.start_time, appointment.date)}
       </span>
       <br />
       <span>Status: {appointment.status}</span>

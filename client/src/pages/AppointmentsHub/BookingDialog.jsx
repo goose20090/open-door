@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import styled from "styled-components";
-import "@radix-ui/colors/blackA.css";
-import "@radix-ui/colors/green.css";
-import "@radix-ui/colors/mauve.css";
-import "@radix-ui/colors/violet.css";
+import "@radix-ui/colors/";
 import BookingDialogContent from "./BookingDialogContent";
-import { Button } from "../../components/Button";
+import { Button } from "../../assets/Buttons";
 
 function BookingDialog() {
   const [open, setOpen] = useState(false);

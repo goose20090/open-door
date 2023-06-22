@@ -1,4 +1,4 @@
-export function formatDate(start_time, date) {
+export function formatSingleDate(start_time, date) {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const months = [
     "January",

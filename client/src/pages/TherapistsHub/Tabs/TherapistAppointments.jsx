@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../../../context/user";
+import NewAppointmentCapsule from "../../../components/NewAppointmentCapsule";
 
 export default function TherapistAppointments() {
   const { user } = useContext(UserContext);
@@ -8,13 +9,21 @@ export default function TherapistAppointments() {
   return (
     <Grid>
       <RegularHeaderWrapper>
-        <Heading>Regular</Heading>
+        <Heading>Regular Appointments</Heading>
       </RegularHeaderWrapper>
-      <RegularAppointments></RegularAppointments>
+      <RegularAppointments>
+        {appointments.map((appointment) =>
+          appointment.recurring ? <NewAppointmentCapsule appointment={appointment} /> : null
+        )}
+      </RegularAppointments>
       <SingleHeaderWrapper>
         <Heading>One-off</Heading>
       </SingleHeaderWrapper>
-      <SingleAppointments />
+      <SingleAppointments>
+        {appointments.map((appointment) =>
+          !appointment.recurring ? <NewAppointmentCapsule appointment={appointment} /> : null
+        )}
+      </SingleAppointments>
     </Grid>
   );
 }
@@ -35,6 +44,8 @@ const Grid = styled.div`
 const RegularAppointments = styled.div`
   background-color: lightblue;
   grid-area: regular;
+  overflow: auto;
+  padding: 8px;
 `;
 
 const SingleAppointments = styled.div`
