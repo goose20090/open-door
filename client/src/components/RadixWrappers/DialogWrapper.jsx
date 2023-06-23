@@ -1,18 +1,18 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import { CloseButton } from "../../assets/Buttons";
 import { Cross2Icon } from "@radix-ui/react-icons";
 export default function DialogWrapper({ children, content: Content, contentProps }) {
   return (
     <Dialog.Root>
-      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>
+        <span>{children}</span>
+      </Dialog.Trigger>
       <Dialog.Portal>
         <DialogOverlay />
         <DialogContent>
-          {/* <DialogTitle>this Appointment</DialogTitle> */}
           <Content {...contentProps} />
-          <DialogDescription />
           <Dialog.Close asChild>
             <CloseButton>
               <Cross2Icon />
@@ -23,7 +23,6 @@ export default function DialogWrapper({ children, content: Content, contentProps
     </Dialog.Root>
   );
 }
-
 const DialogOverlay = styled(Dialog.Overlay)`
   background-color: var(--blackA9);
   position: fixed;

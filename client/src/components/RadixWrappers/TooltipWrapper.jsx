@@ -3,13 +3,15 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import styled from "styled-components";
 import { Time } from "../../assets/AppointmentCapsuleStyles";
 
-export default function TooltipWrapper({ children, textContent }) {
+export default function TooltipWrapper({ children, textContent, sideOffset = 0 }) {
   return (
-    <Tooltip.Provider delayDuration={300}>
+    <Tooltip.Provider delayDuration={700}>
       <Tooltip.Root>
-        <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
+        <Tooltip.Trigger asChild>
+          <span>{children}</span>
+        </Tooltip.Trigger>
         <Tooltip.Portal>
-          <TooltipContent>
+          <TooltipContent sideOffset={sideOffset}>
             <TextContent>{textContent}</TextContent>
             <TooltipArrow />
           </TooltipContent>
