@@ -12,11 +12,13 @@ import { UserContext } from "../../context/user";
 export default function AppointmentsHub() {
   const { isLoading, isError } = useAuthQuery(false);
 
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  console.log(user);
 
-  if (!authQuery.data) return <Redirect to="/" />;
+  if (!user) return <Redirect to="/" />;
 
   const { appointments } = user;
+  console.log(appointments);
   return (
     <Wrapper>
       <Grid>

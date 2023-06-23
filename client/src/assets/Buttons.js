@@ -58,7 +58,7 @@ export const VioletButton = styled(Button)`
   }
 `;
 
-export const IconButton = styled.button`
+export const RoundIconButton = styled.button`
   all: unset;
   font-family: inherit;
   border-radius: 100%;
@@ -67,6 +67,9 @@ export const IconButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const CloseButton = styled(RoundIconButton)`
   color: var(--violet11);
   position: absolute;
   top: 10px;
@@ -78,5 +81,36 @@ export const IconButton = styled.button`
 
   &:focus {
     box-shadow: 0 0 0 2px var(--violet7);
+  }
+`;
+
+export const ConfirmButton = styled.button`
+  all: unset;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--grass7);
+  color: white;
+
+  &:hover {
+    background-color: var(--grass9);
+  }
+  &:active {
+    background-color: var(--grass9);
+  }
+`;
+
+export const DenyButton = styled(ConfirmButton)`
+  background-color: var(--red8);
+  &:hover {
+    background-color: var(--red9);
+  }
+  &:active {
+    background-color: var(--red9);
   }
 `;

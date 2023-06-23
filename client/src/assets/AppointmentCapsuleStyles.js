@@ -27,7 +27,7 @@ export const RescheduleButton = styled(VioletButton)`
   line-height: 25px;
   height: 25px;
 `;
-export const CapButton = styled(Button)`
+export const Status = styled(Button)`
   margin-left: auto;
   grid-area: status;
   align-self: center;

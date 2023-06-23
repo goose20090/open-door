@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../../../context/user";
-import NewAppointmentCapsule from "../../../components/NewAppointmentCapsule";
+import NewAppointmentCapsule from "../../../components/AppointmentCapsule/NewAppointmentCapsule";
 import AppointmentsLayout from "./AppointmentsLayout";
 
 export default function TherapistAppointments() {

@@ -10,7 +10,7 @@ import TherapistSelect from "../../components/TherapistSelect";
 import BookingSubmitter from "../../components/BookingSubmitter";
 import { getNextWorkingDay } from "../../helpers/getNextWorkingDay";
 import { StyledUpdateIcon } from "../../assets/NewAppointmentStyles";
-import { IconButton, GreenButton, Button } from "../../assets/Buttons";
+import { CloseButton, GreenButton, Button } from "../../assets/Buttons";
 import {
   FormWrapper,
   HeaderWrapper,
@@ -67,9 +67,9 @@ export default function BookingDialogContent({ setOpen }) {
         />
       </BookingSubmitterWrapper>
       <Dialog.Close asChild>
-        <IconButton className="IconButton" aria-label="Close">
+        <CloseButton className="CloseButton" aria-label="Close">
           <Cross2Icon />
-        </IconButton>
+        </CloseButton>
       </Dialog.Close>
       {isFetching ? <StyledUpdateIcon /> : null}
     </FormWrapper>

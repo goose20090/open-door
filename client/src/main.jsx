@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import "./assets/index.css";
 import "@radix-ui/colors/blackA.css";
+import "@radix-ui/colors/grass.css";
 import "@radix-ui/colors/green.css";
 import "@radix-ui/colors/mauve.css";
 import "@radix-ui/colors/violet.css";

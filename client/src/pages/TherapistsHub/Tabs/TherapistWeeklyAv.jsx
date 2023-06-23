@@ -5,6 +5,7 @@ import { GreenButton } from "../../../assets/Buttons";
 import { UserContext } from "../../../context/user";
 import { useAvailabilityQuery } from "../../../hooks/useAvailabilityQuery";
 import fetchWithError from "../../../helpers/fetchWithError";
+import { Title } from "../../../assets/AppointmentCapsuleStyles";
 
 export function TherapistWeeklyAv() {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -53,16 +54,22 @@ export function TherapistWeeklyAv() {
         <ScheduleTable>
           <thead>
             <tr>
-              <TableHeading>Hour/Day</TableHeading>
+              <TableHeading>
+                <Title>Hour/Day</Title>
+              </TableHeading>
               {days.map((day) => (
-                <TableHeading key={day}>{day}</TableHeading>
+                <TableHeading key={day}>
+                  <Title>{day}</Title>
+                </TableHeading>
               ))}
             </tr>
           </thead>
           <tbody>
             {hours.map((hour) => (
               <tr key={hour}>
-                <Cell>{`${hour}:00`}</Cell>
+                <Cell>
+                  <Title>{`${hour}:00`} </Title>
+                </Cell>
                 {days.map((day) => (
                   <Cell key={day}>
                     <input

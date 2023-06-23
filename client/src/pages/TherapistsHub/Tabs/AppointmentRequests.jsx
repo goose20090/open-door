@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import AppointmentCapsule from "../../../components/AppointmentCapsule";
-import NewAppointmentCapsule from "../../../components/NewAppointmentCapsule";
+import NewAppointmentCapsule from "../../../components/AppointmentCapsule/NewAppointmentCapsule";
 import AppointmentsLayout from "./AppointmentsLayout";
 
 function AppointmentRequests() {
