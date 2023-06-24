@@ -5,19 +5,17 @@ import { Time } from "../../assets/AppointmentCapsuleStyles";
 
 export default function TooltipWrapper({ children, textContent, sideOffset = 0 }) {
   return (
-    <Tooltip.Provider delayDuration={700}>
-      <Tooltip.Root>
-        <Tooltip.Trigger asChild>
-          <span>{children}</span>
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <TooltipContent sideOffset={sideOffset}>
-            <TextContent>{textContent}</TextContent>
-            <TooltipArrow />
-          </TooltipContent>
-        </Tooltip.Portal>
-      </Tooltip.Root>
-    </Tooltip.Provider>
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        <span>{children}</span>
+      </Tooltip.Trigger>
+      <Tooltip.Portal>
+        <TooltipContent sideOffset={sideOffset}>
+          <TextContent>{textContent}</TextContent>
+          <TooltipArrow />
+        </TooltipContent>
+      </Tooltip.Portal>
+    </Tooltip.Root>
   );
 }
 

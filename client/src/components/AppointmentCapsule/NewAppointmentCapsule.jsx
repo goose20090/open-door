@@ -5,9 +5,10 @@ import * as Popover from "@radix-ui/react-popover";
 import { Title, Time, Status } from "../../assets/AppointmentCapsuleStyles";
 import { formatRecurringTime } from "../../helpers/formatRecurringTime";
 import { formatSingleDate } from "../../helpers/formatSingleDate";
-import ConfirmedOptions from "./AppointmentActions/ConfirmedOptions";
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
-import { PendingOptionsButtons } from "./AppointmentActions/PendingActions";
+import { PendingOptionsButtons } from "./AppointmentActions/PendingOptionsButtons";
+import Options from "./AppointmentActions/OptionsPopover";
+import OptionsPopover from "./AppointmentActions/OptionsPopover";
 
 const integerToWeekday = (day) => {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -17,12 +18,10 @@ const integerToWeekday = (day) => {
 export default function NewAppointmentCapsule({ appointment }) {
   const { status } = appointment;
   function renderOptions() {
-    if (status === "confirmed") {
-      return <ConfirmedOptions />;
-    } else if (status === "pending") {
+    if (status === "pending") {
       return <PendingOptionsButtons appointment={appointment} />;
     } else {
-      return <ConfirmedOptions />;
+      return <OptionsPopover appointment={appointment} />;
     }
   }
 

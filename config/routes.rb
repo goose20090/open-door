@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post 'login', to: "sessions#create"
   post 'signup', to: "clients#create"
 
+  # patch 'appointments/:appointment_id', to: 'appointments#update'
+
   get 'me', to: "users#show"
   delete 'logout', to: "sessions#destroy"
   get '/schedules/:therapist_id', to: 'schedules#show'

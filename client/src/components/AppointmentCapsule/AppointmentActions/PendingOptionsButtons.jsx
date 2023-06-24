@@ -4,15 +4,13 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { StyledCheckIcon } from "../NewAppointmentCapsule";
 import { ConfirmButton, DenyButton } from "../../../assets/Buttons";
 import DialogWrapper from "../../RadixWrappers/DialogWrapper";
-import ConfirmAppointmentForm from "../ConfirmDialogContent";
+import AppointmentStatusUpdateForm from "../AppointmentStatusUpdateForm";
 export function PendingOptionsButtons({ appointment }) {
-  const [openDialog, setOpenDialog] = useState(false);
   return (
     <>
       <DialogWrapper
-        action={"Confirm"}
-        content={ConfirmAppointmentForm}
-        contentProps={{ appointment: appointment }}
+        content={AppointmentStatusUpdateForm}
+        contentProps={{ appointment: appointment, action: "Confirm" }}
       >
         <TooltipWrapper textContent={"Confirm Appointment"} sideOffset={5}>
           <ConfirmButton>
@@ -20,11 +18,16 @@ export function PendingOptionsButtons({ appointment }) {
           </ConfirmButton>
         </TooltipWrapper>
       </DialogWrapper>
-      <TooltipWrapper textContent={"Reject Appointment"}>
-        <DenyButton>
-          <Cross2Icon />
-        </DenyButton>
-      </TooltipWrapper>
+      <DialogWrapper
+        content={AppointmentStatusUpdateForm}
+        contentProps={{ appointment: appointment, action: "Reject" }}
+      >
+        <TooltipWrapper textContent={"Reject Appointment"}>
+          <DenyButton>
+            <Cross2Icon />
+          </DenyButton>
+        </TooltipWrapper>
+      </DialogWrapper>
     </>
   );
 }

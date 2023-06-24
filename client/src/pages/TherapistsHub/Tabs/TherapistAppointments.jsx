@@ -7,12 +7,13 @@ import AppointmentsLayout from "./AppointmentsLayout";
 export default function TherapistAppointments() {
   const { user } = useContext(UserContext);
   const { appointments } = user;
+  console.log(appointments);
   const recurringAppointments = appointments
     .filter((appointment) => appointment.recurring && appointment.status === "confirmed")
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   const singleAppointments = appointments
-    .filter((appointment) => appointment.single && appointment.status === "confirmed")
+    .filter((appointment) => !appointment.recurring && appointment.status === "confirmed")
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   return (

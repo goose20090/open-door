@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, RedButton, VioletButton } from "../assets/Buttons";
+import { Button, RedButton, VioletButton, GreenButton } from "../assets/Buttons";
 
 export const Title = styled.div`
   grid-area: title / title / title / title;
@@ -55,4 +55,28 @@ export const Status = styled(Button)`
         : status === "pending"
         ? "var(--amber7)"
         : "var(--red7)"};
+`;
+export const Label = styled(Time)`
+  font-size: 0.9rem;
+  display: block;
+  padding-top: 10px;
+  font-weight: bold;
+  &:first-of-type {
+    padding-top: 10px;
+  }
+`;
+export const Data = styled.span`
+  font-weight: normal;
+`;
+export const SubmitButton = styled(GreenButton)`
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+`;
+export const Form = styled.form`
+  padding-bottom: 10px;
+`;
+
+export const Confirmation = styled(Title)`
+  font-size: 1.2rem;
 `;

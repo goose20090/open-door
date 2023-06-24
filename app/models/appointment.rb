@@ -11,15 +11,16 @@ class Appointment < ApplicationRecord
 
   def no_overlap
     if self.class.where(
-      "therapist_id = ? AND ((date = ? AND start_time = ?) OR (recurring = ? AND week_day = ? AND start_time = ?))", 
-      therapist_id, 
+      "therapist_id = ? AND status = ? AND ((date = ? AND start_time = ?) OR (recurring = ? AND week_day = ? AND start_time = ?))", 
+      therapist_id,
+      'confirmed',
       date, 
       start_time, 
       true, 
       week_day, 
       start_time
     ).exists?
-      errors.add(:base, 'There is overlapping with another appointment')
+      errors.add(:base, 'There is overlapping with another confirmed appointment')
     end
   end
 end
