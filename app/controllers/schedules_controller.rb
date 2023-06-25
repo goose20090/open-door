@@ -1,34 +1,31 @@
 class SchedulesController < ApplicationController
   DAYS_OF_WEEK = %w[sunday monday tuesday wednesday thursday friday saturday]
 
-   def show
+ def show
+  user = User.find_by(userable_type: params[:user_type_key].classify, userable_id: params[:id])
 
-    schedule = Schedule.find_by(therapist_id: params[:therapist_id])
-    if schedule
-      # Select the user availability if it exists; otherwise, use the default.
-      schedule_availability = schedule.availability.presence || schedule.default
-      
-      # Include the week day in recurring appointments
-      recurring_appointments = Appointment.where(therapist_id: params[:therapist_id], recurring: true).pluck(:week_day, :start_time)
-      single_appointments = Appointment.where(therapist_id: params[:therapist_id], recurring: false, date: Date.parse(params[:date]))
+  if user&.schedule
+    schedule = user.schedule
+    schedule_availability = schedule.availability.presence || schedule.default
 
-      # transform appointments into an array of booked slots
-      booked_slots = single_appointments.map(&:start_time)
-      
-      # Create a hash of booked recurring appointments with week day as the key (converted to a string day name)
-      recurring_booked_slots = {}
-      recurring_appointments.each do |appointment|
-        day_name = DAYS_OF_WEEK[appointment[0]]
-        recurring_booked_slots[day_name] ||= []
-        recurring_booked_slots[day_name] << appointment[1]
-      end
+    recurring_appointments = user.userable.appointments.where(recurring: true, status: ['confirmed', 'pending']).pluck(:week_day, :start_time)
+    single_appointments = user.userable.appointments.where(recurring: false, date: Date.parse(params[:date]), status: ['confirmed', 'pending'])
 
-      filtered_schedule = filter_by_availability(schedule_availability, booked_slots, recurring_booked_slots)
-      render json: filtered_schedule
-    else
-      render json: { error: "Schedule not found" }, status: :not_found
+    booked_slots = single_appointments.map(&:start_time)
+
+    recurring_booked_slots = {}
+    recurring_appointments.each do |appointment|
+      day_name = DAYS_OF_WEEK[appointment[0]]
+      recurring_booked_slots[day_name] ||= []
+      recurring_booked_slots[day_name] << appointment[1]
     end
+
+    filtered_schedule = filter_by_availability(schedule_availability, booked_slots, recurring_booked_slots)
+    render json: filtered_schedule
+  else
+    render json: { error: "Schedule not found" }, status: :not_found
   end
+end
 
   def availability
     schedule = Schedule.find_by(therapist_id: params[:therapist_id])

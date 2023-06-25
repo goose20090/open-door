@@ -1,15 +1,15 @@
 class Schedule < ApplicationRecord
-    belongs_to :therapist
+    belongs_to :user
 
     after_initialize :set_default_schedule, if: :new_record?
 
-    def recurring_appointments
-        self.therapist.appointments.where(recurring: true)
-    end
+    # def recurring_appointments
+    #     self.therapist.appointments.where(recurring: true)
+    # end
     
-    def single_appointments
-        self.therapist.appointments.where(recurring: false)
-    end
+    # def single_appointments
+    #     self.therapist.appointments.where(recurring: false)
+    # end
 
     private 
 

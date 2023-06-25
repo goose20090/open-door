@@ -10,17 +10,19 @@ import AppointmentRescheduleForm from "../AppointmentRescheduleForm";
 
 export default function OptionsPopover({ appointment }) {
   return (
-    <PopoverWrapper>
-      <ButtonsWrapper>
-        <DeleteButton id="cancel-button">Delete</DeleteButton>
-        <DialogWrapper
-          content={AppointmentRescheduleForm}
-          contentProps={{ appointment: appointment }}
-        >
-          <RescheduleButton id="reschedule-button">Reschedule</RescheduleButton>
-        </DialogWrapper>
-      </ButtonsWrapper>
-    </PopoverWrapper>
+    <div style={{ minWidth: "64px", display: "flex", justifyContent: "flexEnd" }}>
+      <PopoverWrapper>
+        <ButtonsWrapper>
+          <DeleteButton id="cancel-button">Delete</DeleteButton>
+          <DialogWrapper
+            content={AppointmentRescheduleForm}
+            contentProps={{ appointment: appointment }}
+          >
+            <RescheduleButton id="reschedule-button">Reschedule</RescheduleButton>
+          </DialogWrapper>
+        </ButtonsWrapper>
+      </PopoverWrapper>
+    </div>
   );
 }
 

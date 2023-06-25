@@ -1,28 +1,8 @@
 import React, { useState } from "react";
-import { Form, Confirmation, Label, Data } from "../../assets/AppointmentCapsuleStyles";
-import { getNextAppointmentDate } from "../../helpers/getNextAppointmentDate";
-import { integerToWeekday } from "../../helpers/integarToWeekday";
-import DatePickerComponent from "../DatePickerComponent";
+import RecurringReschedule from "./RecurringReschedule";
 export default function AppointmentRescheduleForm({ appointment }) {
-  const currentDate = getNextAppointmentDate(appointment.week_day);
-
-  const [date, setDate] = useState(currentDate);
-
-  console.log(appointment.week_day);
-
-  return (
-    <Form>
-      <Confirmation>
-        Reschedule this {appointment.recurring ? "recurring" : "single"} appointment?
-      </Confirmation>
-      <Label as="label">
-        Client Name: <Data> {appointment.client.name}</Data>
-      </Label>
-      <DatePickerComponent therapistSelected={true} startDate={date} setStartDate={setDate} />
-      {/* {dateTimeContent} */}
-      {/* <SubmitButton>Submit</SubmitButton> */}
-    </Form>
-  );
+  if (appointment.recurring) return <RecurringReschedule appointment={appointment} />;
+  if (!appointment.recurring) return <SingleReschedule appointment={appointment} />;
 }
 
 // let dateTimeContent;

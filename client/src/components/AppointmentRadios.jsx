@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { GreenButton } from "../assets/Buttons";
 import { UpdateIcon } from "@radix-ui/react-icons";
 import { handleRadioChange } from "../helpers/handleRadioChange";
 import { useScheduleQuery } from "../hooks/useScheduleQuery";
 import { getAvailableHours } from "../helpers/getAvailableHours";
+import { UserContext } from "../context/user";
 import styled from "styled-components";
 
 export function AppointmentRadios({
@@ -14,12 +15,13 @@ export function AppointmentRadios({
   setFormData,
   children,
 }) {
+  const { user } = useContext(UserContext);
   const {
     isSuccess,
     isLoading,
     data: schedule,
     isFetching,
-  } = useScheduleQuery(currentTherapistId, selectedDate);
+  } = useScheduleQuery(currentTherapistId, selectedDate, user.user_type);
 
   let availableHours;
 

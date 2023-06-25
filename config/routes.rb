@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   get 'me', to: "users#show"
   delete 'logout', to: "sessions#destroy"
-  get '/schedules/:therapist_id', to: 'schedules#show'
+  get '/:user_type_key/:id/schedule', to: 'schedules#show'
 
   
   patch '/:therapist_id/schedule/availability', to: 'schedules#update_availability'

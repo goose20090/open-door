@@ -56,12 +56,11 @@ clients = Client.all
 
   Appointment.create!(
     client_id: clients[i % clients.size].id,
-    # therapist_id: 21,
     therapist_id: therapists[i % therapists.size].id,
     start_time: start_time,
     status: status,
     recurring: i.even?, # Alternating between recurring and non-recurring appointments
     date: date,
-    week_day: i.even? ? i % 7:  nil  # Assuming week_day is 0 for Sunday, 1 for Monday, ..., 6 for Saturday
-  )
+    week_day: i.even? ? 1 + i % 5 : nil # i.even? ? (1 + i % 5) ensures that week_day is between 1 and 5
+)
 end
