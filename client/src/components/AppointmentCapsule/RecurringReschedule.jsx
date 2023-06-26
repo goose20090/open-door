@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../../context/user";
-import { useRecurringScheduleQuery } from "../../hooks/useRecurringScheduleQuery";
+import { useMutualAvailabilitiesQuery } from "../../hooks/useMutualAvailabilitiesQuery";
 import {
   Confirmation,
   Label,
@@ -15,6 +15,7 @@ import { WEEKDAYS } from "../../data/constants";
 import { integerToWeekday } from "../../helpers/integarToWeekday";
 import RecurringAppointmentInfo from "./RecurringAppointmentInfo";
 import { getNextWorkingDay } from "../../helpers/getNextWorkingDay";
+import { handleRadioChange } from "../../helpers/handleRadioChange";
 
 function RecurringReschedule({ appointment }) {
   const [formData, setFormData] = useState({
@@ -29,7 +30,12 @@ function RecurringReschedule({ appointment }) {
       week_day: e.target.value,
     });
   }
-  console.log(appointment.client.name);
+
+  const {
+    data: timeSlots,
+    isSuccess,
+    isLoading,
+  } = useMutualAvailabilitiesQuery(appointment.client.id, appointment.date, appointment.recurring);
 
   return (
     <Form>
@@ -47,23 +53,28 @@ function RecurringReschedule({ appointment }) {
             <option value={5}>Friday</option>
           </select>
         </Label>
-        <fieldset>
+        <Fieldset>
           <legend>
             <Label>Select a time for your appointment:</Label>
           </legend>
-          {/* {availableHours.map((time) => (
-          <div key={time}>
-            <label htmlFor={time}>{time}:00</label>
-            <input
-              id={time}
-              name={`start_time`}
-              type="radio"
-              value={time}
-              onChange={(e) => handleRadioChange(e, setFormData, formData)}
-            />
-          </div>
-        ))} */}
-        </fieldset>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            timeSlots.map((slot) => (
+              <label htmlFor={slot} key={slot}>
+                <input
+                  type="radio"
+                  name="start_time"
+                  id={slot}
+                  defaultChecked={appointment.start_time == slot}
+                  value={slot}
+                  onChange={(e) => handleRadioChange(e, setFormData, formData)}
+                />
+                {slot}:00
+              </label>
+            ))
+          )}
+        </Fieldset>
       </TimeAndDate>
 
       <RecurringAppointmentInfo appointment={formData} name={appointment.client.name} />
@@ -74,9 +85,15 @@ function RecurringReschedule({ appointment }) {
 
 export default RecurringReschedule;
 
+const Fieldset = styled.fieldset`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Form = styled.form`
   width: 100%;
   height: 60vh;
+  padding-left: 5%;
 `;
 
 const SubHeading = styled(Title)``;

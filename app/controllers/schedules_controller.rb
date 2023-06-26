@@ -6,7 +6,7 @@ class SchedulesController < ApplicationController
     user = User.find_by(userable_type: params[:user_type_key].classify, userable_id: params[:id])
 
     # Get the date and weekday to check
-    date = Date.parse(params[:date])
+    date = Date.new(params[:date])
     week_day = date.wday
 
     # Are we checking AV for a recurring or single appointment?

@@ -6,6 +6,8 @@ import { useScheduleQuery } from "../hooks/useScheduleQuery";
 import { getAvailableHours } from "../helpers/getAvailableHours";
 import { UserContext } from "../context/user";
 import styled from "styled-components";
+import { useMutualAvailabilitiesQuery } from "../hooks/useMutualAvailabilitiesQuery";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function AppointmentRadios({
   handleRadioChange,
@@ -16,18 +18,19 @@ export function AppointmentRadios({
   children,
 }) {
   const { user } = useContext(UserContext);
+  const client = useQueryClient();
   const {
     isSuccess,
     isLoading,
     data: schedule,
     isFetching,
-  } = useScheduleQuery(currentTherapistId, selectedDate, user.user_type);
+  } = useMutualAvailabilitiesQuery(currentTherapistId, selectedDate, formData.recurring);
 
-  let availableHours;
+  // let availableHours;
 
-  if (isSuccess) {
-    availableHours = getAvailableHours(schedule, formData.week_day);
-  }
+  // // if (isSuccess) {
+  // //   availableHours = getAvailableHours(schedule, formData.week_day);
+  // // }
 
   return isLoading ? (
     <p>Loading...</p>
@@ -35,7 +38,7 @@ export function AppointmentRadios({
     <>
       <fieldset>
         <legend>Select a time for your appointment:</legend>
-        {availableHours.map((time) => (
+        {schedule.map((time) => (
           <div key={time}>
             <label htmlFor={time}>{time}:00</label>
             <input
@@ -55,9 +58,11 @@ export function AppointmentRadios({
           <input
             id="single-radio"
             type="radio"
-            name="appointment_type"
-            value="single"
-            onChange={(e) => handleRadioChange(e, setFormData, formData)}
+            name="recurring"
+            value={false}
+            onChange={(e) => {
+              handleRadioChange(e, setFormData, formData);
+            }}
           />
         </label>
         <label htmlFor="recurring-radio">
@@ -65,10 +70,13 @@ export function AppointmentRadios({
           <input
             id="recurring-radio"
             type="radio"
-            name="appointment_type"
-            value="recurring"
+            name="recurring"
+            value={true}
             defaultChecked
-            onChange={(e) => handleRadioChange(e, setFormData, formData)}
+            onChange={(e) => {
+              handleRadioChange(e, setFormData, formData);
+              client.invalidateQueries(["availability"]);
+            }}
           />
         </label>
       </fieldset>

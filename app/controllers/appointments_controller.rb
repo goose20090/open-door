@@ -1,11 +1,12 @@
 class AppointmentsController < ApplicationController
 
     def create
+        debugger
         user = User.includes(:userable).find_by(id: session[:user_id])
         client_id = user.userable.id
         start_date = Date.parse(params[:date])
         
-        if params[:appointment_type] == 'recurring'
+        if params[:recurring]
             appointment = Appointment.create!(
                 client_id: client_id,
                 therapist_id: params[:therapist_id],
@@ -16,13 +17,13 @@ class AppointmentsController < ApplicationController
                 status: 'pending'
             )
             render json: appointment, status: :created
-        elsif params[:appointment_type] == 'single'
+        else
             appointment = Appointment.create!(
                 client_id: client_id,
                 therapist_id: params[:therapist_id],
                 start_time: params[:start_time].to_i,
                 date: Date.parse(params[:date]),
-                week_day: nil,
+                week_day: params[:week_day],
                 recurring: false,
                 status: 'pending'
             )

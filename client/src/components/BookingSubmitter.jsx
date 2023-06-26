@@ -21,7 +21,7 @@ function BookingSubmitter({
     week_day: nextWorkingDay,
     date: selectedDate,
     start_time: "",
-    appointment_type: "recurring",
+    recurring: true,
     therapist_id: currentTherapistId,
   });
   useEffect(() => {
