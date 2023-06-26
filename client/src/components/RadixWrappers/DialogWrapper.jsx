@@ -46,11 +46,11 @@ const DialogContent = styled(Dialog.Content)`
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90vw;
-  max-width: 450px;
+  width: 80vw;
   max-height: 85vh;
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: auto;
 
   &:focus {
     outline: none;

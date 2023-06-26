@@ -45,14 +45,16 @@ clients = Client.all
 
 # Create appointments
 20.times do |i|
-  start_time = rand(9..16) # Generate random integer between 9 and 16
+  start_time = rand(9..16) # Generate a random integer between 9 and 16
   status = status_list.sample
-  date = if i.even?
-    nil # For recurring appointments, date is nil
-  else
-    (1..30).to_a.sample.days.from_now.to_date # Random date within one month from now (not including today)
-  end
-  # status = status_list[i % status_list.length] # Rotate through status_list
+
+  week_day = 1 + i % 5 # Generate week_day value between 1 (Monday) and 5 (Friday)
+  today = Date.today
+  next_desired_day = (week_day - today.wday) % 7
+  date = today + next_desired_day.days
+
+  # Adjust date for non-recurring appointments, ensuring they start in more than a week
+  date += 1.week unless i.even?
 
   Appointment.create!(
     client_id: clients[i % clients.size].id,
@@ -61,6 +63,6 @@ clients = Client.all
     status: status,
     recurring: i.even?, # Alternating between recurring and non-recurring appointments
     date: date,
-    week_day: i.even? ? 1 + i % 5 : nil # i.even? ? (1 + i % 5) ensures that week_day is between 1 and 5
-)
+    week_day: week_day # week_day matches day of week of the date
+  )
 end

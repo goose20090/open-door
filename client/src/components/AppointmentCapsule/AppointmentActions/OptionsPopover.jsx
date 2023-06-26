@@ -10,7 +10,7 @@ import AppointmentRescheduleForm from "../AppointmentRescheduleForm";
 
 export default function OptionsPopover({ appointment }) {
   return (
-    <div style={{ minWidth: "64px", display: "flex", justifyContent: "flexEnd" }}>
+    <div style={{ minWidth: "64px", display: "flex", justifyContent: "right" }}>
       <PopoverWrapper>
         <ButtonsWrapper>
           <DeleteButton id="cancel-button">Delete</DeleteButton>

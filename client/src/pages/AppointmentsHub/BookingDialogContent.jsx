@@ -51,7 +51,7 @@ export default function BookingDialogContent({ setOpen }) {
         />
         <DatePickerWrapper>
           <DatePickerComponent
-            therapistSelected={therapistSelected}
+            enabled={therapistSelected}
             startDate={selectedDate}
             setStartDate={setSelectedDate}
           />

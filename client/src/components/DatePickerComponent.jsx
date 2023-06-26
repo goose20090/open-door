@@ -6,16 +6,11 @@ import { getNextWorkingDay } from "../helpers/getNextWorkingDay";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function DatePickerComponent({
-  therapistSelected,
-  startDate,
-  setStartDate,
-  setWeekDay,
-}) {
+export default function DatePickerComponent({ enabled, startDate, setStartDate, setWeekDay }) {
   const nextWorkingDay = getNextWorkingDay();
   const minDate = nextWorkingDay;
 
-  const maxDate = therapistSelected ? getFridayNextWeek() : nextWorkingDay;
+  const maxDate = enabled ? getFridayNextWeek() : nextWorkingDay;
 
   const isWeekday = (date) => {
     const day = date.getDay();
@@ -25,7 +20,7 @@ export default function DatePickerComponent({
   return (
     <DatePicker
       inline
-      selected={therapistSelected ? startDate : null}
+      selected={enabled ? startDate : null}
       onChange={(date) => {
         setStartDate(date);
       }}

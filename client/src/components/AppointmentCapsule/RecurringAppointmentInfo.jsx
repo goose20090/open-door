@@ -2,11 +2,11 @@ import React from "react";
 import { integerToWeekday } from "../../helpers/integarToWeekday";
 import { Label, Data } from "../../assets/AppointmentCapsuleStyles";
 
-export default function RecurringAppointmentInfo({ appointment }) {
+export default function RecurringAppointmentInfo({ appointment, name }) {
   return (
     <>
       <Label as="label">
-        Client Name: <Data> {appointment.client.name}</Data>
+        Client Name: <Data> {name ? name : appointment.client.name}</Data>
       </Label>
       <Label as="label">
         Time: <Data>{appointment.start_time}:00</Data>
