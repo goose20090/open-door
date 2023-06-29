@@ -1,8 +1,8 @@
 class AppointmentsController < ApplicationController
 
     def create
-        debugger
-        user = User.includes(:userable).find_by(id: session[:user_id])
+        # Only clients can create appointments
+        user = User.includes(:userable).find_by(id: session[:user_id], userable_type: "Client")
         client_id = user.userable.id
         start_date = Date.parse(params[:date])
         
@@ -32,15 +32,28 @@ class AppointmentsController < ApplicationController
     end
 
     def update
+        debugger
         appointment = Appointment.find_by(id: params[:id])
-        appointment[:status] = params[:status]
-        appointment.save!
-        render json: appointment
+        if appointment.update(appointment_params)
+            render json: appointment
+        else
+            render json: {errors: appointment.errors.full_messages}, status: :unprocessable_entity
+        end
+    end
+
+    def destroy
+        appointment = Appointment.find_by(id: params[:id])
+        appointment.destroy
+        head :no_content
     end
 
     private
 
     def appointment_params
-        params.permit(:week_day, :date, :start_time, :appointment_type, :therapist_id)
+        if params[:recurring]
+            params.require(:appointment).permit(:start_time, :week_day, :status, :rescheduled_by, :rejected_by)
+        else
+            params.require(:appointment).permit(:start_time, :date, :status, :rescheduled_by, :rejected_by)
+        end
     end
 end

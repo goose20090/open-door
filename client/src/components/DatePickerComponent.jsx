@@ -10,7 +10,7 @@ export default function DatePickerComponent({ enabled, startDate, setStartDate, 
   const nextWorkingDay = getNextWorkingDay();
   const minDate = nextWorkingDay;
 
-  const maxDate = enabled ? getFridayNextWeek() : nextWorkingDay;
+  const maxDate = enabled ? null : nextWorkingDay;
 
   const isWeekday = (date) => {
     const day = date.getDay();

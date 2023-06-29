@@ -1,14 +1,18 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-export default function AppointmentsLayout({ recurringContent, singleContent, contentType }) {
+export default function AppointmentsLayout({
+  recurringContent,
+  singleContent,
+  contentType = "appointments",
+}) {
   return (
     <Grid>
       <RegularHeaderWrapper>
         <Heading>Recurring Appointments</Heading>
       </RegularHeaderWrapper>
       <RegularAppointments>
-        {recurringContent.length > 0 ? (
+        {!recurringContent || recurringContent.length > 0 ? (
           recurringContent
         ) : (
           <p>You have no recurring {contentType}</p>
@@ -18,7 +22,11 @@ export default function AppointmentsLayout({ recurringContent, singleContent, co
         <Heading>One-off</Heading>
       </SingleHeaderWrapper>
       <SingleAppointments>
-        {singleContent.length > 0 ? singleContent : <p>You have no single {contentType}</p>}
+        {!singleContent || singleContent.length > 0 ? (
+          singleContent
+        ) : (
+          <p>You have no single {contentType}</p>
+        )}
       </SingleAppointments>
     </Grid>
   );

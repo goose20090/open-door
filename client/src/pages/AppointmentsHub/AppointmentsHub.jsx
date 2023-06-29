@@ -5,9 +5,11 @@ import styled from "styled-components";
 import { relativeDate } from "../../helpers/relativeDate";
 import { isFutureDate } from "../../helpers/isFutureDate";
 import AppointmentCapsule from "../../components/AppointmentCapsule";
+import NewAppointmentCapsule from "../../components/AppointmentCapsule/NewAppointmentCapsule";
 import BookingDialog from "./BookingDialog";
 import { useAuthQuery } from "../../hooks/useAuthQuery";
 import { UserContext } from "../../context/user";
+import AppointmentsLayout from "../TherapistsHub/Tabs/AppointmentsLayout";
 
 export default function AppointmentsHub() {
   const { isLoading, isError } = useAuthQuery(false);
@@ -17,8 +19,26 @@ export default function AppointmentsHub() {
 
   if (!user) return <Redirect to="/" />;
 
+  // const { data: user, isLoading, isError } = authQuery;
   const { appointments } = user;
-  console.log(appointments);
+
+  const recurringAppointments = appointments
+    .filter(
+      (appointment) =>
+        appointment.recurring &&
+        appointment.rescheduled_by !== user.user_type.toLowerCase() &&
+        appointment.rejected_by !== user.user_type.toLowerCase()
+    )
+    .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
+
+  const singleAppointments = appointments
+    .filter(
+      (appointment) =>
+        !appointment.recurring &&
+        appointment.rescheduled_by !== user.user_type.toLowerCase() &&
+        appointment.rejected_by !== user.user_type.toLowerCase()
+    )
+    .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
   return (
     <Wrapper>
       <Grid>
@@ -33,36 +53,19 @@ export default function AppointmentsHub() {
             </>
           )}
         </UserSidebar>
-        <ComingAppointmentsHeader>Future Appointments</ComingAppointmentsHeader>
-        <ComingAppointments>
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            appointments.map((appointment) =>
-              isFutureDate(appointment.start_time, appointment.date) ? (
-                <AppointmentCapsule key={appointment.id} appointment={appointment} />
-              ) : null
-            )
-          )}
-        </ComingAppointments>
-        <PastAppointmentsHeader>Past Appointments</PastAppointmentsHeader>
-        <PastAppointments>
-          <>
-            {isLoading ? (
-              <p>Loading...</p>
-            ) : (
-              appointments.map((appointment) =>
-                !isFutureDate(appointment.start_time, appointment.date) ? (
-                  <AppointmentCapsule key={appointment.id} appointment={appointment} />
-                ) : null
-              )
-            )}
-          </>
-        </PastAppointments>
+        <UserAppointmentsLayout
+          recurringContent={recurringAppointments}
+          singleContent={singleAppointments}
+        />
       </Grid>
     </Wrapper>
   );
 }
+
+const UserAppointmentsLayout = styled(AppointmentsLayout)`
+  grid-area: appointments;
+  height: 100%;
+`;
 
 const Wrapper = styled.div`
   height: 80%;
@@ -76,8 +79,8 @@ const Grid = styled.div`
     10.6px 12.1px 18.1px -2.5px hsl(var(--shadow-color) / 0.36);
 
   position: absolute;
-  overflow: hidden;
-  border: 2px solid black;
+  overflow: auto;
+  border: 1px solid black;
   border-radius: 25px;
   top: 25px;
   left: 10%;
@@ -85,14 +88,10 @@ const Grid = styled.div`
   bottom: 0;
   display: grid;
   background-color: black;
-  gap: 2px;
+  gap: 1px;
   grid-template-columns: 250px 1fr;
-  grid-template-rows: 4rem 1fr 4rem 1fr;
-  grid-template-areas:
-    "sidebar header"
-    "sidebar coming"
-    "sidebar header2"
-    "sidebar past";
+  /* grid-template-rows: 4rem 1fr 4rem 1fr; */
+  grid-template-areas: "sidebar appointments";
 
   aside {
     background-color: lightblue;

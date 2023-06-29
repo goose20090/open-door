@@ -10,7 +10,7 @@ export default function TooltipWrapper({ children, textContent, sideOffset = 0 }
         <span>{children}</span>
       </Tooltip.Trigger>
       <Tooltip.Portal>
-        <TooltipContent sideOffset={sideOffset}>
+        <TooltipContent sideOffset={sideOffset} side="bottom">
           <TextContent>{textContent}</TextContent>
           <TooltipArrow />
         </TooltipContent>

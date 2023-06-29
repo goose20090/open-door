@@ -3,5 +3,4 @@ export function handleRadioChange(e, setFormData, formData) {
     ...formData,
     [e.target.name]: e.target.value,
   });
-  console.log(formData);
 }

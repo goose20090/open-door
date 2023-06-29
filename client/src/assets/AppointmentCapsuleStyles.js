@@ -41,19 +41,27 @@ export const Status = styled(Button)`
       ? "var(--green2)"
       : status === "pending"
       ? "var(--amber2)"
+      : status === "reschedule"
+      ? "var(--violet2)"
       : "var(--red2)"};
+
   color: ${({ status }) =>
     status === "confirmed"
       ? "var(--green11)"
       : status === "pending"
       ? "var(--amber11)"
+      : status === "reschedule"
+      ? "var(--violet11)"
       : "var(--red11)"};
+
   box-shadow: inset 0 0 0 1px
     ${({ status }) =>
       status === "confirmed"
         ? "var(--green7)"
         : status === "pending"
         ? "var(--amber7)"
+        : status === "reschedule"
+        ? "var(--violet7)"
         : "var(--red7)"};
 `;
 export const Label = styled(Time)`

@@ -26,6 +26,13 @@ export const GreenButton = styled(Button)`
   &:focus {
     box-shadow: 0 0 0 2px var(--green7);
   }
+
+  &:disabled {
+    background-color: var(--green1);
+    color: var(--green7);
+    border: 1px solid var(--blackA6);
+    padding: 0 14px;
+  }
 `;
 
 export const RedButton = styled(Button)`
@@ -47,7 +54,6 @@ export const VioletButton = styled(Button)`
   background-color: var(--violet4);
   color: var(--violet11);
   width: fit-content;
-  align-self: flex-end;
 
   &:hover {
     background-color: var(--violet5);

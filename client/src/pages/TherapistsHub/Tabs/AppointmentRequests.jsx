@@ -14,11 +14,23 @@ function AppointmentRequests() {
   const { appointments } = user;
 
   const recurringAppointmentRequests = appointments
-    .filter((appointment) => appointment.recurring && appointment.status !== "confirmed")
+    .filter(
+      (appointment) =>
+        appointment.recurring &&
+        appointment.status !== "confirmed" &&
+        appointment.rescheduled_by !== user.user_type.toLowerCase() &&
+        appointment.rejected_by !== user.user_type.toLowerCase()
+    )
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   const singleAppointmentRequests = appointments
-    .filter((appointment) => !appointment.recurring && appointment.status !== "confirmed")
+    .filter(
+      (appointment) =>
+        !appointment.recurring &&
+        appointment.status !== "confirmed" &&
+        appointment.rescheduled_by !== user.id &&
+        appointment.rejected_by !== user.id
+    )
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   return isLoading ? (

@@ -22,7 +22,7 @@ function TherapistsHub() {
             <TabsTrigger value="tab1">Appointment Requests</TabsTrigger>
             <TabsTrigger value="tab2">Appointments</TabsTrigger>
             <TabsTrigger value="tab3">Weekly Availability</TabsTrigger>
-            <TabsTrigger value="tab4">Book a Holiday</TabsTrigger>
+            {/* <TabsTrigger value="tab4">Book a Holiday</TabsTrigger> */}
           </TabsList>
         </OrientationRow>
         <Content>
@@ -35,9 +35,9 @@ function TherapistsHub() {
           <TabsContent value="tab3">
             <TherapistWeeklyAv />
           </TabsContent>
-          <TabsContent value="tab4">
+          {/* <TabsContent value="tab4">
             <DateRangePickerComponent />
-          </TabsContent>
+          </TabsContent> */}
         </Content>
       </HubGrid>
     </TabsRoot>

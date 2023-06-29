@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import * as Dialog from "@radix-ui/react-dialog";
 import { UpdateIcon } from "@radix-ui/react-icons";
+import { VioletButton } from "./Buttons";
+import { CheckIcon } from "@radix-ui/react-icons";
+
 export const HeaderWrapper = styled.header`
   grid-area: header;
 `;
@@ -102,4 +105,38 @@ export const StyledUpdateIcon = styled(UpdateIcon)`
       transform: rotate(360deg);
     }
   }
+`;
+export const StyledCheckIcon = styled(CheckIcon)`
+  height: 18px;
+  width: 18px;
+`;
+
+export const RejectedConfirmButton = styled(VioletButton)`
+  font-size: 12px;
+  padding: 0 10px;
+  line-height: 25px;
+  border: 1px solid var(--violet8);
+  height: 23px;
+  align-self: center;
+`;
+export const Wrapper = styled.div`
+  background-color: white;
+  border-radius: 6px;
+  /* width: 400px; */
+  min-width: ${({ status }) => (status === "reschedule" ? "370px" : "250px")};
+  max-width: 400px;
+  --shadow-color: 176deg 27% 46%;
+  box-shadow: 0.5px 0.6px 0.9px hsl(var(--shadow-color) / 0.34),
+    0.9px 1px 1.5px -1.2px hsl(var(--shadow-color) / 0.34),
+    2.1px 2.4px 3.6px -2.5px hsl(var(--shadow-color) / 0.34);
+  padding: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  position: relative;
+  /* display: grid;
+  grid-template-areas: "title status" "description status";
+  grid-template-columns: auto max-content; */
+  column-gap: 15px;
+  align-items: center;
+  margin: 8px;
 `;

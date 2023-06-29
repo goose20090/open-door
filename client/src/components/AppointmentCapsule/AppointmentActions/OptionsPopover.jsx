@@ -6,17 +6,30 @@ import {
 } from "../../../assets/AppointmentCapsuleStyles";
 import { PopoverWrapper } from "../../RadixWrappers/PopoverWrapper";
 import DialogWrapper from "../../RadixWrappers/DialogWrapper";
-import AppointmentRescheduleForm from "../AppointmentRescheduleForm";
+import fetchWithError from "../../../helpers/fetchWithError";
+import { useDialog } from "../../../hooks/useDialog";
+import AppointmenRescheduleForm from "../../AppointmentRescheduleForm";
 
 export default function OptionsPopover({ appointment }) {
+  const { open, openDialog, closeDialog } = useDialog();
+
+  function handleDelete() {
+    fetchWithError(`/api/appointments/${appointment.id}`, {
+      method: "DELETE",
+    });
+  }
   return (
     <div style={{ minWidth: "64px", display: "flex", justifyContent: "right" }}>
       <PopoverWrapper>
         <ButtonsWrapper>
-          <DeleteButton id="cancel-button">Delete</DeleteButton>
+          <DeleteButton id="cancel-button" onClick={handleDelete}>
+            Delete
+          </DeleteButton>
           <DialogWrapper
-            content={AppointmentRescheduleForm}
-            contentProps={{ appointment: appointment }}
+            open={open}
+            onOpenChange={open ? closeDialog : openDialog}
+            content={AppointmenRescheduleForm}
+            contentProps={{ appointment, onCloseDialog: closeDialog }}
           >
             <RescheduleButton id="reschedule-button">Reschedule</RescheduleButton>
           </DialogWrapper>

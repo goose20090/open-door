@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import TooltipWrapper from "../../RadixWrappers/TooltipWrapper";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { StyledCheckIcon } from "../NewAppointmentCapsule";
+import { StyledCheckIcon } from "../../../assets/NewAppointmentStyles";
 import { ConfirmButton, DenyButton } from "../../../assets/Buttons";
 import DialogWrapper from "../../RadixWrappers/DialogWrapper";
-import AppointmentStatusUpdateForm from "../AppointmentStatusUpdateForm";
+import AppointmentStatusUpdateForm from "../../AppointmentStatusUpdateForm";
 export function PendingOptionsButtons({ appointment }) {
   return (
     <>
@@ -22,7 +22,7 @@ export function PendingOptionsButtons({ appointment }) {
         content={AppointmentStatusUpdateForm}
         contentProps={{ appointment: appointment, action: "Reject" }}
       >
-        <TooltipWrapper textContent={"Reject Appointment"}>
+        <TooltipWrapper textContent={"Reject Appointment"} sideOffset={5}>
           <DenyButton>
             <Cross2Icon />
           </DenyButton>

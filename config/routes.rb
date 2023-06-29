@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   delete 'logout', to: "sessions#destroy"
 
 
-  get '/mutual_availabilities/:client_id/:therapist_id/:date/:recurring', to: 'mutual_availabilities#show', as: 'mutual_availability'
+  get '/mutual_availabilities/:client_id/:therapist_id/:recurring', to: 'mutual_availabilities#show'
   patch '/:therapist_id/schedule/availability', to: 'schedules#update_availability'
   get '/:therapist_id/schedule/availability', to: 'schedules#availability'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

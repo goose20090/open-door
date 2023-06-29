@@ -3,7 +3,16 @@ import fetchWithError from "../helpers/fetchWithError";
 import { UserContext } from "../context/user";
 import { useContext } from "react";
 
-export function useMutualAvailabilitiesQuery(nonUserId, date, recurring) {
+// argument 1- the therapist or client the user wants to book an appointment with
+// argument 2- if booking a recurring appointment: a week day integer, if not: a date object
+// argument 3- a boolean based on whether the user is querying AV for a recurring or single appointment
+
+export function useMutualAvailabilitiesQuery(
+  nonUserId,
+  dateOrWeekday,
+  recurring,
+  reschedule = null
+) {
   const { user } = useContext(UserContext);
   const { user_type } = user;
   let clientId;
@@ -26,11 +35,10 @@ export function useMutualAvailabilitiesQuery(nonUserId, date, recurring) {
     appointmentType = "single";
   }
 
-  // Check if date is a string, if not convert it
-  if (Object.prototype.toString.call(date) !== "[object String]") {
-    date = date.toISOString();
+  // Check if dateOrWeekday is a string, if not convert it
+  if (!recurring && Object.prototype.toString.call(dateOrWeekday) !== "[object String]") {
+    dateOrWeekday = dateOrWeekday.toISOString().split("T")[0];
   }
-  date = date.split("T")[0];
 
   return useQuery(
     [
@@ -41,12 +49,17 @@ export function useMutualAvailabilitiesQuery(nonUserId, date, recurring) {
       appointmentType,
       clientId,
       therapistId,
-      date,
+      dateOrWeekday,
     ],
     ({ signal }) =>
-      fetchWithError(`/api/mutual_availabilities/${clientId}/${therapistId}/${date}/${recurring}`, {
-        signal,
-      }),
+      fetchWithError(
+        `/api/mutual_availabilities/${clientId}/${therapistId}/${recurring}?${
+          recurring ? `weekday=${dateOrWeekday}` : `date=${dateOrWeekday}`
+        }${reschedule ? `&reschedule=${reschedule}` : ""}`,
+        {
+          signal,
+        }
+      ),
     {
       enabled: !!nonUserId,
       useErrorBoundary: true,
