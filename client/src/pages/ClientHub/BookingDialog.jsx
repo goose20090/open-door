@@ -4,14 +4,14 @@ import * as Dialog from "@radix-ui/react-dialog";
 import styled from "styled-components";
 import "@radix-ui/colors/";
 import BookingDialogContent from "./BookingDialogContent";
-import { Button } from "../../assets/Buttons";
+import { Button, BookingButton } from "../../assets/Buttons";
 
 function BookingDialog() {
   const [open, setOpen] = useState(false);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <VioletButton>Book an Appointment</VioletButton>
+        <BookingButton>Book an Appointment</BookingButton>
       </Dialog.Trigger>
       <Dialog.Portal>
         <DialogOverlay />
@@ -67,18 +67,5 @@ const DialogContent = styled(Dialog.Content)`
 
   &:focus {
     outline: none;
-  }
-`;
-
-const VioletButton = styled(Button)`
-  background-color: white;
-  color: var(--violet11);
-  box-shadow: 0 2px 10px var(--blackA7);
-
-  &:hover {
-    background-color: var(--mauve3);
-  }
-  &:focus {
-    box-shadow: 0 0 0 2px black;
   }
 `;

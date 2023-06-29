@@ -31,7 +31,9 @@ export default function OptionsPopover({ appointment }) {
             content={AppointmenRescheduleForm}
             contentProps={{ appointment, onCloseDialog: closeDialog }}
           >
-            <RescheduleButton id="reschedule-button">Reschedule</RescheduleButton>
+            <RescheduleButton id="reschedule-button">
+              {appointment.status === "rejected" ? "Try another time" : "Reschedule"}
+            </RescheduleButton>
           </DialogWrapper>
         </ButtonsWrapper>
       </PopoverWrapper>

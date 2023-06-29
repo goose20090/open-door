@@ -32,7 +32,6 @@ class AppointmentsController < ApplicationController
     end
 
     def update
-        debugger
         appointment = Appointment.find_by(id: params[:id])
         if appointment.update(appointment_params)
             render json: appointment

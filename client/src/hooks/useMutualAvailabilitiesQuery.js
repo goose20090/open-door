@@ -13,6 +13,7 @@ export function useMutualAvailabilitiesQuery(
   recurring,
   reschedule = null
 ) {
+  // debugger;
   const { user } = useContext(UserContext);
   const { user_type } = user;
   let clientId;

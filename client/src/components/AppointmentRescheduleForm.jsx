@@ -24,6 +24,9 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   const { user } = useContext(UserContext);
   const { recurring } = appointment;
   let weekDayOrDateQueryKey;
+  const requestRecipient =
+    user.user_type === "Client" ? appointment.therapist.name : appointment.client.name;
+  const nonUserId = user.user_type === "Client" ? appointment.therapist.id : appointment.client.id;
 
   const [formData, setFormData] = useState({
     date: appointment.date,
@@ -67,17 +70,16 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     isSuccess,
     isLoading,
   } = useMutualAvailabilitiesQuery(
-    appointment.client.id,
+    nonUserId,
     weekDayOrDateQueryKey,
     appointment.recurring,
     appointment.id
   );
 
+  console.log(timeSlots);
   return (
     <Form onSubmit={rescheduleAppointment}>
-      <Confirmation>
-        Reschedule this recurring appointment with {appointment.client.name}?
-      </Confirmation>
+      <Confirmation>Reschedule this recurring appointment with {requestRecipient}?</Confirmation>
       <Grid>
         <InputWrapper>
           {appointment.recurring ? (
@@ -134,7 +136,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
             <Label>Your Appointment:</Label>
             <NewAppointment>
               <div>
-                <AppointmentTitle>{appointment.client.name}</AppointmentTitle>
+                <AppointmentTitle>{requestRecipient}</AppointmentTitle>
                 <AppointmentTime>
                   {appointment.recurring
                     ? formatRecurringTime(formData.start_time, formData.week_day)

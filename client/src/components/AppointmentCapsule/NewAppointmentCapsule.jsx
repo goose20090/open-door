@@ -17,25 +17,28 @@ const integerToWeekday = (day) => {
 
 export default function NewAppointmentCapsule({ appointment }) {
   const { user } = useContext(UserContext);
-  const { status } = appointment;
-  console.log(!!appointment.rescheduled_by);
+  const { status, rescheduled_by, recurring, start_time, week_day, date, therapist, client } =
+    appointment;
+
+  const isClient = user.user_type === "Client";
+  const isRescheduled = !!rescheduled_by;
+  const pending = status === "pending";
+  const notRescheduledByUser = user.user_type.toLowerCase() !== appointment.rescheduled_by;
+  const name = isClient ? therapist.name : client.name;
+  const time = recurring
+    ? formatRecurringTime(start_time, week_day)
+    : formatSingleDate(start_time, date);
   return (
-    <Wrapper status={!!appointment.rescheduled_by ? "reschedule" : ""}>
+    <Wrapper status={isRescheduled ? "reschedule" : ""}>
       <div>
-        <Title>
-          {user.user_type === "Client" ? appointment.therapist.name : appointment.client.name}
-        </Title>
-        {appointment.recurring ? (
-          <Time>{formatRecurringTime(appointment.start_time, appointment.week_day)}</Time>
-        ) : (
-          <Time>{formatSingleDate(appointment.start_time, appointment.date)}</Time>
-        )}
+        <Title>{name}</Title>
+        <Time>{time}</Time>
       </div>
       <Status status={status} as={"div"}>
         {status}
       </Status>
-      {!!appointment.rescheduled_by ? <Status status={"reschedule"}>reschedule</Status> : null}
-      {status === "pending" ? (
+      {isRescheduled && <Status status={"reschedule"}>reschedule</Status>}
+      {pending && notRescheduledByUser && !isClient ? (
         <PendingOptionsButtons appointment={appointment} />
       ) : (
         <OptionsPopover appointment={appointment} />

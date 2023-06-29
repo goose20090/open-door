@@ -6,16 +6,22 @@ import { relativeDate } from "../../helpers/relativeDate";
 import { isFutureDate } from "../../helpers/isFutureDate";
 import AppointmentCapsule from "../../components/AppointmentCapsule";
 import NewAppointmentCapsule from "../../components/AppointmentCapsule/NewAppointmentCapsule";
+import DialogWrapper from "../../components/RadixWrappers/DialogWrapper";
 import BookingDialog from "./BookingDialog";
 import { useAuthQuery } from "../../hooks/useAuthQuery";
 import { UserContext } from "../../context/user";
 import AppointmentsLayout from "../TherapistsHub/Tabs/AppointmentsLayout";
+import { BookingButton } from "../../assets/Buttons";
+import BookingDialogContent from "./BookingDialogContent";
+import { useDialog } from "../../hooks/useDialog";
+import NewAppointmentForm from "../../components/NewAppointmentForm";
 
-export default function AppointmentsHub() {
+export default function ClientHub() {
   const { isLoading, isError } = useAuthQuery(false);
 
   const { user } = useContext(UserContext);
-  console.log(user);
+
+  const { open, openDialog, closeDialog } = useDialog();
 
   if (!user) return <Redirect to="/" />;
 
@@ -25,18 +31,16 @@ export default function AppointmentsHub() {
   const recurringAppointments = appointments
     .filter(
       (appointment) =>
-        appointment.recurring &&
-        appointment.rescheduled_by !== user.user_type.toLowerCase() &&
-        appointment.rejected_by !== user.user_type.toLowerCase()
+        appointment.recurring && appointment.rejected_by !== user.user_type.toLowerCase()
+      // appointment.rescheduled_by !== user.user_type.toLowerCase() &&
     )
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   const singleAppointments = appointments
     .filter(
       (appointment) =>
-        !appointment.recurring &&
-        appointment.rescheduled_by !== user.user_type.toLowerCase() &&
-        appointment.rejected_by !== user.user_type.toLowerCase()
+        !appointment.recurring && appointment.rejected_by !== user.user_type.toLowerCase()
+      // appointment.rescheduled_by !== user.user_type.toLowerCase() &&
     )
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
   return (
@@ -48,8 +52,15 @@ export default function AppointmentsHub() {
           ) : (
             <>
               <h2>{user.name}</h2>
-              <p>Total appointments: {appointments.length}</p>
-              <BookingDialog />
+              <p>Total appointments: {recurringAppointments.length + singleAppointments.length}</p>
+              <DialogWrapper
+                open={open}
+                onOpenChange={open ? closeDialog : openDialog}
+                content={NewAppointmentForm}
+                contentProps={{ onCloseDialog: closeDialog }}
+              >
+                <BookingButton>Book an Appointment</BookingButton>
+              </DialogWrapper>
             </>
           )}
         </UserSidebar>

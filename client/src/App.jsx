@@ -7,7 +7,7 @@ import GlobalStyles from "./assets/GlobalStyles.js";
 import styled from "styled-components";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
-import AppointmentsHub from "./pages/AppointmentsHub/AppointmentsHub";
+import ClientHub from "./pages/ClientHub/ClientHub";
 import About from "./pages/About/About";
 import { useAuthQuery } from "./hooks/useAuthQuery";
 import TherapistsHub from "./pages/TherapistsHub/TherapistsHub";
@@ -29,7 +29,7 @@ function App() {
           <Signup />
         </Route>
         <Route path="/appointments">
-          <AppointmentsHub />
+          <ClientHub />
         </Route>
         <Route path="/therapist-appointments">
           <TherapistsHub />

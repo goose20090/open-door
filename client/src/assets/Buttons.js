@@ -120,3 +120,16 @@ export const DenyButton = styled(ConfirmButton)`
     background-color: var(--red9);
   }
 `;
+
+export const BookingButton = styled(Button)`
+  background-color: white;
+  color: var(--violet11);
+  box-shadow: 0 2px 10px var(--blackA7);
+
+  &:hover {
+    background-color: var(--mauve3);
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px black;
+  }
+`;
