@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { GreenButton } from "../../../assets/Buttons";
 import { UserContext } from "../../../context/user";
-import { useAvailabilityQuery } from "../../../hooks/useAvailabilityQuery";
+import { useScheduleQuery } from "../../../hooks/useScheduleQuery";
 import fetchWithError from "../../../helpers/fetchWithError";
 import { Title } from "../../../assets/AppointmentCapsuleStyles";
 
@@ -11,23 +11,22 @@ export function TherapistWeeklyAv() {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const hours = [9, 10, 11, 12, 13, 14, 15, 16];
   const { user } = useContext(UserContext);
-  const { data: therapistAvailability, isLoading, isSuccess } = useAvailabilityQuery(user.id);
+  const { data: fetchedSchedule, isLoading, isSuccess } = useScheduleQuery(user.id);
 
-  const initialAvailability = Object.fromEntries(
+  const initialSchedule = Object.fromEntries(
     days.map((day) => [day.toLowerCase(), hours.map((hour) => ({ [hour]: true }))])
   );
 
-  const [availability, setAvailability] = useState(initialAvailability);
+  const [schedule, setSchedule] = useState(initialSchedule);
   useEffect(() => {
     if (isSuccess) {
-      console.log(therapistAvailability);
-      setAvailability(therapistAvailability);
+      setSchedule(fetchedSchedule);
     }
-  }, [isSuccess, therapistAvailability]);
+  }, [isSuccess, fetchedSchedule]);
   const toggleAvailability = (day, hour) => {
-    setAvailability({
-      ...availability,
-      [day]: availability[day].map((hourObj) =>
+    setSchedule({
+      ...schedule,
+      [day]: schedule[day].map((hourObj) =>
         Object.keys(hourObj)[0] == hour ? { [hour]: !hourObj[hour] } : hourObj
       ),
     });
@@ -35,15 +34,13 @@ export function TherapistWeeklyAv() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetchWithError(`/api/${user.id}/schedule/availability`, {
+    fetchWithError(`/api/therapists/${user.id}/schedule`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ availability: availability }),
+      body: JSON.stringify({ new_schedule: schedule }),
     }).then((r) => console.log(r));
-
-    console.log(availability);
   };
   return (
     <ScheduleForm onSubmit={handleSubmit}>
@@ -75,7 +72,7 @@ export function TherapistWeeklyAv() {
                     <input
                       type="checkbox"
                       checked={
-                        availability[day.toLowerCase()].find(
+                        schedule[day.toLowerCase()].find(
                           (hourObj) => Object.keys(hourObj)[0] == hour
                         )[hour]
                       }

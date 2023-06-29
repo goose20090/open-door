@@ -1,25 +1,27 @@
 class SchedulesController < ApplicationController
-  DAYS_OF_WEEK = %w[sunday monday tuesday wednesday thursday friday saturday]
-
-  def availability
-    schedule = Schedule.find_by(therapist_id: params[:therapist_id])
+  def show
+    schedule =find_user.schedule
 
     availability = if schedule.availability?
                      schedule.availability
                    else
                      schedule.default
                    end
-
     render json: availability
   end
 
-  def update_availability
-    schedule = Schedule.find_by(therapist_id: params[:therapist_id])
-
-    if schedule.update(availability: params[:availability])
+  def update
+    schedule = find_user.schedule
+    if schedule.update(availability: params[:new_schedule])
       render json: { success: "Availability updated successfully." }
     else
       render json: { error: "Failed to update availability." }, status: :unprocessable_entity
     end
+  end
+
+  private
+
+  def find_user
+    User.includes(:schedule).find_by(userable_type: 'Therapist', userable_id: params[:therapist_id])
   end
 end

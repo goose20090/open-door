@@ -19,46 +19,34 @@ import TooltipWrapper from "./RadixWrappers/TooltipWrapper";
 import { formatSingleDate } from "../helpers/formatSingleDate";
 import { sameAsInitialDate } from "../helpers/sameAsInitialDate";
 import PlaceHolderSelect from "./PlaceHolderSelect";
+import { useRescheduleMutation } from "../hooks/useRescheduleMutation";
 
 function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const { recurring } = appointment;
-  let weekDayOrDateQueryKey;
   const requestRecipient =
     user.user_type === "Client" ? appointment.therapist.name : appointment.client.name;
   const nonUserId = user.user_type === "Client" ? appointment.therapist.id : appointment.client.id;
+
+  const rescheduleAppointment = useRescheduleMutation(appointment, onCloseDialog);
 
   const [formData, setFormData] = useState({
     date: appointment.date,
     start_time: appointment.start_time,
     week_day: appointment.week_day,
     recurring: appointment.recurring,
-    date: appointment.date,
     status: "pending",
     rescheduled_by: user.user_type.toLowerCase(),
     rejected_by: null,
   });
 
-  function handleSelectChange(e) {
-    setFormData({
-      ...formData,
-      week_day: e.target.value,
-    });
-  }
-
-  function rescheduleAppointment(e) {
+  function handleSubmit(e) {
+    console.log("hello");
     e.preventDefault();
-    fetchWithError(`/api/appointments/${appointment.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then((r) => {
-      onCloseDialog();
-    });
+    rescheduleAppointment.mutate(formData);
   }
 
+  let weekDayOrDateQueryKey;
   if (recurring) {
     weekDayOrDateQueryKey = formData.week_day;
   } else {
@@ -76,16 +64,24 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     appointment.id
   );
 
-  console.log(timeSlots);
   return (
-    <Form onSubmit={rescheduleAppointment}>
+    <Form onSubmit={handleSubmit}>
       <Confirmation>Reschedule this recurring appointment with {requestRecipient}?</Confirmation>
       <Grid>
         <InputWrapper>
           {appointment.recurring ? (
             <StyledLabel as="label" htmlfor="week-day-select">
               Select a new day for your new appointment:
-              <Select id="week-day-select" value={formData.week_day} onChange={handleSelectChange}>
+              <Select
+                id="week-day-select"
+                value={formData.week_day}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    week_day: e.target.value,
+                  })
+                }
+              >
                 <option value={1}>Monday</option>
                 <option value={2}>Tuesday</option>
                 <option value={3}>Wednesday</option>
@@ -154,7 +150,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                   <SubmitButton disabled={true}>Submit</SubmitButton>
                 </TooltipWrapper>
               ) : (
-                <SubmitButton>Submit</SubmitButton>
+                <SubmitButton type="submit">Submit</SubmitButton>
               )}
             </ButtonWrapper>
           </AppointmentWrapper>

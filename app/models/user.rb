@@ -8,6 +8,8 @@ class User < ApplicationRecord
   private
 
   def create_default_schedule
-    self.build_schedule.save!
+    if self.userable_type == 'Therapist'
+      self.build_schedule.save!
+    end
   end
 end

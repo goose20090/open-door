@@ -18,7 +18,6 @@ function AppointmentRequests() {
       (appointment) =>
         appointment.recurring &&
         appointment.status !== "confirmed" &&
-        appointment.rescheduled_by !== user.user_type.toLowerCase() &&
         appointment.rejected_by !== user.user_type.toLowerCase()
     )
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
@@ -28,7 +27,6 @@ function AppointmentRequests() {
       (appointment) =>
         !appointment.recurring &&
         appointment.status !== "confirmed" &&
-        appointment.rescheduled_by !== user.id &&
         appointment.rejected_by !== user.id
     )
     .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);

@@ -20,30 +20,17 @@ import {
   DialogDescription,
   DatePickerWrapper,
 } from "../assets/NewAppointmentStyles";
+import { useCreateAppointment } from "../hooks/useCreateAppointmentMutation";
 
-export default function NewAppointmentForm({ setOpen }) {
+export default function NewAppointmentForm({ setOpen, onCloseDialog }) {
   const { isLoading: therapistsLoading, data: therapists } = useTherapists();
   const initialDate = getNextWorkingDay();
-
-  //   useEffect(() => {
-  //     setFormData((prevState) => ({
-  //       ...prevState,
-  //       date: getNextWorkingDay(),
-  //       week_day: date.getDay(),
-  //     }));
-  //   }, [date]);
+  const createApppointment = useCreateAppointment(onCloseDialog);
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetchWithError("/api/appointments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then((r) => {
-      console.log(r);
-    });
+    console.log("test");
+    createApppointment.mutate(formData);
   }
 
   const [formData, setFormData] = useState({
@@ -78,7 +65,6 @@ export default function NewAppointmentForm({ setOpen }) {
     formData.recurring
   );
 
-  console.log(timeSlots);
   return (
     <FormGrid onSubmit={handleSubmit}>
       <InitialInputWrapper>
@@ -192,47 +178,3 @@ const TimeAndSubmitInputWrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
 `;
-
-// <FormWrapper>
-//   <HeaderWrapper>
-//     <DialogTitle>Book a New Appointment</DialogTitle>
-//     <DialogDescription className="DialogDescription">
-//       Select a therapist and pick an available time.
-//     </DialogDescription>
-//   </HeaderWrapper>
-//   <DateSelectWrapper>
-//     <TherapistSelect
-//       isLoading={isLoading}
-//       therapists={therapists}
-//       handleChange={handleChange}
-//     />
-//     <DatePickerWrapper>
-//       <DatePickerComponent
-//         enabled={therapistSelected}
-//         startDate={selectedDate}
-//         setStartDate={setSelectedDate}
-//       />
-//     </DatePickerWrapper>
-//   </DateSelectWrapper>
-//   <BookingSubmitterWrapper>
-//     <BookingSubmitter
-//       currentTherapistId={currentTherapistId}
-//       therapistSelected={therapistSelected}
-//       nextWorkingDay={nextWorkingDay.getDay}
-//       selectedDate={selectedDate}
-//       setOpen={setOpen}
-//     />
-//   </BookingSubmitterWrapper>
-//   {isFetching ? <StyledUpdateIcon /> : null}
-// </FormWrapper>
-{
-  /* <AppointmentRadios
-                handleSubmit={handleSubmit}
-                handleRadioChange={handleRadioChange}
-                currentTherapistId={currentTherapistId}
-                selectedDate={selectedDate}
-                formData={formData}
-                setFormData={setFormData}
-              >
-              </AppointmentRadios> */
-}

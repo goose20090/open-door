@@ -9,20 +9,18 @@ import DialogWrapper from "../../RadixWrappers/DialogWrapper";
 import fetchWithError from "../../../helpers/fetchWithError";
 import { useDialog } from "../../../hooks/useDialog";
 import AppointmenRescheduleForm from "../../AppointmentRescheduleForm";
+import { useMutation } from "@tanstack/react-query";
+import { useDeleteAppointmentMutation } from "../../../hooks/useDeleteAppointmentMutation";
 
 export default function OptionsPopover({ appointment }) {
   const { open, openDialog, closeDialog } = useDialog();
+  const deleteAppointment = useDeleteAppointmentMutation(appointment);
 
-  function handleDelete() {
-    fetchWithError(`/api/appointments/${appointment.id}`, {
-      method: "DELETE",
-    });
-  }
   return (
     <div style={{ minWidth: "64px", display: "flex", justifyContent: "right" }}>
       <PopoverWrapper>
         <ButtonsWrapper>
-          <DeleteButton id="cancel-button" onClick={handleDelete}>
+          <DeleteButton id="cancel-button" onClick={() => deleteAppointment.mutate(appointment)}>
             Delete
           </DeleteButton>
           <DialogWrapper
