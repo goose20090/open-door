@@ -37,6 +37,9 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     recurring: appointment.recurring,
     status: "pending",
     rescheduled_by: user.user_type.toLowerCase(),
+    rollback_start_time: appointment.start_time,
+    rollback_week_day: appointment.week_day,
+    rollback_date: appointment.date,
     rejected_by: null,
   });
 

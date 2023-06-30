@@ -41,12 +41,14 @@ end
 
 # Define appointment status list
 status_list = ['pending', 'confirmed', 'rejected']
+created_by_list = ['client', 'therapist']
 clients = Client.all
 
 # Create appointments
 20.times do |i|
   start_time = rand(9..16) # Generate a random integer between 9 and 16
   status = status_list.sample
+  created_by = created_by_list.sample
 
   week_day = 1 + i % 5 # Generate week_day value between 1 (Monday) and 5 (Friday)
   today = Date.today
@@ -59,6 +61,7 @@ clients = Client.all
   Appointment.create!(
     client_id: clients[i % clients.size].id,
     therapist_id: therapists[i % therapists.size].id,
+    created_by: created_by,
     start_time: start_time,
     status: status,
     recurring: i.even?, # Alternating between recurring and non-recurring appointments

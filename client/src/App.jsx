@@ -11,6 +11,7 @@ import ClientHub from "./pages/ClientHub/ClientHub";
 import About from "./pages/About/About";
 import { useAuthQuery } from "./hooks/useAuthQuery";
 import TherapistsHub from "./pages/TherapistsHub/TherapistsHub";
+import * as Toast from "@radix-ui/react-toast";
 
 function App() {
   useAuthQuery();

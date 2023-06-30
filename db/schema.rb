@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_28_181806) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_30_151741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_181806) do
     t.integer "week_day"
     t.string "rejected_by"
     t.string "rescheduled_by"
+    t.integer "rollback_start_time"
+    t.datetime "rollback_date"
+    t.integer "rollback_week_day"
+    t.string "created_by"
   end
 
   create_table "clients", force: :cascade do |t|

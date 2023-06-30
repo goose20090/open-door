@@ -15,8 +15,10 @@ import "@radix-ui/colors/red.css";
 import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ToastProvider } from "./context/toast.jsx";
 import { UserProvider } from "./context/user.jsx";
 import { Tooltip } from "@radix-ui/react-tooltip";
+import { ToastWrapper } from "./components/ToastWrapper.jsx";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +28,10 @@ ReactDOM.render(
       <QueryClientProvider client={queryClient}>
         <UserProvider>
           <TooltipProvider delayDuration={700}>
-            <App />
+            <ToastProvider>
+              <ToastWrapper />
+              <App />
+            </ToastProvider>
           </TooltipProvider>
         </UserProvider>
         <ReactQueryDevtools />

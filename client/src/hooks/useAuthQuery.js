@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import fetchWithError from "../helpers/fetchWithError";
 import { UserContext } from "../context/user";
 import { useContext } from "react";
+import { useToast } from "./useToast";
 
 function checkSession() {
   return fetchWithError("api/me");

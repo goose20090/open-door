@@ -33,7 +33,28 @@ class AppointmentsController < ApplicationController
 
     def update
         appointment = Appointment.find_by(id: params[:id])
-        if appointment.update(appointment_params)
+        if appointment[:status] == 'pending' && params[:status] == 'rejected' && appointment[:rescheduled_by].present?
+            appointment.update(
+                status: 'confirmed',
+                start_time: appointment[:rollback_start_time],
+                date: appointment[:rollback_date],
+                week_day: appointment[:rollback_week_day],
+                rescheduled_by: nil,
+                rollback_start_time: nil,
+                rollback_date: nil,
+                rollback_week_day: nil,
+            )
+            render json: appointment
+        elsif appointment[:status] == 'pending' && params[:status] == 'confirmed' && appointment[:rescheduled_by].present?
+            appointment.update(
+                status: 'confirmed',
+                rescheduled_by: nil,
+                rollback_start_time: nil,
+                rollback_date: nil,
+                rollback_week_day: nil,
+            )
+            render json: appointment
+        elsif appointment.update(appointment_params)
             render json: appointment
         else
             render json: {errors: appointment.errors.full_messages}, status: :unprocessable_entity
@@ -50,9 +71,9 @@ class AppointmentsController < ApplicationController
 
     def appointment_params
         if params[:recurring]
-            params.require(:appointment).permit(:start_time, :week_day, :status, :rescheduled_by, :rejected_by)
+            params.require(:appointment).permit(:start_time, :week_day, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day)
         else
-            params.require(:appointment).permit(:start_time, :date, :status, :rescheduled_by, :rejected_by)
+            params.require(:appointment).permit(:start_time, :date, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day)
         end
     end
 end
