@@ -33,7 +33,7 @@ class AppointmentsController < ApplicationController
 
     def update
         appointment = Appointment.find_by(id: params[:id])
-        if appointment[:status] == 'pending' && params[:status] == 'rejected' && appointment[:rescheduled_by].present?
+        if appointment[:status] == 'pending' && params[:status] == 'rejected' && appointment[:rescheduled_by].present? || params[:rollback]
             appointment.update(
                 status: 'confirmed',
                 start_time: appointment[:rollback_start_time],
@@ -71,9 +71,9 @@ class AppointmentsController < ApplicationController
 
     def appointment_params
         if params[:recurring]
-            params.require(:appointment).permit(:start_time, :week_day, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day)
+            params.require(:appointment).permit(:start_time, :week_day, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day, :rollback)
         else
-            params.require(:appointment).permit(:start_time, :date, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day)
+            params.require(:appointment).permit(:start_time, :date, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day, :rollback)
         end
     end
 end

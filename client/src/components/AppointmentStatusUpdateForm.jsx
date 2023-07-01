@@ -18,14 +18,12 @@ export default function AppointmentStatusUpdateForm({ appointment, action }) {
   if (action.toLowerCase() === "confirm") {
     statusUpdateObj = {
       status: "confirmed",
-      rescheduling: false,
       rescheduled_by: null,
       rejected_by: null,
     };
   } else if (action.toLowerCase() === "reject") {
     statusUpdateObj = {
       status: "rejected",
-      rescheduling: false,
       rescheduled_by: null,
       rejected_by: user.user_type.toLowerCase(),
     };

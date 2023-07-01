@@ -18,6 +18,7 @@ export const Time = styled.div`
 export const CancelButton = styled(RedButton)`
   font-size: 12px;
   padding: 0 10px;
+  margin-right: 10px;
   line-height: 25px;
   height: 25px;
 `;
@@ -26,6 +27,15 @@ export const RescheduleButton = styled(VioletButton)`
   padding: 0 10px;
   line-height: 25px;
   height: 25px;
+  background-color: ${({ status }) => (status === "pending" ? "var(--amber3)" : null)};
+  color: ${({ status }) => (status === "pending" ? "var(--amber11)" : null)};
+  &:hover {
+    background-color: ${({ status }) => (status === "pending" ? "var(--amber4)" : null)};
+  }
+
+  &:focus {
+    box-shadow: ${({ status }) => (status === "pending" ? "0 0 0 2px var(--amber7)" : null)};
+  }
 `;
 export const Status = styled(Button)`
   margin-left: auto;

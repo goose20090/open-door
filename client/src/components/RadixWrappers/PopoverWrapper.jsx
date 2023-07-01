@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Popover from "@radix-ui/react-popover";
 import { Cross2Icon, GearIcon } from "@radix-ui/react-icons";
@@ -6,15 +6,24 @@ import { CancelButton, RescheduleButton } from "../../assets/AppointmentCapsuleS
 import { CloseButton, RoundIconButton } from "../../assets/Buttons";
 
 export function PopoverWrapper({ children }) {
+  const [open, setOpen] = useState(false);
+  function handleClose() {
+    setOpen(false);
+  }
   return (
-    <PopoverRoot>
+    <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger asChild>
         <OptionsButton>
           <GearIcon />
         </OptionsButton>
       </Popover.Trigger>
       <Popover.Portal>
-        <PopoverContent>
+        <PopoverContent
+          onFocusOutside={handleClose}
+          onInteractOutside={handleClose}
+          onCloseAutoFocus={handleClose}
+          hideWhenDetached={true}
+        >
           {children}
           <Popover.Close asChild>
             <PositionedCloseButton>
@@ -24,10 +33,9 @@ export function PopoverWrapper({ children }) {
           <Popover.Arrow />
         </PopoverContent>
       </Popover.Portal>
-    </PopoverRoot>
+    </Popover.Root>
   );
 }
-
 const OptionsButton = styled(RoundIconButton)`
   border: 0.75px solid var(--blackA7);
   --shadow-color: 176deg 27% 46%;
@@ -45,7 +53,7 @@ export const PopoverContent = styled(Popover.Content)`
   border-radius: 6px;
   padding: 10px;
   padding-top: 15px;
-  width: 200px;
+  width: fit-content;
   background-color: white;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   animation-duration: 400ms;

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../context/user";
 import { useMutualAvailabilitiesQuery } from "../hooks/useMutualAvailabilitiesQuery";
@@ -20,13 +20,21 @@ import { formatSingleDate } from "../helpers/formatSingleDate";
 import { sameAsInitialDate } from "../helpers/sameAsInitialDate";
 import PlaceHolderSelect from "./PlaceHolderSelect";
 import { useRescheduleMutation } from "../hooks/useRescheduleMutation";
+import { renderRescheduleTitle } from "../helpers/renderRescheduleTitle";
 
 function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   const { user, setUser } = useContext(UserContext);
   const { recurring } = appointment;
+  const rescheduledBy =
+    appointment.status === "confirmed" || !!appointment.rescheduled_by
+      ? user.user_type.toLowerCase()
+      : null;
   const requestRecipient =
     user.user_type === "Client" ? appointment.therapist.name : appointment.client.name;
+
   const nonUserId = user.user_type === "Client" ? appointment.therapist.id : appointment.client.id;
+
+  function formatConfirmationTitle() {}
 
   const rescheduleAppointment = useRescheduleMutation(appointment, onCloseDialog);
 
@@ -36,7 +44,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     week_day: appointment.week_day,
     recurring: appointment.recurring,
     status: "pending",
-    rescheduled_by: user.user_type.toLowerCase(),
+    rescheduled_by: rescheduledBy,
     rollback_start_time: appointment.start_time,
     rollback_week_day: appointment.week_day,
     rollback_date: appointment.date,
@@ -48,7 +56,6 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     e.preventDefault();
     rescheduleAppointment.mutate(formData);
   }
-
   let weekDayOrDateQueryKey;
   if (recurring) {
     weekDayOrDateQueryKey = formData.week_day;
@@ -69,7 +76,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Confirmation>Reschedule this recurring appointment with {requestRecipient}?</Confirmation>
+      <Confirmation>{renderRescheduleTitle(user, appointment, requestRecipient)}</Confirmation>
       <Grid>
         <InputWrapper>
           {appointment.recurring ? (
