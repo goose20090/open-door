@@ -12,7 +12,7 @@ import RecurringAppointmentInfo from "./AppointmentCapsule/RecurringAppointmentI
 import { getNextWorkingDay } from "../helpers/getNextWorkingDay";
 import { handleRadioChange } from "../helpers/handleRadioChange";
 import fetchWithError from "../helpers/fetchWithError";
-import NewAppointmentCapsule from "./AppointmentCapsule/NewAppointmentCapsule";
+import NewAppointmentCapsule from "./AppointmentCapsule/AppointmentCapsule";
 import { Wrapper } from "../assets/NewAppointmentStyles";
 import { formatRecurringTime } from "../helpers/formatRecurringTime";
 import TooltipWrapper from "./RadixWrappers/TooltipWrapper";

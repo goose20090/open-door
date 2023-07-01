@@ -14,8 +14,7 @@ const integerToWeekday = (day) => {
   return days[day];
 };
 
-export default function NewAppointmentCapsule({ appointment }) {
-  console.log(appointment);
+export default function AppointmentCapsule({ appointment }) {
   // getting variables
   const { user } = useContext(UserContext);
   const { status, rescheduled_by, recurring, start_time, week_day, date, therapist, client } =

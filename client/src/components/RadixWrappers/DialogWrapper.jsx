@@ -3,8 +3,8 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import { CloseButton } from "../../assets/Buttons";
 import { Cross2Icon } from "@radix-ui/react-icons";
-export default function DialogWrapper({ children, content: Content, contentProps }) {
-  const [open, setOpen] = useState(false);
+export default function DialogWrapper({ children, open, setOpen }) {
+  // const [open, setOpen] = useState(false);
 
   const handleCloseDialog = () => {
     setOpen(false);
@@ -12,13 +12,10 @@ export default function DialogWrapper({ children, content: Content, contentProps
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
-        <span>{children}</span>
-      </Dialog.Trigger>
       <Dialog.Portal>
         <DialogOverlay onClick={handleCloseDialog} />
         <DialogContent>
-          <Content {...contentProps} onCloseDialog={handleCloseDialog} />
+          {children}
           <Dialog.Close asChild>
             <CloseButton>
               <Cross2Icon />

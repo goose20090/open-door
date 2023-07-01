@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { relativeDate } from "../../helpers/relativeDate";
 import { isFutureDate } from "../../helpers/isFutureDate";
-import AppointmentCapsule from "../../components/AppointmentCapsule";
-import NewAppointmentCapsule from "../../components/AppointmentCapsule/NewAppointmentCapsule";
 import DialogWrapper from "../../components/RadixWrappers/DialogWrapper";
 import BookingDialog from "./BookingDialog";
 import { useAuthQuery } from "../../hooks/useAuthQuery";
@@ -15,13 +13,13 @@ import { BookingButton } from "../../assets/Buttons";
 import BookingDialogContent from "./BookingDialogContent";
 import { useDialog } from "../../hooks/useDialog";
 import NewAppointmentForm from "../../components/NewAppointmentForm";
+import AppointmentCapsule from "../../components/AppointmentCapsule/AppointmentCapsule";
 
 export default function ClientHub() {
   const { isLoading, isError } = useAuthQuery(false);
 
   const { user } = useContext(UserContext);
-
-  const { open, openDialog, closeDialog } = useDialog();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!user) return <Redirect to="/" />;
 
@@ -34,7 +32,7 @@ export default function ClientHub() {
         appointment.recurring && appointment.rejected_by !== user.user_type.toLowerCase()
       // appointment.rescheduled_by !== user.user_type.toLowerCase() &&
     )
-    .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
+    .map((appointment) => <AppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   const singleAppointments = appointments
     .filter(
@@ -42,7 +40,7 @@ export default function ClientHub() {
         !appointment.recurring && appointment.rejected_by !== user.user_type.toLowerCase()
       // appointment.rescheduled_by !== user.user_type.toLowerCase() &&
     )
-    .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
+    .map((appointment) => <AppointmentCapsule key={appointment.id} appointment={appointment} />);
   return (
     <Wrapper>
       <Grid>
@@ -53,14 +51,10 @@ export default function ClientHub() {
             <>
               <h2>{user.name}</h2>
               <p>Total appointments: {recurringAppointments.length + singleAppointments.length}</p>
-              <DialogWrapper
-                open={open}
-                onOpenChange={open ? closeDialog : openDialog}
-                content={NewAppointmentForm}
-                contentProps={{ onCloseDialog: closeDialog }}
-              >
-                <BookingButton>Book an Appointment</BookingButton>
+              <DialogWrapper open={dialogOpen} setOpen={setDialogOpen}>
+                <NewAppointmentForm onCloseDialog={() => setDialogOpen(false)} />
               </DialogWrapper>
+              <BookingButton onClick={() => setDialogOpen(true)}>Book an Appointment</BookingButton>
             </>
           )}
         </UserSidebar>

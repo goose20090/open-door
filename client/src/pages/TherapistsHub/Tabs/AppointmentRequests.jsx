@@ -1,9 +1,9 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import AppointmentCapsule from "../../../components/AppointmentCapsule";
-import NewAppointmentCapsule from "../../../components/AppointmentCapsule/NewAppointmentCapsule";
+
 import AppointmentsLayout from "./AppointmentsLayout";
+import AppointmentCapsule from "../../../components/AppointmentCapsule/AppointmentCapsule";
 
 function AppointmentRequests() {
   const authQuery = useQuery(["user", "authorisation"], () => null, {
@@ -20,7 +20,7 @@ function AppointmentRequests() {
         appointment.status !== "confirmed" &&
         appointment.rejected_by !== user.user_type.toLowerCase()
     )
-    .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
+    .map((appointment) => <AppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   const singleAppointmentRequests = appointments
     .filter(
@@ -29,7 +29,7 @@ function AppointmentRequests() {
         appointment.status !== "confirmed" &&
         appointment.rejected_by !== user.id
     )
-    .map((appointment) => <NewAppointmentCapsule key={appointment.id} appointment={appointment} />);
+    .map((appointment) => <AppointmentCapsule key={appointment.id} appointment={appointment} />);
 
   return isLoading ? (
     <p>Loading...</p>

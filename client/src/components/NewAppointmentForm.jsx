@@ -22,7 +22,7 @@ import {
 } from "../assets/NewAppointmentStyles";
 import { useCreateAppointment } from "../hooks/useCreateAppointmentMutation";
 
-export default function NewAppointmentForm({ setOpen, onCloseDialog }) {
+export default function NewAppointmentForm({ onCloseDialog }) {
   const { isLoading: therapistsLoading, data: therapists } = useTherapists();
   const initialDate = getNextWorkingDay();
   const createApppointment = useCreateAppointment(onCloseDialog);

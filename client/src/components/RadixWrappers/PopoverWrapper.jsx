@@ -5,8 +5,8 @@ import { Cross2Icon, GearIcon } from "@radix-ui/react-icons";
 import { CancelButton, RescheduleButton } from "../../assets/AppointmentCapsuleStyles";
 import { CloseButton, RoundIconButton } from "../../assets/Buttons";
 
-export function PopoverWrapper({ children }) {
-  const [open, setOpen] = useState(false);
+export function PopoverWrapper({ children, open, setOpen }) {
+  // const [open, setOpen] = useState(false);
   function handleClose() {
     setOpen(false);
   }
@@ -18,12 +18,7 @@ export function PopoverWrapper({ children }) {
         </OptionsButton>
       </Popover.Trigger>
       <Popover.Portal>
-        <PopoverContent
-          onFocusOutside={handleClose}
-          onInteractOutside={handleClose}
-          onCloseAutoFocus={handleClose}
-          hideWhenDetached={true}
-        >
+        <PopoverContent>
           {children}
           <Popover.Close asChild>
             <PositionedCloseButton>

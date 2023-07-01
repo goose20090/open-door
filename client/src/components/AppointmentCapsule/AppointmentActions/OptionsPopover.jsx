@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   CancelButton as DeleteButton,
@@ -14,9 +14,10 @@ import { useDeleteAppointmentMutation } from "../../../hooks/useDeleteAppointmen
 import { useRollbackMutation } from "../../../hooks/useRollbackMutation";
 
 export default function OptionsPopover({ appointment }) {
-  const { open, openDialog, closeDialog } = useDialog();
   const deleteAppointment = useDeleteAppointmentMutation(appointment);
   const rollbackAppointment = useRollbackMutation(appointment);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   function renderDeleteButtonText() {
     if (appointment.status === "rejected") {
@@ -43,7 +44,7 @@ export default function OptionsPopover({ appointment }) {
   }
   return (
     <div style={{ minWidth: "64px", display: "flex", justifyContent: "right" }}>
-      <PopoverWrapper>
+      <PopoverWrapper open={popoverOpen} setOpen={setPopoverOpen}>
         <ButtonsWrapper>
           <DeleteButton
             id="cancel-button"
@@ -55,21 +56,22 @@ export default function OptionsPopover({ appointment }) {
           >
             {renderDeleteButtonText()}
           </DeleteButton>
-          <DialogWrapper
-            open={open}
-            onOpenChange={open ? closeDialog : openDialog}
-            content={AppointmenRescheduleForm}
-            contentProps={{ appointment, onCloseDialog: closeDialog }}
+
+          <RescheduleButton
+            id="reschedule-button"
+            status={!!appointment.rescheduled_by ? "reschedule" : appointment.status}
+            onClick={() => setDialogOpen(true)}
           >
-            <RescheduleButton
-              id="reschedule-button"
-              status={!!appointment.rescheduled_by ? "reschedule" : appointment.status}
-            >
-              {renderRescheduleButtonText()}
-            </RescheduleButton>
-          </DialogWrapper>
+            {renderRescheduleButtonText()}
+          </RescheduleButton>
         </ButtonsWrapper>
       </PopoverWrapper>
+      <DialogWrapper open={dialogOpen} setOpen={setDialogOpen}>
+        <AppointmenRescheduleForm
+          appointment={appointment}
+          onCloseDialog={() => setDialogOpen(false)}
+        />
+      </DialogWrapper>
     </div>
   );
 }
