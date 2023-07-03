@@ -1,7 +1,7 @@
 import * as Toast from "@radix-ui/react-toast";
 import styled, { keyframes } from "styled-components";
 import { useToast } from "../hooks/useToast";
-import { Status as ConfirmButton, Status } from "../assets/AppointmentCapsuleStyles";
+import { Status as ConfirmButton } from "../assets/AppointmentCapsuleStyles";
 import { formatDetails } from "../helpers/formatDetails";
 import { useContext } from "react";
 import { UserContext } from "../context/user";
@@ -21,6 +21,13 @@ export function ToastWrapper() {
 
   function renderTitle(toast) {
     const { action, appointment } = toast;
+
+    if (action === "notificationConfirm") {
+      return `${appointment.therapist.name} confirmed your appointment request`;
+    }
+    if (action === "notificationReject") {
+      return `${appointment.therapist.name} rejected your appointment request`;
+    }
     if (action === "reschedule" && appointment.status === "pending") {
       return "Reschedule Request Updated";
     }
@@ -54,6 +61,9 @@ export function ToastWrapper() {
           {newDetails}
         </>
       );
+    }
+    if (action === "notificationConfirm" || action === "notificationReject") {
+      return details;
     }
 
     if (action === "delete") {

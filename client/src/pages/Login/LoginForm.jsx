@@ -3,32 +3,13 @@
 import React, { useState, useContext } from "react";
 import * as Form from "@radix-ui/react-form";
 import styled from "styled-components";
-import { UserContext } from "../../context/user";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useLoginMutation } from "../../hooks/useLoginMutation";
 import fetchWithError from "../../helpers/fetchWithError";
 
 export default function LoginForm() {
-  const { setUser } = useContext(UserContext);
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const queryClient = useQueryClient();
-
-  function attemptLogin(formData) {
-    return fetchWithError("api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-  }
-
-  const loginMutation = useMutation(attemptLogin, {
-    onSuccess: (r) => {
-      queryClient.setQueryData(["user", "authorisation"], () => r);
-      setUser(r);
-    },
-    onError: (r) => console.log(r),
-  });
+  const loginMutation = useLoginMutation(formData);
+  const { isLoading, isError } = loginMutation;
 
   function handleChange(e) {
     setFormData({

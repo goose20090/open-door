@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_30_090839) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_03_164116) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,12 +37,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_090839) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "feedbacks", force: :cascade do |t|
-    t.integer "appointment_id"
-    t.string "content"
-    t.integer "rating"
+  create_table "notifications", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "originator_id"
+    t.string "notification_type"
+    t.string "recurring"
+    t.datetime "date"
+    t.integer "week_day"
+    t.string "rejected_by"
+    t.string "rescheduled_by"
+    t.integer "rollback_start_time"
+    t.datetime "rollback_date"
+    t.integer "rollback_week_day"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "start_time"
   end
 
   create_table "schedules", force: :cascade do |t|

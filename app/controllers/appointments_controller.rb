@@ -1,4 +1,5 @@
 class AppointmentsController < ApplicationController
+    before_action :pass_to_notification_model, only: [:update]
 
     def create
         # Only clients can create appointments
@@ -75,5 +76,13 @@ class AppointmentsController < ApplicationController
         else
             params.require(:appointment).permit(:start_time, :date, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day, :rollback)
         end
+    end
+
+    def find_appointment
+        Appointment.find_by(id: params[:id])
+    end
+
+    def pass_to_notification_model
+        Notification.create_notification(find_appointment, session[:user_id], params)
     end
 end
