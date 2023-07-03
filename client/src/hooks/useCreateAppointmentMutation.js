@@ -9,7 +9,7 @@ import { formatSingleDate } from "../helpers/formatSingleDate";
 export function useCreateAppointment(onCloseDialog) {
   const { user, setUser } = useContext(UserContext);
   const client = useQueryClient();
-  const { showToast } = useToast();
+  const { addToast } = useToast();
   function createAppointment(formData) {
     return fetchWithError("/api/appointments", {
       method: "POST",
@@ -33,7 +33,7 @@ export function useCreateAppointment(onCloseDialog) {
       setUser(updatedUser);
       client.setQueryData(["user", "authorisation"], updatedUser);
       onCloseDialog();
-      showToast("Scheduled", formattedDate);
+      addToast("create", newAppointment, newAppointment.status);
     },
   });
 }

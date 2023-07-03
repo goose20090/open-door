@@ -1,27 +1,86 @@
 import * as Toast from "@radix-ui/react-toast";
 import styled, { keyframes } from "styled-components";
 import { useToast } from "../hooks/useToast";
-import { Status as ConfirmButton } from "../assets/AppointmentCapsuleStyles";
+import { Status as ConfirmButton, Status } from "../assets/AppointmentCapsuleStyles";
+import { formatDetails } from "../helpers/formatDetails";
+import { useContext } from "react";
+import { UserContext } from "../context/user";
 
 export function ToastWrapper() {
-  const { toastInfo, hideToast } = useToast();
+  const { user } = useContext(UserContext);
+  const { toasts, removeToast } = useToast();
+
+  const actionTitles = {
+    create: "Appointment Requested",
+    alter: "Appointment Request Changed",
+    reschedule: "Reschedule Requested",
+    delete: "Appointment Deleted",
+    reject: "Appointment Rejected",
+    confirm: "Appointment Confirmed",
+  };
+
+  function renderTitle(toast) {
+    const { action, appointment } = toast;
+    if (action === "reschedule" && appointment.status === "pending") {
+      return "Reschedule Request Updated";
+    }
+    if (action === "delete" && appointment.status === "pending") {
+      return "Appointment Request Deleted";
+    }
+    return actionTitles[toast.action];
+  }
+
+  function renderDescription(toast) {
+    const { appointment, newAppointment, action } = toast;
+
+    const otherPartyName =
+      user.user_type === "Client" ? appointment.therapist.name : appointment.client.name;
+    const details = formatDetails(appointment);
+    const newDetails = newAppointment ? formatDetails(newAppointment) : null;
+    const fullDetails = `${details}, with ${otherPartyName}`;
+
+    if (action === "create" || action === "confirm" || action === "reject") {
+      return fullDetails;
+    }
+    if (action === "alter" || action === "reschedule") {
+      return (
+        <>
+          <b>{otherPartyName}</b>
+          <br />
+          <b>From: </b>
+          {details}
+          <br />
+          <b>To: </b>
+          {newDetails}
+        </>
+      );
+    }
+
+    if (action === "delete") {
+      return fullDetails;
+    }
+  }
 
   return (
     <>
-      <Root open={toastInfo.isOpen} onOpenChange={hideToast}>
-        <Title>{toastInfo.title}</Title>
-        <Description>{toastInfo.description}</Description>
-        <Action asChild altText="confirm button">
-          <ConfirmButton onClick={hideToast} status="confirmed">
-            Ok
-          </ConfirmButton>
-        </Action>
-      </Root>
+      {toasts.map((toast) => (
+        <Root key={toast.id} open={true} onOpenChange={() => removeToast(toast.id)}>
+          <Title>{renderTitle(toast)}</Title>
+          <Description>{renderDescription(toast)}</Description>
+          <Confirmation asChild altText="confirm button">
+            <ConfirmButton
+              onClick={() => removeToast(toast.id)}
+              status={toast.action === "reschedule" ? "reschedule" : toast.status}
+            >
+              OK
+            </ConfirmButton>
+          </Confirmation>
+        </Root>
+      ))}
       <Viewport />
     </>
   );
 }
-
 const Title = styled(Toast.Title)`
   grid-area: title;
   margin-bottom: 5px;
@@ -33,12 +92,21 @@ const Title = styled(Toast.Title)`
 const Description = styled(Toast.Description)`
   grid-area: description;
   margin: 0;
-  color: var(--slate-11);
+  color: var(--blackA11);
   font-size: 13px;
   line-height: 1.3;
 `;
+const Details = styled.div`
+  color: inherit;
+  padding: 2px 0px;
+`;
 
-const Action = styled(Toast.Action)`
+const NextStep = styled.div`
+  padding: 2px 0px;
+  color: var(--blackA12);
+`;
+
+const Confirmation = styled(Toast.Close)`
   grid-area: action;
 `;
 

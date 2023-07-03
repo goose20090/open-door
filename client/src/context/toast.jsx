@@ -1,30 +1,32 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import { Provider } from "@radix-ui/react-toast";
+import { v4 as uniqueId } from "uuid";
 
 export const ToastContext = createContext();
 
 export function ToastProvider({ children }) {
-  const [toastInfo, setToastInfo] = useState({
-    isOpen: false,
-    title: "",
-    description: "",
-  });
+  const [toasts, setToasts] = useState([]);
 
-  const showToast = (title, description) => {
-    setToastInfo({
-      isOpen: true,
-      title,
-      description,
-    });
+  const addToast = (action, appointment, status, newAppointment = null) => {
+    setToasts((prevToasts) => [
+      ...prevToasts,
+      {
+        id: uniqueId(),
+        action,
+        appointment,
+        status,
+        newAppointment,
+      },
+    ]);
   };
 
-  const hideToast = () => {
-    setToastInfo((prevState) => ({ ...prevState, isOpen: false }));
+  const removeToast = (id) => {
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
   };
 
   return (
-    <Provider open={toastInfo.isOpen} onOpenChange={setToastInfo}>
-      <ToastContext.Provider value={{ toastInfo, showToast, hideToast }}>
+    <Provider duration={5000 * 60}>
+      <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
         {children}
       </ToastContext.Provider>
     </Provider>

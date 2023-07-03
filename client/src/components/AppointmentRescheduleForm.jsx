@@ -25,6 +25,9 @@ import { renderRescheduleTitle } from "../helpers/renderRescheduleTitle";
 function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   const { user, setUser } = useContext(UserContext);
   const { recurring } = appointment;
+
+  const status = !!appointment.rescheduled_by ? "reschedule" : appointment.status;
+
   const rescheduledBy =
     appointment.status === "confirmed" || !!appointment.rescheduled_by
       ? user.user_type.toLowerCase()
@@ -33,8 +36,6 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     user.user_type === "Client" ? appointment.therapist.name : appointment.client.name;
 
   const nonUserId = user.user_type === "Client" ? appointment.therapist.id : appointment.client.id;
-
-  function formatConfirmationTitle() {}
 
   const rescheduleAppointment = useRescheduleMutation(appointment, onCloseDialog);
 
@@ -149,7 +150,9 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                     : formatSingleDate(formData.start_time, formData.date)}
                 </AppointmentTime>
               </div>
-              <RescheduleStatus as="div">Reschedule</RescheduleStatus>
+              <RescheduleStatus as="div" status={status}>
+                {!!appointment.rescheduled_by ? "reschedule" : "pending"}
+              </RescheduleStatus>
             </NewAppointment>
             <ButtonWrapper>
               {sameAsInitialDate(formData, appointment) ? (
@@ -157,10 +160,14 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                   textContent={"Please choose a new day/start time to reschedule appointment"}
                   sideOffset={5}
                 >
-                  <SubmitButton disabled={true}>Submit</SubmitButton>
+                  <SubmitButton disabled={true} status={status}>
+                    Submit
+                  </SubmitButton>
                 </TooltipWrapper>
               ) : (
-                <SubmitButton type="submit">Submit</SubmitButton>
+                <SubmitButton type="submit" status={status}>
+                  Submit
+                </SubmitButton>
               )}
             </ButtonWrapper>
           </AppointmentWrapper>
@@ -180,11 +187,37 @@ const InputWrapper = styled.div`
 const SubmitButton = styled(VioletButton)`
   width: 100%;
   margin-left: 8px;
+  background-color: ${({ status }) =>
+    status === "confirmed" || status === "reschedule" ? "var(--violet4)" : "var(--amber4)"};
+  color: ${({ status }) =>
+    status === "confirmed" || status === "reschedule" ? "var(--violet11)" : "var(--amber11)"};
+
+  &:hover {
+    background-color: ${({ status }) =>
+      status === "confirmed" || status === "reschedule" ? "var(--violet5)" : "var(--amber5)"};
+  }
+  // &:focus {
+  //   box-shadow: 0 0 0 2px var(--violet7);
+  // }
+
   &:disabled {
-    background-color: var(--violet1);
-    color: var(--violet7);
+    background-color: ${({ status }) =>
+      status === "confirmed" || status === "reschedule" ? "var(--violet1)" : "var(--amber2)"};
+    color: ${({ status }) =>
+      status === "confirmed" || status === "reschedule" ? "var(--violet7)" : "var(--amber6)"};
   }
 `;
+
+// background-color: var(--violet4);
+// color: var(--violet11);
+
+// &:hover {
+//   background-color: var(--violet5);
+// }
+
+// &:focus {
+//   box-shadow: 0 0 0 2px var(--violet7);
+// }
 const AppointmentWrapper = styled.div`
   justify-self: center;
   width: fit-content;
@@ -230,9 +263,13 @@ const RescheduleStatus = styled(Button)`
   padding: 0 10px;
   line-height: 25px;
   height: 25px;
-  background-color: var(--violet2);
-  color: var(--violet11);
-  box-shadow: inset 0 0 0 1px var(--violet7);
+  background-color: ${({ status }) =>
+    status === "confirmed" || status === "reschedule" ? "var(--violet2)" : "var(--amber2)"};
+  color: ${({ status }) =>
+    status === "confirmed" || status === "reschedule" ? "var(--violet11)" : "var(--amber11)"};
+  box-shadow: inset 0 0 0 1px
+    ${({ status }) =>
+      status === "confirmed" || status == "reschedule" ? "var(--violet7)" : "var(--amber7)"};
 `;
 
 const Grid = styled.div`

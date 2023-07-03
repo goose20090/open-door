@@ -9,26 +9,14 @@ import RecurringAppointmentInfo from "./AppointmentCapsule/RecurringAppointmentI
 import { Form, SubmitButton, Confirmation } from "../assets/AppointmentCapsuleStyles";
 import SingleAppointmentInfo from "./AppointmentCapsule/SingleAppointmentInfo";
 import { UserContext } from "../context/user";
+import { useUpdateStatusMutation } from "../hooks/useUpdateStatusMutation";
+
 export default function AppointmentStatusUpdateForm({ appointment, action }) {
   const queryClient = useQueryClient();
   const { user } = useContext(UserContext);
+  const statusMutation = useUpdateStatusMutation(appointment, action);
 
   let statusUpdateObj;
-
-  if (action.toLowerCase() === "confirm") {
-    statusUpdateObj = {
-      status: "confirmed",
-      rescheduled_by: null,
-      rejected_by: null,
-    };
-  } else if (action.toLowerCase() === "reject") {
-    statusUpdateObj = {
-      status: "rejected",
-      rescheduled_by: null,
-      rejected_by: user.user_type.toLowerCase(),
-    };
-  }
-
   let updateType;
   if (!!appointment.rescheduled_by) {
     updateType = "reschedule request";
@@ -38,13 +26,7 @@ export default function AppointmentStatusUpdateForm({ appointment, action }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetchWithError(`api/appointments/${appointment.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(statusUpdateObj),
-    }).then(() => queryClient.invalidateQueries(["user"]));
+    statusMutation.mutate();
   }
   return (
     <Form onSubmit={handleSubmit}>
