@@ -3,11 +3,8 @@ class ClientSerializer < ActiveModel::Serializer
 
   has_many :appointments
 
+
   def user_type
     'Client'
-  end
-
-  def notifications
-    ActiveModel::SerializableResource.new(object.user.notifications.where.not(originator_id: object.user.id))
   end
 end

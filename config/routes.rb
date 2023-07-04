@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'me', to: "users#show"
   delete 'logout', to: "sessions#destroy"
 
+  patch '/notifications', to: 'notifications#mark_as_read'
 
   get '/mutual_availabilities/:client_id/:therapist_id/:recurring', to: 'mutual_availabilities#show'
 

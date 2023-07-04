@@ -7,7 +7,6 @@ import { formatRecurringTime } from "../helpers/formatRecurringTime";
 import { formatSingleDate } from "../helpers/formatSingleDate";
 
 export function useUpdateStatusMutation(appointment, action) {
-  debugger;
   const { user, setUser } = useContext(UserContext);
   const client = useQueryClient();
   const { addToast } = useToast();
@@ -17,7 +16,7 @@ export function useUpdateStatusMutation(appointment, action) {
   if (action.toLowerCase() === "confirm") {
     statusUpdateObj = {
       status: "confirmed",
-      rescheduled_by: null,
+      rescheduled_by: appointment.rescheduled_by,
       rejected_by: null,
     };
   } else if (action.toLowerCase() === "reject") {

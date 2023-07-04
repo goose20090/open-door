@@ -1,6 +1,5 @@
 class Notification < ApplicationRecord
     belongs_to :user
-    belongs_to :originator, class_name: 'User', foreign_key: 'originator_id'
 
     def self.create_notification(appointment, user_id, params)
         originator = User.includes(:userable).find_by(id: user_id)
@@ -12,23 +11,37 @@ class Notification < ApplicationRecord
 
         type = self.figure_out_notification_type(appointment, params)
 
-        notification = self.create!(
+            notification = self.create!(
             user_id: recipient.id,
-            originator_id: originator.id,
+            originator_name: originator.userable.name,
             notification_type: type,
-            recurring: appointment.recurring,
-            start_time: appointment.start_time,
-            date: appointment.date,
-            rescheduled_by: appointment.rescheduled_by,
-            rollback_start_time: appointment.rollback_start_time,
-            rollback_week_day: appointment.rollback_week_day,
-        )
+            read: false
+            )
+
+            
     end
 
     def self.figure_out_notification_type appointment, params
-        if appointment.status === 'pending' && params[:status] === 'confirmed'
+        if appointment.status === 'confirmed' && !!params[:rescheduled_by]
+            return 'reschedule_confirm'
+        end
+        if appointment.status === 'confirmed' && params[:status] === 'confirmed'
             return 'confirm'
         end
+
+        if appointment.status === 'rejected' && params[:status] === 'rejected'
+            return 'reject'
+        end
+
+        if appointment.status === 'pending' && !!params[:rescheduled_by]
+            return 'reschedule_request'
+        end
+
+        if appointment.status === 'confirmed' && params[:status] === 'rejected'
+            return 'reschedule_reject'
+        end
+
+
     end
     
 

@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-    before_action :pass_to_notification_model, only: [:update]
+    after_action :pass_to_notification_model, only: [:update]
 
     def create
         # Only clients can create appointments

@@ -4,8 +4,10 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { BellIcon } from "@radix-ui/react-icons";
 import { UserContext } from "../context/user";
 import LogoutButton from "./LogoutButton";
+import NotificationsPopup from "./NotificationsPopup";
 
 function NavBar() {
   const { user } = useContext(UserContext);
@@ -20,6 +22,7 @@ function NavBar() {
           <>
             <UserSpecificLinks user={user} />
             <p>Logged in as: {user.name}</p>
+            <NotificationsPopup />
             <LogoutButton />
           </>
         ) : (
