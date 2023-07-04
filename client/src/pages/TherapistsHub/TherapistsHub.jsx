@@ -15,36 +15,42 @@ function TherapistsHub() {
   if (isLoading) return <p>Loading...</p>;
   if (!user) return <Redirect to="/" />;
   return (
-    <TabsRoot orientation="vertical" defaultValue="tab2">
-      <HubGrid>
-        <OrientationRow>
-          <TabsList>
-            <TabsTrigger value="tab1">Appointment Requests</TabsTrigger>
-            <TabsTrigger value="tab2">Appointments</TabsTrigger>
-            <TabsTrigger value="tab3">Weekly Availability</TabsTrigger>
-            {/* <TabsTrigger value="tab4">Book a Holiday</TabsTrigger> */}
-          </TabsList>
-        </OrientationRow>
-        <Content>
-          <TabsContent value="tab1">
-            <AppointmentRequests />
-          </TabsContent>
-          <TabsContent value="tab2">
-            <TherapistAppointments />
-          </TabsContent>
-          <TabsContent value="tab3">
-            <TherapistWeeklyAv />
-          </TabsContent>
-          {/* <TabsContent value="tab4">
+    <Wrapper>
+      <TabsRoot orientation="vertical" defaultValue="tab2">
+        <HubGrid>
+          <OrientationRow>
+            <TabsList>
+              <TabsTrigger value="tab1">Appointment Requests</TabsTrigger>
+              <TabsTrigger value="tab2">Appointments</TabsTrigger>
+              <TabsTrigger value="tab3">Weekly Availability</TabsTrigger>
+              {/* <TabsTrigger value="tab4">Book a Holiday</TabsTrigger> */}
+            </TabsList>
+          </OrientationRow>
+          <Content>
+            <TabsContent value="tab1">
+              <AppointmentRequests />
+            </TabsContent>
+            <TabsContent value="tab2">
+              <TherapistAppointments />
+            </TabsContent>
+            <TabsContent value="tab3">
+              <TherapistWeeklyAv />
+            </TabsContent>
+            {/* <TabsContent value="tab4">
             <DateRangePickerComponent />
           </TabsContent> */}
-        </Content>
-      </HubGrid>
-    </TabsRoot>
+          </Content>
+        </HubGrid>
+      </TabsRoot>
+    </Wrapper>
   );
 }
 
 export default TherapistsHub;
+
+const Wrapper = styled.main`
+  height: 100%;
+`;
 
 const HubGrid = styled.div`
   --shadow-color: 176deg 27% 46%;
@@ -61,7 +67,8 @@ const HubGrid = styled.div`
   left: 10%;
   right: 10%;
   bottom: 10%;
-  /* height: 100%; */
+  /* height: 80%; */
+  margin-top: 5%;
   background-color: gray;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -89,8 +96,9 @@ const TabsContent = styled(Tabs.Content)`
 `;
 
 const TabsRoot = styled(Tabs.Root)`
-  height: 80%;
-  position: relative;
+  /* padding: 1px; */
+  /* height: 80%; */
+  /* position: relative; */
 `;
 
 const TabsTrigger = styled(Tabs.Trigger)`

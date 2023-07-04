@@ -25,7 +25,7 @@ export function ToastProvider({ children }) {
   };
 
   return (
-    <Provider duration={5000 * 60}>
+    <Provider duration={5000}>
       <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
         {children}
       </ToastContext.Provider>

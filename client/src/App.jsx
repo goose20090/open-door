@@ -12,6 +12,7 @@ import About from "./pages/About/About";
 import { useAuthQuery } from "./hooks/useAuthQuery";
 import TherapistsHub from "./pages/TherapistsHub/TherapistsHub";
 import * as Toast from "@radix-ui/react-toast";
+import Home from "./pages/Home/Home";
 
 function App() {
   useAuthQuery();
@@ -36,7 +37,7 @@ function App() {
           <TherapistsHub />
         </Route>
         <Route path="/">
-          <h1>Home</h1>
+          <Home />
         </Route>
       </Switch>
     </Wrapper>
@@ -45,7 +46,7 @@ function App() {
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-color: lightblue;
 `;
 
