@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { BellIcon } from "@radix-ui/react-icons";
 import * as Popover from "@radix-ui/react-popover";
@@ -13,34 +13,57 @@ import { useReadNotifcationsMutation } from "../hooks/useReadNotificationsMutati
 export default function NotificationsPopup() {
   const { user } = useContext(UserContext);
   const { notifications } = user;
+
+  const [initialOpen, setInitialOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [unread, setUnread] = useState(user.unread);
   const readNotifications = useReadNotifcationsMutation(user);
+
+  function handleChange() {
+    if (!initialOpen) {
+      setInitialOpen(true);
+      if (unread > 0) {
+        readNotifications.mutate();
+        setUnread(0);
+      }
+    }
+    setOpen(!open);
+  }
+
   return (
-    <Popover.Root onOpenChange={() => readNotifications.mutate()}>
+    <Popover.Root open={open} onOpenChange={handleChange}>
       <Popover.Trigger asChild>
         <div style={{ position: "relative" }}>
           <BellButton>
             <Bell />
           </BellButton>
-          {notifications ? (
+          {unread > 0 ? (
             <Count>
-              <Number>{notifications.length}</Number>
+              <Number>{unread}</Number>
             </Count>
           ) : null}
         </div>
       </Popover.Trigger>
       <Popover.Portal>
         <NotificationsPopupContent>
-          <Time>While you were away...</Time>
+          <Time>
+            {user.notifications.length > 0 ? "While you were away..." : "No new notifications"}
+          </Time>
           {notifications.map((not) => (
             <StyledNotification notification={not} key={key()} />
           ))}
 
-          <Popover.Arrow />
+          <PopoverArrow />
         </NotificationsPopupContent>
       </Popover.Portal>
     </Popover.Root>
   );
 }
+
+const PopoverArrow = styled(Popover.Arrow)`
+  fill: white;
+  /* border: 1px solid black; */
+`;
 
 const StyledNotification = styled(Notification)`
   &:first-of-type {
@@ -59,10 +82,21 @@ const BellButton = styled(RoundIconButton)`
 
 const Bell = styled(BellIcon)``;
 
-const NotificationsPopupContent = styled(PopoverContent)`
+const NotificationsPopupContent = styled(Popover.Content)`
   padding: 20px;
   width: 300px;
-  height: 400px;
+
+  border-radius: 6px;
+  padding: 10px;
+  padding-top: 15px;
+  width: fit-content;
+  background-color: white;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  /* will-change: transform, opacity; */
+
+  max-height: 400px;
   overflow: auto;
   > :nth-child(2) {
     border-top: none;

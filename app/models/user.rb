@@ -6,6 +6,9 @@ class User < ApplicationRecord
   
   after_create :create_default_schedule
 
+  def unread_notifications_count
+    self.notifications.where(read:false).count
+  end
   private
 
   def create_default_schedule
@@ -13,4 +16,5 @@ class User < ApplicationRecord
       self.build_schedule.save!
     end
   end
+
 end
