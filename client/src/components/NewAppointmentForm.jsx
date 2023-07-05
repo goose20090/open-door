@@ -21,9 +21,11 @@ import {
   DatePickerWrapper,
 } from "../assets/NewAppointmentStyles";
 import { useCreateAppointmentMutation } from "../hooks/useCreateAppointmentMutation";
+import ErrorList from "./ErrorList";
 
 export default function NewAppointmentForm({ onCloseDialog }) {
   const { isLoading: therapistsLoading, data: therapists, isError } = useTherapists();
+  let errors;
   const initialDate = getNextWorkingDay();
   const createApppointment = useCreateAppointmentMutation(onCloseDialog);
 
@@ -65,7 +67,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
   );
 
   if (createApppointment.isError) {
-    console.log(createApppointment);
+    errors = createApppointment.error;
   }
 
   return (
@@ -140,13 +142,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
                   />
                 </label>
               </fieldset>
-              {createApppointment.isError ? (
-                <ul>
-                  {createApppointment.error.map((error) => (
-                    <ErrorMessage>{error}</ErrorMessage>
-                  ))}
-                </ul>
-              ) : null}
+              {createApppointment.isError ? <ErrorList errors={errors} /> : null}
               <GreenButton>Request Appointment</GreenButton>
             </>
           ) : (
@@ -157,18 +153,6 @@ export default function NewAppointmentForm({ onCloseDialog }) {
     </FormGrid>
   );
 }
-
-const ErrorMessage = styled.li`
-  color: red;
-  padding: 8px 0;
-  font-style: italic;
-  list-style-type: none;
-  text-align: end;
-
-  &:first-of-type {
-    padding-top: 0;
-  }
-`;
 
 const FormGrid = styled.form`
   display: grid;

@@ -9,6 +9,11 @@ class Appointment < ApplicationRecord
     validate :not_past_date_validation, unless: :recurring
     validate :not_today_validation, unless: :recurring
     validate :working_day_validation, unless: :recurring
+    # validate :always_fail
+
+    # def always_fail
+    #     errors.add(:base, "This is a custom error for testing purposes.")
+    # end
   
     def not_past_date_validation
       errors.add(:date, "must be in the future") if date.present? && date < Date.current

@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchWithError from "../helpers/fetchWithError";
 import { useContext } from "react";
 import { UserContext } from "../context/user";
-import { useToast } from "./useToast";
 
 export function useLoginMutation(formData) {
   const queryClient = useQueryClient();
+  const { setUser } = useContext(UserContext);
 
   function attemptLogin(formData) {
     return fetchWithError("api/login", {
@@ -22,7 +22,6 @@ export function useLoginMutation(formData) {
       queryClient.setQueryData(["user", "authorisation"], () => r);
       setUser(r);
     },
-    onError: (r) => console.log(r),
   });
 
   return loginMutation;

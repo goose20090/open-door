@@ -6,9 +6,10 @@ import { useToast } from "./useToast";
 
 export function useSignUpMutation(formData) {
   const queryClient = useQueryClient();
+  const { setUser } = useContext(UserContext);
 
-  function attemptLogin(formData) {
-    return fetchWithError("api/login", {
+  function attemptSignup() {
+    return fetchWithError("api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,7 +18,7 @@ export function useSignUpMutation(formData) {
     });
   }
 
-  const loginMutation = useMutation(attemptLogin, {
+  const signUpMutation = useMutation(attemptSignup, {
     onSuccess: (r) => {
       queryClient.setQueryData(["user", "authorisation"], () => r);
       setUser(r);
@@ -25,5 +26,5 @@ export function useSignUpMutation(formData) {
     onError: (r) => console.log(r),
   });
 
-  return loginMutation;
+  return signUpMutation;
 }

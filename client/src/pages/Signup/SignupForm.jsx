@@ -4,30 +4,26 @@ import React, { useState, useContext } from "react";
 import * as Form from "@radix-ui/react-form";
 import styled from "styled-components";
 import { UserContext } from "../../context/user";
+import { useSignUpMutation } from "../../hooks/useSignUpMutation";
+import ErrorList from "../../components/ErrorList";
 
 export default function SignupForm() {
   const { setUser } = useContext(UserContext);
+  let errors;
 
   const [formData, setFormData] = useState({
     email: "",
     name: "",
     password: "",
-    passwordConfirmation: "",
+    password_confirmation: "",
   });
 
-  function attemptSignup(formData) {
-    return fetch("api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((r) => r.json())
-      .then((r) => {
-        console.log(r);
-        setUser(r);
-      });
+  const signupMutation = useSignUpMutation(formData);
+
+  const { isError } = signupMutation;
+
+  if (isError) {
+    errors = signupMutation.error;
   }
 
   function handleChange(e) {
@@ -40,7 +36,7 @@ export default function SignupForm() {
     <RadixForm
       onSubmit={(e) => {
         e.preventDefault();
-        attemptSignup(formData);
+        signupMutation.mutate();
       }}
     >
       <InputWrapper>
@@ -58,11 +54,12 @@ export default function SignupForm() {
       <InputWrapper>
         <InputLabel>Password Confirmation</InputLabel>
         <Input
-          name={"passwordConfirmation"}
-          value={formData.passwordConfirmation}
+          name={"password_confirmation"}
+          value={formData.password_confirmation}
           onChange={handleChange}
         />
       </InputWrapper>
+      {isError ? <ErrorList errors={errors} /> : null}
       <SubmitButton>Submit</SubmitButton>
     </RadixForm>
   );

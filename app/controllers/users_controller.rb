@@ -13,4 +13,6 @@ def show
       render json: {error: "Not authorised"}, status: :unauthorized
     end
   end
+
 end
+
