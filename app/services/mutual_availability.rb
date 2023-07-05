@@ -16,11 +16,9 @@ class MutualAvailability
     target_day = recurring ? weekday : date.wday
     schedule = therapist.schedule.availability.presence || therapist.schedule.default
     booked_slots = merge_booked_slots(get_booked_slots(therapist), get_booked_slots(client))
-
     if needs_filtering?
       booked_slots = filter_reschedule_time(booked_slots)
     end
-
     available_hours = filter_by_availability(schedule, booked_slots, target_day)
   end
 
