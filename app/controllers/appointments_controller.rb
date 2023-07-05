@@ -1,4 +1,6 @@
 class AppointmentsController < ApplicationController
+    rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
+    rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
     after_action :pass_to_notification_model, only: [:update]
 
     def create
@@ -35,7 +37,7 @@ class AppointmentsController < ApplicationController
     def update
         appointment = Appointment.find_by(id: params[:id])
         if appointment[:status] == 'pending' && params[:status] == 'rejected' && appointment[:rescheduled_by].present? || params[:rollback]
-            appointment.update(
+            appointment.update!(
                 status: 'confirmed',
                 start_time: appointment[:rollback_start_time],
                 date: appointment[:rollback_date],
@@ -76,6 +78,14 @@ class AppointmentsController < ApplicationController
         else
             params.require(:appointment).permit(:start_time, :date, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day, :rollback)
         end
+    end
+
+    def render_not_found_response 
+        render json: {errors: 'Appointment not found'}, status: :not_found
+    end
+
+    def render_unprocessable_entity invalid
+        render json: {errors: invalid.record.errors.full_messages}, status: :not_found
     end
 
     def find_appointment

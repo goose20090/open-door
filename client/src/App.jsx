@@ -20,7 +20,7 @@ function App() {
     <Wrapper>
       <GlobalStyles />
       <NavBar />
-      <Switch>
+      <StyledSwitch>
         <Route path="/about">
           <About />
         </Route>
@@ -39,7 +39,7 @@ function App() {
         <Route path="/">
           <Home />
         </Route>
-      </Switch>
+      </StyledSwitch>
     </Wrapper>
   );
 }
@@ -50,4 +50,7 @@ const Wrapper = styled.div`
   background-color: lightblue;
 `;
 
+const StyledSwitch = styled(Switch)`
+  height: 100%;
+`;
 export default App;

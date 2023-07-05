@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/user";
 import { useToast } from "./useToast";
 
-export function useLoginMutation(formData) {
+export function useSignUpMutation(formData) {
   const queryClient = useQueryClient();
 
   function attemptLogin(formData) {

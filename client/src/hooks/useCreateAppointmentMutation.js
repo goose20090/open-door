@@ -6,7 +6,7 @@ import { useToast } from "./useToast";
 import { formatRecurringTime } from "../helpers/formatRecurringTime";
 import { formatSingleDate } from "../helpers/formatSingleDate";
 
-export function useCreateAppointment(onCloseDialog) {
+export function useCreateAppointmentMutation(onCloseDialog) {
   const { user, setUser } = useContext(UserContext);
   const client = useQueryClient();
   const { addToast } = useToast();
@@ -22,7 +22,6 @@ export function useCreateAppointment(onCloseDialog) {
 
   return useMutation(createAppointment, {
     onSuccess: (newAppointment) => {
-      console.log(newAppointment);
       const formattedDate = newAppointment.recurring
         ? formatRecurringTime(newAppointment.start_time, newAppointment.week_day)
         : formatSingleDate(newAppointment.start_time, newAppointment.date);

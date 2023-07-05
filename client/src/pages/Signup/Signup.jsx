@@ -1,15 +1,15 @@
 /** @format */
 
 import React from "react";
-import FormWrapper from "../../components/FormWrapper";
 import SignupForm from "./SignupForm";
+import { AuthWrapper } from "../Login/Login";
 
 function Signup() {
   return (
-    <FormWrapper>
+    <AuthWrapper>
       <h2>Signup Page</h2>
       <SignupForm />
-    </FormWrapper>
+    </AuthWrapper>
   );
 }
 
