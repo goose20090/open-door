@@ -17,12 +17,12 @@ export function ToastWrapper() {
     delete: "Appointment Deleted",
     reject: "Appointment Rejected",
     confirm: "Appointment Confirmed",
+    rollback: "Reschedule Request Cancelled",
     error: "Error",
   };
 
   function renderTitle(toast) {
     const { action, appointment } = toast;
-
     if (action === "notificationConfirm") {
       return `${appointment.therapist.name} confirmed your appointment request`;
     }
@@ -51,7 +51,12 @@ export function ToastWrapper() {
     const newDetails = newAppointment ? formatDetails(newAppointment) : null;
     const fullDetails = `${details}, with ${otherPartyName}`;
 
-    if (action === "create" || action === "confirm" || action === "reject") {
+    if (
+      action === "create" ||
+      action === "confirm" ||
+      action === "reject" ||
+      action === "rollback"
+    ) {
       return fullDetails;
     }
     if (action === "alter" || action === "reschedule") {

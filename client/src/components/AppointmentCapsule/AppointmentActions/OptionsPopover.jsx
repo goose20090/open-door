@@ -6,17 +6,13 @@ import {
 } from "../../../assets/AppointmentCapsuleStyles";
 import { PopoverWrapper } from "../../RadixWrappers/PopoverWrapper";
 import DialogWrapper from "../../RadixWrappers/DialogWrapper";
-import fetchWithError from "../../../helpers/fetchWithError";
 import { useDialog } from "../../../hooks/useDialog";
 import AppointmenRescheduleForm from "../../AppointmentRescheduleForm";
-import { useMutation } from "@tanstack/react-query";
-import { useDeleteAppointmentMutation } from "../../../hooks/useDeleteAppointmentMutation";
-import { useRollbackMutation } from "../../../hooks/useRollbackMutation";
+import AlertWrapper from "../../RadixWrappers/AlertWrapper";
 
 export default function OptionsPopover({ appointment }) {
-  const deleteAppointment = useDeleteAppointmentMutation(appointment);
-  const rollbackAppointment = useRollbackMutation(appointment);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   function renderDeleteButtonText() {
@@ -27,7 +23,7 @@ export default function OptionsPopover({ appointment }) {
       return "Cancel Request";
     }
     if (appointment.status === "confirmed") {
-      return "Cancel Appointment";
+      return "Delete Appointment";
     }
   }
 
@@ -46,14 +42,7 @@ export default function OptionsPopover({ appointment }) {
     <div style={{ minWidth: "64px", display: "flex", justifyContent: "right" }}>
       <PopoverWrapper open={popoverOpen} setOpen={setPopoverOpen}>
         <ButtonsWrapper>
-          <DeleteButton
-            id="cancel-button"
-            onClick={() =>
-              !!appointment.rescheduled_by
-                ? rollbackAppointment.mutate(appointment)
-                : deleteAppointment.mutate(appointment)
-            }
-          >
+          <DeleteButton id="cancel-button" onClick={() => setAlertOpen(true)}>
             {renderDeleteButtonText()}
           </DeleteButton>
 
@@ -72,6 +61,7 @@ export default function OptionsPopover({ appointment }) {
           onCloseDialog={() => setDialogOpen(false)}
         />
       </DialogWrapper>
+      <AlertWrapper open={alertOpen} setOpen={setAlertOpen} appointment={appointment} />
     </div>
   );
 }

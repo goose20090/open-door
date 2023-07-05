@@ -2,9 +2,11 @@ import { useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "../context/user";
 import fetchWithError from "../helpers/fetchWithError";
+import { ToastContext } from "../context/toast";
 
 export function useRollbackMutation(appointment) {
   const { user, setUser } = useContext(UserContext);
+  const { addToast } = useContext(ToastContext);
   const client = useQueryClient();
 
   async function patchAppointment(formData) {
@@ -26,6 +28,7 @@ export function useRollbackMutation(appointment) {
 
       setUser(updatedUser);
       client.setQueryData(["user", "authorisation"], updatedUser);
+      addToast("rollback", res, res.status);
     },
   });
 
