@@ -13,6 +13,7 @@ import { useAuthQuery } from "./hooks/useAuthQuery";
 import TherapistsHub from "./pages/TherapistsHub/TherapistsHub";
 import * as Toast from "@radix-ui/react-toast";
 import Home from "./pages/Home/Home";
+import wave from "./assets/wave-haikei.svg";
 
 function App() {
   useAuthQuery();
@@ -47,7 +48,11 @@ function App() {
 const Wrapper = styled.div`
   width: 100%;
   min-height: 100%;
-  background-color: lightblue;
+  background-color: white;
+  background-image: url(${wave});
+  background-repeat: no-repeat;
+  /* background-size: cover; // or "contain" depending on your needs */
+  /* background-position: center; // optional, to center the background image */
 `;
 
 const StyledSwitch = styled(Switch)`

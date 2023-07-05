@@ -52,7 +52,7 @@ function UserSpecificLinks({ user }) {
   }
 }
 const Wrapper = styled.header`
-  background-color: white;
+  /* background-color: white; */
   overflow: hidden;
   justify-content: space-between;
   padding: 6px;
