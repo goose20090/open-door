@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
         render json: therapist, include: ['appointments', 'appointments.client', 'user.notifications'], status: :created
       end
     else
-      render json: {error: "Invalid username or password"}, status: :unauthorized
+      render json: {errors: ["Invalid username or password"]}, status: :unauthorized
     end
   end
 

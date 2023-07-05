@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import ErrorList from "../../../components/Errors/ErrorList";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { GreenButton } from "../../../assets/Buttons";
@@ -6,18 +7,29 @@ import { UserContext } from "../../../context/user";
 import { useScheduleQuery } from "../../../hooks/useScheduleQuery";
 import fetchWithError from "../../../helpers/fetchWithError";
 import { Title } from "../../../assets/AppointmentCapsuleStyles";
+import { useScheduleMutation } from "../../../hooks/useScheduleMutation";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "../../../components/Errors/ErrorFallback";
 
 export function TherapistWeeklyAv() {
+  const { user } = useContext(UserContext);
+  const {
+    data: fetchedSchedule,
+    isLoading,
+    isSuccess,
+    isError: isQueryError,
+  } = useScheduleQuery(user.id);
+
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const hours = [9, 10, 11, 12, 13, 14, 15, 16];
-  const { user } = useContext(UserContext);
-  const { data: fetchedSchedule, isLoading, isSuccess } = useScheduleQuery(user.id);
 
   const initialSchedule = Object.fromEntries(
     days.map((day) => [day.toLowerCase(), hours.map((hour) => ({ [hour]: true }))])
   );
 
   const [schedule, setSchedule] = useState(initialSchedule);
+  const updateSchedule = useScheduleMutation(schedule, user);
+
   useEffect(() => {
     if (isSuccess) {
       setSchedule(fetchedSchedule);
@@ -34,16 +46,13 @@ export function TherapistWeeklyAv() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetchWithError(`/api/therapists/${user.id}/schedule`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ new_schedule: schedule }),
-    }).then((r) => console.log(r));
+    updateSchedule.mutate();
   };
   return (
     <ScheduleForm onSubmit={handleSubmit}>
+      {isQueryError ? (
+        <ErrorList errors={["Error: schedule request failed, please try again."]} />
+      ) : null}
       <TableWrapper>
         <p>
           Please uncheck boxes where you are <i>not</i> available:
@@ -87,6 +96,7 @@ export function TherapistWeeklyAv() {
         </ScheduleTable>
         <SubmitButton type="submit">Submit</SubmitButton>
       </TableWrapper>
+      {/* </ErrorBoundary> */}
     </ScheduleForm>
   );
 }

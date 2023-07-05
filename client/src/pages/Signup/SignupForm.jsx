@@ -5,7 +5,7 @@ import * as Form from "@radix-ui/react-form";
 import styled from "styled-components";
 import { UserContext } from "../../context/user";
 import { useSignUpMutation } from "../../hooks/useSignUpMutation";
-import ErrorList from "../../components/ErrorList";
+import ErrorList from "../../components/Errors/ErrorList";
 
 export default function SignupForm() {
   const { setUser } = useContext(UserContext);

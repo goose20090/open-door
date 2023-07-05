@@ -17,6 +17,7 @@ export function ToastWrapper() {
     delete: "Appointment Deleted",
     reject: "Appointment Rejected",
     confirm: "Appointment Confirmed",
+    error: "Error",
   };
 
   function renderTitle(toast) {
@@ -39,6 +40,10 @@ export function ToastWrapper() {
 
   function renderDescription(toast) {
     const { appointment, newAppointment, action } = toast;
+
+    if (action === "error") {
+      return "There was an error and this action did not complete. Please try again";
+    }
 
     const otherPartyName =
       user.user_type === "Client" ? appointment.therapist.name : appointment.client.name;

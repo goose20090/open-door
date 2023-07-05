@@ -7,7 +7,7 @@ import fetchWithError from "../helpers/fetchWithError";
 import { AppointmentRadios } from "./AppointmentRadios";
 import { handleRadioChange } from "../helpers/handleRadioChange";
 import { GreenButton } from "../assets/Buttons";
-import { ScheduleQueryError } from "./Errors/ScheduleQueryError";
+import { ErrorFallback } from "./Errors/ErrorFallback";
 
 function BookingSubmitter({
   therapistSelected,

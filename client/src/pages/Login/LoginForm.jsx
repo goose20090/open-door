@@ -5,6 +5,7 @@ import * as Form from "@radix-ui/react-form";
 import styled from "styled-components";
 import { useLoginMutation } from "../../hooks/useLoginMutation";
 import fetchWithError from "../../helpers/fetchWithError";
+import ErrorList from "../../components/Errors/ErrorList";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -17,10 +18,14 @@ export default function LoginForm() {
       [e.target.name]: e.target.value,
     });
   }
+
+  if (isError) {
+    console.log(loginMutation);
+  }
   return (
     <>
       {loginMutation.isLoading ? <p>Loading...</p> : null}
-      {loginMutation.isError ? <p>{loginMutation.error.message}</p> : null}
+      {loginMutation.isError ? <ErrorList errors={loginMutation.error} /> : null}
       <RadixForm
         onSubmit={(e) => {
           e.preventDefault();

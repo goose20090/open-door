@@ -26,12 +26,6 @@ export function AppointmentRadios({
     isFetching,
   } = useMutualAvailabilitiesQuery(currentTherapistId, selectedDate, formData.recurring);
 
-  // let availableHours;
-
-  // // if (isSuccess) {
-  // //   availableHours = getAvailableHours(schedule, formData.week_day);
-  // // }
-
   return isLoading ? (
     <p>Loading...</p>
   ) : (

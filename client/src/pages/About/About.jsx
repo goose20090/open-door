@@ -3,12 +3,15 @@ import styled from "styled-components";
 import { useTherapists } from "../../hooks/useTherapists";
 import { v4 as key } from "uuid";
 import { ReactComponent as Profile1 } from "../../assets/undraw_profile_pic_re_iwgo.svg";
+import ErrorList from "../../components/Errors/ErrorList";
 
 export default function About() {
-  const { data: therapists, isSuccess, isLoading } = useTherapists();
+  const { data: therapists, isSuccess, isLoading, isError } = useTherapists();
 
-  if (isSuccess) {
-    console.log(therapists);
+  if (isError) {
+    return (
+      <ErrorList errors={["There's been an error, please refresh or try again at another time"]} />
+    );
   }
   return (
     <Wrapper>

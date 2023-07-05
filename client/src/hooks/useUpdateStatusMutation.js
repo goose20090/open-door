@@ -52,6 +52,9 @@ export function useUpdateStatusMutation(appointment, action) {
         addToast("reject", res, res.status);
       }
     },
+    onError: () => {
+      addToast("error");
+    },
   });
 
   return rescheduleAppointment;

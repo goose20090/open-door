@@ -6,7 +6,6 @@ import { Confirmation, Label, Data, Title, Time } from "../assets/AppointmentCap
 import { GreenButton, Button, VioletButton } from "../assets/Buttons";
 import { getNextAppointmentDate } from "../helpers/getNextAppointmentDate";
 import DatePickerComponent from "./DatePickerComponent";
-import { WEEKDAYS } from "../data/constants";
 import { integerToWeekday } from "../helpers/integarToWeekday";
 import RecurringAppointmentInfo from "./AppointmentCapsule/RecurringAppointmentInfo";
 import { getNextWorkingDay } from "../helpers/getNextWorkingDay";
@@ -25,6 +24,8 @@ import { renderRescheduleTitle } from "../helpers/renderRescheduleTitle";
 function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   const { user, setUser } = useContext(UserContext);
   const { recurring } = appointment;
+  const rescheduleAppointment = useRescheduleMutation(appointment, onCloseDialog);
+  const { isError } = rescheduleAppointment;
 
   const status = !!appointment.rescheduled_by ? "reschedule" : appointment.status;
 
@@ -36,8 +37,6 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     user.user_type === "Client" ? appointment.therapist.name : appointment.client.name;
 
   const nonUserId = user.user_type === "Client" ? appointment.therapist.id : appointment.client.id;
-
-  const rescheduleAppointment = useRescheduleMutation(appointment, onCloseDialog);
 
   const [formData, setFormData] = useState({
     date: appointment.date,
@@ -53,7 +52,6 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   });
 
   function handleSubmit(e) {
-    console.log("hello");
     e.preventDefault();
     rescheduleAppointment.mutate(formData);
   }
@@ -155,6 +153,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
               </RescheduleStatus>
             </NewAppointment>
             <ButtonWrapper>
+              {isError ? <ErrorList errors={rescheduleAppointment.error} /> : null}
               {sameAsInitialDate(formData, appointment) ? (
                 <TooltipWrapper
                   textContent={"Please choose a new day/start time to reschedule appointment"}

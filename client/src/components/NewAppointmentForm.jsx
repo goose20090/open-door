@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ErrorBoundary } from "react-error-boundary";
 import { useState, useEffect } from "react";
 import { useTherapists } from "../hooks/useTherapists";
+import { ErrorBoundary } from "react-error-boundary";
 import { handleRadioChange } from "../helpers/handleRadioChange";
 import { getNextWorkingDay } from "../helpers/getNextWorkingDay";
 import { StyledUpdateIcon } from "../assets/NewAppointmentStyles";
 import { GreenButton } from "../assets/Buttons";
-import { ScheduleQueryError } from "./Errors/ScheduleQueryError";
+import { ErrorFallback } from "./Errors/ErrorFallback";
 import { useMutualAvailabilitiesQuery } from "../hooks/useMutualAvailabilitiesQuery";
 import fetchWithError from "../helpers/fetchWithError";
 import DatePickerComponent from "./DatePickerComponent";
@@ -21,13 +21,16 @@ import {
   DatePickerWrapper,
 } from "../assets/NewAppointmentStyles";
 import { useCreateAppointmentMutation } from "../hooks/useCreateAppointmentMutation";
-import ErrorList from "./ErrorList";
+import ErrorList from "./Errors/ErrorList";
 
 export default function NewAppointmentForm({ onCloseDialog }) {
   const { isLoading: therapistsLoading, data: therapists, isError } = useTherapists();
-  let errors;
   const initialDate = getNextWorkingDay();
   const createApppointment = useCreateAppointmentMutation(onCloseDialog);
+  let errors;
+  if (createApppointment.isError) {
+    errors = createApppointment.error;
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -66,8 +69,8 @@ export default function NewAppointmentForm({ onCloseDialog }) {
     formData.recurring
   );
 
-  if (createApppointment.isError) {
-    errors = createApppointment.error;
+  if (isSuccess && !formData.start_time) {
+    setFormData({ ...formData, start_time: timeSlots[0] });
   }
 
   return (
@@ -95,7 +98,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
         />
       </InitialInputWrapper>
       <TimeAndSubmitInputWrapper>
-        <ErrorBoundary FallbackComponent={ScheduleQueryError}>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
           {formData.therapist_id && isSuccess ? (
             <>
               <fieldset>
@@ -108,6 +111,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
                       name={`start_time`}
                       type="radio"
                       value={time}
+                      checked={formData.start_time === time}
                       onChange={(e) => handleRadioChange(e, setFormData, formData)}
                     />
                   </div>

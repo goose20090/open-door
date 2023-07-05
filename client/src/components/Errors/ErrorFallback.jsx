@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Button } from "../../assets/Buttons";
 
-export function ScheduleQueryError({ error, resetErrorBoundary }) {
+export function ErrorFallback({ error, resetErrorBoundary }) {
   return (
     <ErrorWrapper>
       <heading>

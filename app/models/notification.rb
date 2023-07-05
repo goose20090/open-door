@@ -17,8 +17,6 @@ class Notification < ApplicationRecord
             notification_type: type,
             read: false
             )
-
-            
     end
 
     def self.figure_out_notification_type appointment, params
