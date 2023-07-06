@@ -1,4 +1,4 @@
-class NotificationsController < ApplicationController
+class Api::NotificationsController < ApplicationController
     before_action :authorize
 
     def mark_as_read
@@ -11,3 +11,4 @@ class NotificationsController < ApplicationController
         return render json: {error: "Not authorised"}, status: :unauthorized unless session.include? :user_id
     end
 end
+

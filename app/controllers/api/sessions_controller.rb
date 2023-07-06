@@ -1,4 +1,5 @@
-class SessionsController < ApplicationController
+class Api::SessionsController < ApplicationController
+  before_action :authorize, only: [:destroy]
   def create
     user = User.includes(:userable, :notifications).find_by(email: params[:email])
     if user&.authenticate(params[:password])
@@ -17,7 +18,6 @@ class SessionsController < ApplicationController
   end
 
     def destroy
-      authorize
       current_user.notifications.where(read: true).destroy_all
       session.delete :user_id 
       head :no_content
@@ -28,3 +28,4 @@ class SessionsController < ApplicationController
       return render json: {error: "Not authorised"}, status: :unauthorized unless session.include? :user_id
     end 
 end
+

@@ -1,4 +1,4 @@
-class MutualAvailabilitiesController < ApplicationController
+class Api::MutualAvailabilitiesController < ApplicationController
   def show
     # debugger
     client = User.find_by(userable_type: "Client", userable_id: params[:client_id]).userable

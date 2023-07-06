@@ -1,26 +1,27 @@
 Rails.application.routes.draw do
-  # get '/:user_type_key/:id/schedule', to: 'schedules#show'
 
-  resources :appointments
-  resources :therapists
-  resources :clients
-
-
-  post 'login', to: "sessions#create"
-  post 'signup', to: "clients#create"
-
-  get 'me', to: "users#show"
-  delete 'logout', to: "sessions#destroy"
-
-  patch '/notifications', to: 'notifications#mark_as_read'
-
-  get '/mutual_availabilities/:client_id/:therapist_id/:recurring', to: 'mutual_availabilities#show'
+  namespace :api do
+    resources :appointments
+    resources :therapists
+    resources :clients
 
 
-  patch '/therapists/:therapist_id/schedule', to: 'schedules#update'
-  get '/therapists/:therapist_id/schedule/', to: 'schedules#show'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+    post 'login', to: "sessions#create"
+    post 'signup', to: "clients#create"
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+    get 'me', to: "users#show"
+    delete 'logout', to: "sessions#destroy"
+
+    patch '/notifications', to: 'notifications#mark_as_read'
+
+    get '/mutual_availabilities/:client_id/:therapist_id/:recurring', to: 'mutual_availabilities#show'
+
+
+    patch '/therapists/:therapist_id/schedule', to: 'schedules#update'
+    get '/therapists/:therapist_id/schedule/', to: 'schedules#show'
+  end
+
+
+  get '*path', to: 'fallback#index', constraints: -> (req) {!req.xhr? && req.format.html?}
+
 end

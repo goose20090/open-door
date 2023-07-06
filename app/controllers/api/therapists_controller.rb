@@ -1,4 +1,4 @@
-class TherapistsController < ApplicationController
+class Api::TherapistsController < ApplicationController
 
     def index
         therapists = Therapist.all

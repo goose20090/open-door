@@ -1,4 +1,4 @@
-class AppointmentsController < ApplicationController
+class Api::AppointmentsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
     before_action :authorize
@@ -91,3 +91,4 @@ class AppointmentsController < ApplicationController
         return render json: {errors: ["Not authorised"]}, status: :unauthorized unless session.include? :user_id
     end
 end
+

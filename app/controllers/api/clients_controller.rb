@@ -1,4 +1,4 @@
-class ClientsController < ApplicationController
+class Api::ClientsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
     def show
@@ -45,4 +45,3 @@ end
 def render_unprocessable_entity invalid
   render json: {errors: invalid.record.errors.full_messages}, status: :not_found
 end
-

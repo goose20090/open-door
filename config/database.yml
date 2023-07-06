@@ -81,6 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: open_door_production
-  username: open_door
-  password: <%= ENV["OPEN_DOOR_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL']%>

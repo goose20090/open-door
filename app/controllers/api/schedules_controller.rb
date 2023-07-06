@@ -1,4 +1,4 @@
-class SchedulesController < ApplicationController
+class Api::SchedulesController < ApplicationController
   before_action :authorize
   def show
     schedule = current_user.schedule
