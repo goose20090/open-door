@@ -21,6 +21,7 @@ import {
 } from "../assets/NewAppointmentStyles";
 import { useCreateAppointmentMutation } from "../hooks/useCreateAppointmentMutation";
 import ErrorList from "./Errors/ErrorList";
+import PlaceholderRadio from "./PlaceholderRadio";
 
 export default function NewAppointmentForm({ onCloseDialog }) {
   const { isLoading: therapistsLoading, data: therapists, isError } = useTherapists();
@@ -61,7 +62,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
   const {
     data: timeSlots,
     isSuccess,
-    isFetching,
+    isFetching: availabilityFetching,
     isLoading: availabilityLoading,
   } = useMutualAvailabilitiesQuery(
     formData.therapist_id,
@@ -75,7 +76,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
 
   return (
     <FormGrid onSubmit={handleSubmit}>
-      {isFetching && createApppointment.isLoading ? <StyledUpdateIcon /> : null}
+      {availabilityFetching || createApppointment.isLoading ? <StyledUpdateIcon /> : null}
       <NewAppointmentTitle>Book a New Appointment</NewAppointmentTitle>
       <SelectWrapper>
         <select placeholder="thearapists" onChange={(e) => handleTherapistChange(e)}>
@@ -105,55 +106,23 @@ export default function NewAppointmentForm({ onCloseDialog }) {
               <legend>Select a time for your appointment:</legend>
               {timeSlots.map((time) => (
                 <TimeRadio key={time}>
-                  <label htmlFor={time}>{time}:00</label>
-                  <input
-                    id={time}
-                    name={`start_time`}
-                    type="radio"
-                    value={time}
-                    checked={formData.start_time === time}
-                    onChange={(e) => handleRadioChange(e, setFormData, formData)}
-                  />
+                  <label htmlFor={time}>
+                    <input
+                      id={time}
+                      name={`start_time`}
+                      type="radio"
+                      value={time}
+                      checked={formData.start_time === time}
+                      onChange={(e) => handleRadioChange(e, setFormData, formData)}
+                    />
+                    {time}:00
+                  </label>
                 </TimeRadio>
               ))}
             </fieldset>
           </>
         ) : (
-          <fieldset>
-            <legend>Select a time for your appointment</legend>
-            <TimeRadio>
-              <label>9:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-            <TimeRadio>
-              <label>10:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-            <TimeRadio>
-              <label>11:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-            <TimeRadio>
-              <label>12:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-            <TimeRadio>
-              <label>13:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-            <TimeRadio>
-              <label>14:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-            <TimeRadio>
-              <label>15:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-            <TimeRadio>
-              <label>16:00</label>
-              <input type="radio" disabled></input>
-            </TimeRadio>
-          </fieldset>
+          <PlaceholderRadio />
         )}
       </TimeWrapper>
       <TypeWrapper>
@@ -199,7 +168,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
   );
 }
 
-const TimeRadio = styled.div`
+export const TimeRadio = styled.div`
   display: flex;
 `;
 const TypeWrapper = styled.div`
@@ -230,8 +199,11 @@ const TimeWrapper = styled.div`
   font-size: 0.9rem;
   line-height: 1.3;
   label {
+    display: flex;
+    justify-content: space-between;
     font-size: 0.95rem;
-    min-width: 75px;
+    width: 80px;
+    margin-left: 5%;
   }
   fieldset {
     border-radius: 8px;

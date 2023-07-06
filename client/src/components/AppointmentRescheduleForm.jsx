@@ -12,7 +12,7 @@ import { getNextWorkingDay } from "../helpers/getNextWorkingDay";
 import { handleRadioChange } from "../helpers/handleRadioChange";
 import fetchWithError from "../helpers/fetchWithError";
 import NewAppointmentCapsule from "./AppointmentCapsule/AppointmentCapsule";
-import { Wrapper } from "../assets/NewAppointmentStyles";
+import { StyledUpdateIcon, Wrapper } from "../assets/NewAppointmentStyles";
 import { formatRecurringTime } from "../helpers/formatRecurringTime";
 import TooltipWrapper from "./RadixWrappers/TooltipWrapper";
 import { formatSingleDate } from "../helpers/formatSingleDate";
@@ -20,6 +20,8 @@ import { sameAsInitialDate } from "../helpers/sameAsInitialDate";
 import PlaceHolderSelect from "./PlaceHolderSelect";
 import { useRescheduleMutation } from "../hooks/useRescheduleMutation";
 import { renderRescheduleTitle } from "../helpers/renderRescheduleTitle";
+import PlaceholderRadio from "./PlaceholderRadio";
+import ErrorList from "./Errors/ErrorList";
 
 function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   const { user, setUser } = useContext(UserContext);
@@ -66,6 +68,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     data: timeSlots,
     isSuccess,
     isLoading,
+    isFetching: availabilityFetching,
   } = useMutualAvailabilitiesQuery(
     nonUserId,
     weekDayOrDateQueryKey,
@@ -75,11 +78,14 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Confirmation>{renderRescheduleTitle(user, appointment, requestRecipient)}</Confirmation>
+      {availabilityFetching || rescheduleAppointment.isLoading ? <StyledUpdateIcon /> : null}
+      <RescheduleTitle>
+        {renderRescheduleTitle(user, appointment, requestRecipient)}
+      </RescheduleTitle>
       <Grid>
-        <InputWrapper>
+        <DayWrapper>
           {appointment.recurring ? (
-            <StyledLabel as="label" htmlfor="week-day-select">
+            <label htmlfor="week-day-select">
               Select a new day for your new appointment:
               <Select
                 id="week-day-select"
@@ -97,10 +103,10 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                 <option value={4}>Thursday</option>
                 <option value={5}>Friday</option>
               </Select>
-            </StyledLabel>
+            </label>
           ) : (
             <>
-              <Label>Select a new date for your appointment:</Label>
+              Select a date for your new appointment:
               <DatePickerComponent
                 startDate={new Date(formData.date)}
                 setStartDate={(date) => {
@@ -113,14 +119,14 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
               />
             </>
           )}
-          <Fieldset>
-            <legend>
-              <Label>{isLoading ? "Loading..." : "Select a time for your appointment"}</Label>
-            </legend>
-            {isLoading ? (
-              <PlaceHolderSelect />
-            ) : (
-              timeSlots.map((slot) => (
+        </DayWrapper>
+        <TimeWrapper>
+          {isLoading ? (
+            <PlaceholderRadio />
+          ) : (
+            <Fieldset>
+              <legend>Select a time for your new appointment</legend>
+              {timeSlots.map((slot) => (
                 <label htmlFor={slot} key={slot}>
                   <input
                     type="radio"
@@ -132,13 +138,13 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                   />
                   {slot}:00
                 </label>
-              ))
-            )}
-          </Fieldset>
-        </InputWrapper>
+              ))}
+            </Fieldset>
+          )}
+        </TimeWrapper>
         <AppointmenGridArea>
           <AppointmentWrapper>
-            <Label>Your Appointment:</Label>
+            Your Appointment:
             <NewAppointment>
               <div>
                 <AppointmentTitle>{requestRecipient}</AppointmentTitle>
@@ -148,12 +154,22 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                     : formatSingleDate(formData.start_time, formData.date)}
                 </AppointmentTime>
               </div>
-              <RescheduleStatus as="div" status={status}>
-                {!!appointment.rescheduled_by ? "reschedule" : "pending"}
-              </RescheduleStatus>
+              {!!appointment.rescheduled_by ? (
+                <>
+                  <RescheduleStatus as="div" status={"pending"}>
+                    pending
+                  </RescheduleStatus>
+                  <RescheduleStatus as="div" status={"reschedule"}>
+                    reschedule
+                  </RescheduleStatus>
+                </>
+              ) : (
+                <RescheduleStatus as="div" status={"pending"}>
+                  pending
+                </RescheduleStatus>
+              )}
             </NewAppointment>
             <ButtonWrapper>
-              {isError ? <ErrorList errors={rescheduleAppointment.error} /> : null}
               {sameAsInitialDate(formData, appointment) ? (
                 <TooltipWrapper
                   textContent={"Please choose a new day/start time to reschedule appointment"}
@@ -164,9 +180,12 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                   </SubmitButton>
                 </TooltipWrapper>
               ) : (
-                <SubmitButton type="submit" status={status}>
-                  Submit
-                </SubmitButton>
+                <>
+                  <SubmitButton type="submit" status={status}>
+                    Submit
+                  </SubmitButton>
+                  {isError ? <ErrorList errors={rescheduleAppointment.error} /> : null}
+                </>
               )}
             </ButtonWrapper>
           </AppointmentWrapper>
@@ -178,9 +197,57 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
 
 export default AppointmenRescheduleForm;
 
-const InputWrapper = styled.div`
-  grid-area: input;
-  padding: 10px;
+const DayWrapper = styled.div`
+  grid-area: day;
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  line-height: 1.3;
+`;
+
+const RescheduleTitle = styled(Title)`
+  grid-area: title;
+  font-size: 1.4rem;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 2rem 1fr min(250px, 1fr);
+  /* height: fit-content; */
+  /* height: 40%; */
+  /* width: 100%; */
+  /* max-height: 40%; */
+  background-color: white;
+  gap: 1px;
+  grid-template-areas:
+    "title title"
+    "day time"
+    "appointment appointment";
+`;
+
+const TimeWrapper = styled.div`
+  grid-area: time;
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  line-height: 1.3;
+  display: flex;
+  justify-content: center;
+  label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    width: 80px;
+    margin-left: 5%;
+  }
+  input {
+    margin-left: 5px;
+  }
+  fieldset {
+    justify-self: center;
+    display: flex;
+    border-radius: 8px;
+    border: 1px solid var(--blackA9);
+  }
 `;
 
 const SubmitButton = styled(VioletButton)`
@@ -203,25 +270,19 @@ const SubmitButton = styled(VioletButton)`
     background-color: ${({ status }) =>
       status === "confirmed" || status === "reschedule" ? "var(--violet1)" : "var(--amber2)"};
     color: ${({ status }) =>
-      status === "confirmed" || status === "reschedule" ? "var(--violet7)" : "var(--amber6)"};
+      status === "confirmed" || status === "reschedule" ? "var(--violet7)" : "var(--amber5)"};
   }
 `;
 
-// background-color: var(--violet4);
-// color: var(--violet11);
-
-// &:hover {
-//   background-color: var(--violet5);
-// }
-
-// &:focus {
-//   box-shadow: 0 0 0 2px var(--violet7);
-// }
 const AppointmentWrapper = styled.div`
   justify-self: center;
-  width: fit-content;
+  min-width: fit-content;
+  width: 400px;
   align-self: center;
   padding: 10px;
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  line-height: 1.3;
 `;
 const NewAppointment = styled.div`
   background-color: white;
@@ -243,7 +304,7 @@ const NewAppointment = styled.div`
   height: fit-content;
 `;
 const AppointmenGridArea = styled.div`
-  grid-area: submit;
+  grid-area: appointment;
   height: 100%;
   display: grid;
   width: 100%;
@@ -269,21 +330,6 @@ const RescheduleStatus = styled(Button)`
   box-shadow: inset 0 0 0 1px
     ${({ status }) =>
       status === "confirmed" || status == "reschedule" ? "var(--violet7)" : "var(--amber7)"};
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  /* height: fit-content; */
-  /* height: 40%; */
-  /* width: 100%; */
-  /* max-height: 40%; */
-  background-color: white;
-  gap: 1px;
-  grid-template-areas:
-    "input submit"
-    "input submit";
 `;
 
 const ButtonWrapper = styled.div`
@@ -322,7 +368,10 @@ const StyledLabel = styled(Label)`
 
 const Select = styled.select`
   padding: 8px;
-  max-width: 50%;
+  margin-top: 16px;
+  width: 80%;
   min-width: min-content;
-  justify-self: center;
+  padding: 10px;
+  /* color: rgb(104, 112, 118); */
+  font-size: 0.9rem;
 `;
