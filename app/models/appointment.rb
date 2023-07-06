@@ -9,8 +9,8 @@ class Appointment < ApplicationRecord
     validate :not_past_date_validation, unless: :recurring
     validate :not_today_validation, unless: :recurring
     validate :working_day_validation, unless: :recurring
-    validate :recurring_slot_uniqueness, if: :recurring
-    validate :single_slot_uniqueness, unless: :recurring
+    # validate :recurring_slot_uniqueness, if: :recurring
+    # validate :single_slot_uniqueness, unless: :recurring
     # validate :always_fail
 
 
