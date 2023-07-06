@@ -9,13 +9,13 @@ export default function AppointmentsLayout({
   return (
     <Grid>
       <RegularHeaderWrapper>
-        <Heading>Recurring Appointments</Heading>
+        <Heading>Recurring</Heading>
       </RegularHeaderWrapper>
       <RegularAppointments>
         {!recurringContent || recurringContent.length > 0 ? (
           recurringContent
         ) : (
-          <p>You have no recurring {contentType}</p>
+          <Placeholder>You have no recurring {contentType}</Placeholder>
         )}
       </RegularAppointments>
       <SingleHeaderWrapper>
@@ -25,12 +25,20 @@ export default function AppointmentsLayout({
         {!singleContent || singleContent.length > 0 ? (
           singleContent
         ) : (
-          <p>You have no single {contentType}</p>
+          <Placeholder>You have no single {contentType}</Placeholder>
         )}
       </SingleAppointments>
     </Grid>
   );
 }
+
+const Placeholder = styled.p`
+  margin: 0px;
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  padding-left: 8px;
+  line-height: 1.3;
+`;
 
 const Grid = styled.div`
   display: grid;
@@ -39,29 +47,31 @@ const Grid = styled.div`
   gap: 1px;
   position: relative;
   height: 100%;
-  background-color: black;
+  background-color: var(--blackA7);
   grid-template-areas:
     "heading1 heading2"
     "regular single";
 `;
 
 const RegularAppointments = styled.div`
-  background-color: lightblue;
+  background-color: hsla(0, 0%, 100%, 1);
   grid-area: regular;
   overflow: auto;
   padding: 8px;
 `;
 
 const SingleAppointments = styled.div`
-  background-color: lightblue;
+  background-color: white;
   grid-area: single;
   padding: 8px;
 `;
 
 const Header = styled.header`
-  background-color: lightblue;
+  background-color: white;
   padding: 6px;
+  padding-left: 16px;
   margin-bottom: -1px;
+  padding-top: 10px;
 `;
 
 const RegularHeaderWrapper = styled(Header)`

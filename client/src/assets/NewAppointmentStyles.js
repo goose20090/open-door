@@ -122,6 +122,7 @@ export const RejectedConfirmButton = styled(VioletButton)`
 export const Wrapper = styled.div`
   background-color: white;
   border-radius: 6px;
+  border: 1px solid var(--blackA6);
   /* width: 400px; */
   min-width: ${({ status }) => (status === "reschedule" ? "370px" : "250px")};
   max-width: 400px;

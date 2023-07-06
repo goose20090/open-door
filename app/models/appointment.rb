@@ -11,7 +11,12 @@ class Appointment < ApplicationRecord
     validate :working_day_validation, unless: :recurring
     validate :recurring_slot_uniqueness, if: :recurring
     validate :single_slot_uniqueness, unless: :recurring
+    # validate :always_fail
 
+
+    def always_fail
+        errors.add(:base, "This is a custom error for testing purposes.")
+    end
 
 
     def recurring_slot_uniqueness
@@ -46,9 +51,5 @@ class Appointment < ApplicationRecord
       end
     end
 
-        # validate :always_fail
 
-    # def always_fail
-    #     errors.add(:base, "This is a custom error for testing purposes.")
-    # end
   end

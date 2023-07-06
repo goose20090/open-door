@@ -18,7 +18,6 @@ import {
   BookingSubmitterWrapper,
   DialogTitle,
   DialogDescription,
-  DatePickerWrapper,
 } from "../assets/NewAppointmentStyles";
 import { useCreateAppointmentMutation } from "../hooks/useCreateAppointmentMutation";
 import ErrorList from "./Errors/ErrorList";
@@ -62,6 +61,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
   const {
     data: timeSlots,
     isSuccess,
+    isFetching,
     isLoading: availabilityLoading,
   } = useMutualAvailabilitiesQuery(
     formData.therapist_id,
@@ -75,14 +75,13 @@ export default function NewAppointmentForm({ onCloseDialog }) {
 
   return (
     <FormGrid onSubmit={handleSubmit}>
-      <InitialInputWrapper>
-        <DialogTitle>Book a New Appointment</DialogTitle>
-        <select
-          placeholder="thearapists"
-          style={{ width: "fit-content" }}
-          onChange={(e) => handleTherapistChange(e)}
-        >
-          <option>{therapistsLoading ? "Loading..." : "please select a therapist"}</option>
+      {isFetching && createApppointment.isLoading ? <StyledUpdateIcon /> : null}
+      <NewAppointmentTitle>Book a New Appointment</NewAppointmentTitle>
+      <SelectWrapper>
+        <select placeholder="thearapists" onChange={(e) => handleTherapistChange(e)}>
+          <option value={false}>
+            {therapistsLoading ? "Loading..." : "Please select a therapist"}
+          </option>
           {therapistsLoading
             ? null
             : therapists.map((therapist) => (
@@ -91,83 +90,208 @@ export default function NewAppointmentForm({ onCloseDialog }) {
                 </option>
               ))}
         </select>
+      </SelectWrapper>
+      <DatePickerWrapper>
         <DatePickerComponent
           enabled={!!formData.therapist_id}
           startDate={formData.date}
           setStartDate={(date) => setFormData({ ...formData, date: date, week_day: date.getDay() })}
         />
-      </InitialInputWrapper>
+      </DatePickerWrapper>
+      <TimeWrapper>
+        {formData.therapist_id && isSuccess ? (
+          <>
+            <fieldset>
+              <legend>Select a time for your appointment:</legend>
+              {timeSlots.map((time) => (
+                <TimeRadio key={time}>
+                  <label htmlFor={time}>{time}:00</label>
+                  <input
+                    id={time}
+                    name={`start_time`}
+                    type="radio"
+                    value={time}
+                    checked={formData.start_time === time}
+                    onChange={(e) => handleRadioChange(e, setFormData, formData)}
+                  />
+                </TimeRadio>
+              ))}
+            </fieldset>
+          </>
+        ) : (
+          <fieldset>
+            <legend>Select a time for your appointment</legend>
+            <TimeRadio>
+              <label>9:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+            <TimeRadio>
+              <label>10:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+            <TimeRadio>
+              <label>11:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+            <TimeRadio>
+              <label>12:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+            <TimeRadio>
+              <label>13:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+            <TimeRadio>
+              <label>14:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+            <TimeRadio>
+              <label>15:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+            <TimeRadio>
+              <label>16:00</label>
+              <input type="radio" disabled></input>
+            </TimeRadio>
+          </fieldset>
+        )}
+      </TimeWrapper>
+      <TypeWrapper>
+        <fieldset>
+          <legend>What kind of appointment is this?</legend>
+          <label htmlFor="single-radio">
+            Single
+            <input
+              id="single-radio"
+              type="radio"
+              name="recurring"
+              value={false}
+              checked={!formData.recurring}
+              onChange={(e) => {
+                setFormData({ ...formData, recurring: false });
+              }}
+            />
+          </label>
+          <label htmlFor="recurring-radio">
+            Recurring
+            <input
+              id="recurring-radio"
+              type="radio"
+              name="recurring"
+              value={true}
+              checked={formData.recurring}
+              onChange={(e) => {
+                setFormData({ ...formData, recurring: true });
+              }}
+            />
+          </label>
+        </fieldset>
+      </TypeWrapper>
+      <SubmitWrapper>
+        {createApppointment.isError ? <ErrorList errors={errors} /> : null}
+
+        <SubmitButton>Request Appointment</SubmitButton>
+      </SubmitWrapper>
       <TimeAndSubmitInputWrapper>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          {formData.therapist_id && isSuccess ? (
-            <>
-              <fieldset>
-                <legend>Select a time for your appointment:</legend>
-                {timeSlots.map((time) => (
-                  <div key={time}>
-                    <label htmlFor={time}>{time}:00</label>
-                    <input
-                      id={time}
-                      name={`start_time`}
-                      type="radio"
-                      value={time}
-                      checked={formData.start_time === time}
-                      onChange={(e) => handleRadioChange(e, setFormData, formData)}
-                    />
-                  </div>
-                ))}
-              </fieldset>
-              <fieldset>
-                <legend>What kind of appointment is this?</legend>
-                <label htmlFor="single-radio">
-                  Single
-                  <input
-                    id="single-radio"
-                    type="radio"
-                    name="recurring"
-                    value={false}
-                    checked={!formData.recurring}
-                    onChange={(e) => {
-                      setFormData({ ...formData, recurring: false });
-                    }}
-                  />
-                </label>
-                <label htmlFor="recurring-radio">
-                  Recurring
-                  <input
-                    id="recurring-radio"
-                    type="radio"
-                    name="recurring"
-                    value={true}
-                    checked={formData.recurring}
-                    onChange={(e) => {
-                      setFormData({ ...formData, recurring: true });
-                    }}
-                  />
-                </label>
-              </fieldset>
-              {createApppointment.isError ? <ErrorList errors={errors} /> : null}
-              <GreenButton>Request Appointment</GreenButton>
-            </>
-          ) : (
-            <p>Please select a therapist</p>
-          )}
-        </ErrorBoundary>
+        <ErrorBoundary FallbackComponent={ErrorFallback}></ErrorBoundary>
       </TimeAndSubmitInputWrapper>
     </FormGrid>
   );
 }
 
+const TimeRadio = styled.div`
+  display: flex;
+`;
+const TypeWrapper = styled.div`
+  grid-area: type;
+  align-self: start;
+  /* margin: 0px; */
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  line-height: 1.3;
+  label {
+    padding: 0 8px;
+    font-size: 0.95rem;
+  }
+  input {
+    margin-left: 5px;
+  }
+  fieldset {
+    display: flex;
+    border-radius: 8px;
+    border: 1px solid var(--blackA9);
+  }
+`;
+const TimeWrapper = styled.div`
+  grid-area: time;
+  padding-top: 30px;
+  margin: 0px;
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  line-height: 1.3;
+  label {
+    font-size: 0.95rem;
+    min-width: 75px;
+  }
+  fieldset {
+    border-radius: 8px;
+    border: 1px solid var(--blackA9);
+  }
+`;
+
+const SubmitWrapper = styled.div`
+  grid-area: submit;
+  display: flex;
+  flex-direction: column;
+  /* justify-self: center; */
+  /* justify-content: flex-end; */
+  align-self: flex-start;
+`;
+
+const SubmitButton = styled(GreenButton)`
+  width: 100%;
+  padding: 0;
+`;
+
+const NewAppointmentTitle = styled(DialogTitle)`
+  grid-area: title;
+  font-size: 1.6rem;
+`;
+
+const DatePickerWrapper = styled.div`
+  grid-area: date;
+  align-self: end;
+  justify-self: start;
+`;
+
+const SelectWrapper = styled.div`
+  grid-area: select;
+  padding-top: 32px;
+  width: 240px;
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  line-height: 1.3;
+  select {
+    width: 100%;
+  }
+  /* align-self: center; */
+  justify-self: start;
+`;
+
 const FormGrid = styled.form`
   display: grid;
   height: 60vh;
   width: 60vw;
+  max-width: 750px;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1.6rem repeat(3, 1fr), 2rem;
   grid-template-areas:
-    "therapistDate timeSubmit"
-    "therapistDate timeSubmit";
-  background-color: black;
+    "title title"
+    "select time"
+    "date time"
+    "date type"
+    "null submit";
+  background-color: white;
   gap: 1px;
 `;
 
@@ -181,7 +305,7 @@ const InitialInputWrapper = styled.div`
 `;
 
 const TimeAndSubmitInputWrapper = styled.div`
-  grid-area: timeSubmit;
+  /* grid-area: time; */
   background-color: white;
   height: 100%;
   display: flex;

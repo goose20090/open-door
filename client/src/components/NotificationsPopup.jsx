@@ -81,7 +81,9 @@ const BellButton = styled(RoundIconButton)`
     1px 2px 2.5px -2.5px hsl(var(--shadow-color) / 0.34);
 `;
 
-const Bell = styled(BellIcon)``;
+const Bell = styled(BellIcon)`
+  fill: yellow;
+`;
 
 const NotificationsPopupContent = styled(Popover.Content)`
   padding: 20px;

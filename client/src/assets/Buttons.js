@@ -133,3 +133,18 @@ export const BookingButton = styled(Button)`
     box-shadow: 0 0 0 2px black;
   }
 `;
+
+export const BlueButton = styled(Button)`
+  background-color: var(--blue4);
+  color: var(--blue11);
+  width: fit-content;
+  align-self: flex-end;
+
+  &:hover {
+    background-color: var(--blue5);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--blue7);
+  }
+`;

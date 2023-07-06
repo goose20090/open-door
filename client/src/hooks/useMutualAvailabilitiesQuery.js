@@ -13,6 +13,7 @@ export function useMutualAvailabilitiesQuery(
   recurring,
   reschedule = null
 ) {
+  console.log(nonUserId);
   // debugger;
   const { user } = useContext(UserContext);
   const { user_type } = user;
@@ -62,7 +63,7 @@ export function useMutualAvailabilitiesQuery(
         }
       ),
     {
-      enabled: !!nonUserId,
+      enabled: nonUserId != null && nonUserId != "false",
       useErrorBoundary: true,
     }
   );
