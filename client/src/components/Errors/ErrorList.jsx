@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-function ErrorList({ errors }) {
-  debugger;
+import { v4 as key } from "uuid";
+function ErrorList({ errors, className }) {
   return (
-    <Ul>
+    <Ul className={className}>
       {errors.map((error) => (
-        <li>{error}</li>
+        <li key={key()}>{error}</li>
       ))}
     </Ul>
   );
@@ -15,6 +15,7 @@ const Ul = styled.ul`
   padding: 8px 0;
   font-style: italic;
   list-style-type: none;
+  font-size: 13px;
 
   &:first-of-type {
     padding-top: 0;

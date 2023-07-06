@@ -17,7 +17,7 @@ export const GreenButton = styled(Button)`
   background-color: var(--green4);
   color: var(--green11);
   width: fit-content;
-  align-self: flex-end;
+  /* align-self: flex-end; */
 
   &:hover {
     background-color: var(--green5);

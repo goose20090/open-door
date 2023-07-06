@@ -26,6 +26,7 @@ end
 therapists = 5.times.map do
   therapist = Therapist.create!(
     name: Faker::Name.name,
+    biography: Faker::Lorem.paragraph_by_chars(number: 250, supplemental: false),
     created_at: Faker::Time.between(from: 6.months.ago, to: Date.today),
     updated_at: Faker::Time.between(from: 6.months.ago, to: Date.today)
   )

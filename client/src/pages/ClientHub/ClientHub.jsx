@@ -73,7 +73,7 @@ const UserAppointmentsLayout = styled(AppointmentsLayout)`
 `;
 
 const Wrapper = styled.div`
-  height: 80vh;
+  height: 80%;
   position: relative;
 `;
 const Grid = styled.div`

@@ -74,6 +74,7 @@ const PopoverRoot = styled(Popover.Root)``;
 
 const BellButton = styled(RoundIconButton)`
   border: 0.75px solid var(--blackA7);
+  background-color: white;
   --shadow-color: 176deg 27% 46%;
   box-shadow: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.34),
     0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 0.34),

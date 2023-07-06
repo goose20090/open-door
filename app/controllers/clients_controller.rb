@@ -11,7 +11,6 @@ class ClientsController < ApplicationController
     end
 
     def create
-      debugger
       client = Client.new(client_params)
       user = User.new(user_params)
   

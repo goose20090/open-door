@@ -13,7 +13,7 @@ import { useAuthQuery } from "./hooks/useAuthQuery";
 import TherapistsHub from "./pages/TherapistsHub/TherapistsHub";
 import * as Toast from "@radix-ui/react-toast";
 import Home from "./pages/Home/Home";
-import wave from "./assets/wave-haikei.svg";
+import wave from "./assets/wave-haikei6.svg";
 
 function App() {
   useAuthQuery();
@@ -21,7 +21,7 @@ function App() {
     <Wrapper>
       <GlobalStyles />
       <NavBar />
-      <StyledSwitch>
+      <Switch>
         <Route path="/about">
           <About />
         </Route>
@@ -40,13 +40,14 @@ function App() {
         <Route path="/">
           <Home />
         </Route>
-      </StyledSwitch>
+      </Switch>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   width: 100%;
+  height: 100vh;
   min-height: 100%;
   background-color: white;
   background-image: url(${wave});
@@ -55,7 +56,4 @@ const Wrapper = styled.div`
   /* background-position: center; // optional, to center the background image */
 `;
 
-const StyledSwitch = styled(Switch)`
-  height: 100%;
-`;
 export default App;

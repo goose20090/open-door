@@ -16,5 +16,6 @@ export function useAuthQuery(enabled = true) {
       setUser(r);
     },
     enabled: enabled,
+    refetchOnWindowFocus: false,
   });
 }

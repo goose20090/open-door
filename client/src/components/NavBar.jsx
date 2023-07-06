@@ -8,6 +8,7 @@ import { BellIcon } from "@radix-ui/react-icons";
 import { UserContext } from "../context/user";
 import LogoutButton from "./LogoutButton";
 import NotificationsPopup from "./NotificationsPopup";
+import { Title } from "../assets/AppointmentCapsuleStyles";
 
 function NavBar() {
   const { user } = useContext(UserContext);
@@ -16,19 +17,27 @@ function NavBar() {
     <Wrapper>
       <Heading>Open Door Therapy</Heading>
       <LinkWrapper>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
+        <Link exact activeStyle={{ textDecoration: "underline" }} to="/">
+          Home
+        </Link>
+        <Link activeStyle={{ textDecoration: "underline" }} to="/about">
+          About
+        </Link>
         {user ? (
           <>
             <UserSpecificLinks user={user} />
-            <p>Logged in as: {user.name}</p>
+            <p>Welcome, {user.name}</p>
             <NotificationsPopup />
             <LogoutButton />
           </>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signup</Link>
+            <Link activeStyle={{ textDecoration: "underline" }} to="/login">
+              Login
+            </Link>
+            <Link activeStyle={{ textDecoration: "underline" }} to="/signup">
+              Signup
+            </Link>
           </>
         )}
       </LinkWrapper>
@@ -40,13 +49,17 @@ function UserSpecificLinks({ user }) {
   if (user.user_type === "Client") {
     return (
       <>
-        <Link to="/appointments">My Appointments</Link>
+        <Link activeStyle={{ textDecoration: "underline" }} to="/appointments">
+          My Appointments
+        </Link>
       </>
     );
   } else {
     return (
       <>
-        <Link to="/therapist-appointments">Therapist Hub</Link>
+        <Link activeStyle={{ textDecoration: "underline" }} to="/therapist-appointments">
+          Therapist Hub
+        </Link>
       </>
     );
   }
@@ -82,7 +95,9 @@ const Heading = styled.h1`
 
 const Link = styled(NavLink)`
   padding: 8px;
-  border: 1px solid black;
+  font-weight: 500;
+  color: rgb(17, 24, 28);
+  /* border: 1px solid black; */
 `;
 
 export default NavBar;
