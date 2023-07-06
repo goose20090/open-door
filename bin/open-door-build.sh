@@ -5,7 +5,7 @@ set -o errexit
 rm -rf public
 npm install --prefix client && npm run build --prefix client
 
-cp -a client/dist. public/
+cp -a client/dist public/
 
 # bundle exec rake assets:precomplie 
 # bundle exec rake assets:clean
