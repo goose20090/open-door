@@ -51,7 +51,7 @@ export default function SignupForm() {
         </InputWrapper>
         <InputWrapper name="name">
           <InputLabel>Name</InputLabel>
-          <Input name={"name"} required value={formData.name} onChange={handleChange} required />
+          <Input name={"name"} required value={formData.name} onChange={handleChange} />
           <FormMessage match={"valueMissing"} />
         </InputWrapper>
         <InputWrapper name="password">
