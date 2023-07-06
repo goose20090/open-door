@@ -284,7 +284,7 @@ const AppointmentWrapper = styled.div`
   font-size: 0.9rem;
   line-height: 1.3;
 `;
-const NewAppointment = styled.div`
+export const NewAppointment = styled.div`
   background-color: white;
   border-radius: 6px;
   width: 100%;
@@ -314,7 +314,7 @@ const AppointmentTitle = styled(Title)``;
 
 const AppointmentTime = styled(Time)``;
 
-const RescheduleStatus = styled(Button)`
+export const RescheduleStatus = styled(Button)`
   margin-left: auto;
   grid-area: status;
   align-self: center;
