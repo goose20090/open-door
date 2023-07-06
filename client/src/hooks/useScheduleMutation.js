@@ -1,8 +1,10 @@
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import fetchWithError from "../helpers/fetchWithError";
+import { useToast } from "./useToast";
 
 export function useScheduleMutation(schedule, user) {
+  const { addToast } = useToast();
   async function updateSchedule() {
     return fetchWithError(`/api/therapists/${user.id}/schedule`, {
       method: "PATCH",
@@ -13,5 +15,9 @@ export function useScheduleMutation(schedule, user) {
     });
   }
 
-  return useMutation(updateSchedule);
+  return useMutation(updateSchedule, {
+    onSuccess: () => {
+      addToast("scheduleSuccess");
+    },
+  });
 }

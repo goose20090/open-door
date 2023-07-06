@@ -4,7 +4,7 @@ import { TimeRadio } from "./NewAppointmentForm";
 export default function PlaceholderRadio() {
   return (
     <Wrapper>
-      <legend>Select a time for your appointment</legend>
+      <legend>Select a time for your new appointment</legend>
       <TimeRadio>
         <label>
           <input type="radio" disabled></input>9:00

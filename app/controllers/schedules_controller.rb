@@ -1,6 +1,7 @@
 class SchedulesController < ApplicationController
+  before_action :authorize
   def show
-    schedule =find_user.schedule
+    schedule = current_user.schedule
 
     availability = if schedule.availability?
                      schedule.availability
@@ -11,7 +12,7 @@ class SchedulesController < ApplicationController
   end
 
   def update
-    schedule = find_user.schedule
+    schedule = current_user.schedule
     if schedule.update(availability: params[:new_schedule])
       render json: { success: "Availability updated successfully." }
     else
@@ -24,4 +25,9 @@ class SchedulesController < ApplicationController
   def find_user
     User.includes(:schedule).find_by(userable_type: 'Therapist', userable_id: params[:therapist_id])
   end
+
+  def authorize
+    return render json: {error: "Not authorised"}, status: :unauthorized unless session.include? :user_id
+  end 
+  
 end

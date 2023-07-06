@@ -24,9 +24,13 @@ export function ToastProvider({ children }) {
     setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
   };
 
+  const removeAllToast = () => {
+    setToasts([]);
+  };
+
   return (
     <Provider duration={5000}>
-      <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+      <ToastContext.Provider value={{ toasts, addToast, removeToast, removeAllToast }}>
         {children}
       </ToastContext.Provider>
     </Provider>

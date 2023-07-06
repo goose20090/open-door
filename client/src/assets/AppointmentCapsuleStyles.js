@@ -53,7 +53,9 @@ export const Status = styled(Button)`
       ? "var(--amber2)"
       : status === "reschedule"
       ? "var(--violet2)"
-      : "var(--red2)"};
+      : status === "rejected"
+      ? "var(--red2)"
+      : "var(--green2)"};
 
   color: ${({ status }) =>
     status === "confirmed"
@@ -62,7 +64,9 @@ export const Status = styled(Button)`
       ? "var(--amber11)"
       : status === "reschedule"
       ? "var(--violet11)"
-      : "var(--red11)"};
+      : status === "rejected"
+      ? "var(--red11)"
+      : "var(--green11)"};
 
   box-shadow: inset 0 0 0 1px
     ${({ status }) =>
@@ -72,7 +76,9 @@ export const Status = styled(Button)`
         ? "var(--amber7)"
         : status === "reschedule"
         ? "var(--violet7)"
-        : "var(--red7)"};
+        : status === "rejected"
+        ? "var(--red7)"
+        : "var(--green7)"};
 `;
 export const Label = styled(Time)`
   font-size: 0.9rem;

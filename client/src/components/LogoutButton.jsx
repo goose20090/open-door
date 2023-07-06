@@ -2,23 +2,10 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { UserContext } from "../context/user";
 import styled from "styled-components";
 import React, { useContext } from "react";
+import { useLogoutMutation } from "../hooks/useLogoutMutation";
 
 export default function LogoutButton() {
-  const { user, setUser } = useContext(UserContext);
-  function handleLogout() {
-    fetch("/api/logout", {
-      method: "DELETE",
-    });
-  }
-
-  const queryClient = useQueryClient();
-
-  const logoutMutation = useMutation(handleLogout, {
-    onSuccess: () => {
-      queryClient.setQueryData(["user", "authorisation"], () => null);
-      setUser(false);
-    },
-  });
+  const logoutMutation = useLogoutMutation();
 
   return <LogoutBtn onClick={logoutMutation.mutate}>Logout</LogoutBtn>;
 }

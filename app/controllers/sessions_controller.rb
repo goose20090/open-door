@@ -17,8 +17,14 @@ class SessionsController < ApplicationController
   end
 
     def destroy
-        current_user.notifications.where(read: true).destroy_all
-        session.delete :user_id 
-        head :no_content
+      authorize
+      current_user.notifications.where(read: true).destroy_all
+      session.delete :user_id 
+      head :no_content
     end
+
+    private
+    def authorize
+      return render json: {error: "Not authorised"}, status: :unauthorized unless session.include? :user_id
+    end 
 end

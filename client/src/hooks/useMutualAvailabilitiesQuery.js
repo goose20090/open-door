@@ -6,6 +6,7 @@ import { useContext } from "react";
 // argument 1- the therapist or client the user wants to book an appointment with
 // argument 2- if booking a recurring appointment: a week day integer, if not: a date object
 // argument 3- a boolean based on whether the user is querying AV for a recurring or single appointment
+// argument 4- an id of an appointment that requires rescheduling if this is a reschedule request
 
 export function useMutualAvailabilitiesQuery(
   nonUserId,
@@ -13,8 +14,6 @@ export function useMutualAvailabilitiesQuery(
   recurring,
   reschedule = null
 ) {
-  console.log(nonUserId);
-  // debugger;
   const { user } = useContext(UserContext);
   const { user_type } = user;
   let clientId;

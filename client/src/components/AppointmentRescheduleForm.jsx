@@ -28,7 +28,6 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   const { recurring } = appointment;
   const rescheduleAppointment = useRescheduleMutation(appointment, onCloseDialog);
   const { isError } = rescheduleAppointment;
-
   const status = !!appointment.rescheduled_by ? "reschedule" : appointment.status;
 
   const rescheduledBy =
@@ -85,7 +84,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
       <Grid>
         <DayWrapper>
           {appointment.recurring ? (
-            <label htmlfor="week-day-select">
+            <label htmlFor="week-day-select">
               Select a new day for your new appointment:
               <Select
                 id="week-day-select"
@@ -154,7 +153,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                     : formatSingleDate(formData.start_time, formData.date)}
                 </AppointmentTime>
               </div>
-              {!!appointment.rescheduled_by ? (
+              {!!appointment.rescheduled_by || appointment.status === "confirmed" ? (
                 <>
                   <RescheduleStatus as="div" status={"pending"}>
                     pending

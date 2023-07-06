@@ -6,10 +6,11 @@ import { GreenButton } from "../../../assets/Buttons";
 import { UserContext } from "../../../context/user";
 import { useScheduleQuery } from "../../../hooks/useScheduleQuery";
 import fetchWithError from "../../../helpers/fetchWithError";
-import { Title } from "../../../assets/AppointmentCapsuleStyles";
+import { Time, Title } from "../../../assets/AppointmentCapsuleStyles";
 import { useScheduleMutation } from "../../../hooks/useScheduleMutation";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "../../../components/Errors/ErrorFallback";
+import { StyledUpdateIcon } from "../../../assets/NewAppointmentStyles";
 
 export function TherapistWeeklyAv() {
   const { user } = useContext(UserContext);
@@ -50,13 +51,15 @@ export function TherapistWeeklyAv() {
   };
   return (
     <ScheduleForm onSubmit={handleSubmit}>
+      {updateSchedule.isLoading ? <StyledUpdateIcon /> : null}
       {isQueryError ? (
         <ErrorList errors={["Error: schedule request failed, please try again."]} />
       ) : null}
       <TableWrapper>
-        <p>
+        {/* <StyledUpdateIcon /> */}
+        <Instructions>
           Please uncheck boxes where you are <i>not</i> available:
-        </p>
+        </Instructions>
         <ScheduleTable>
           <thead>
             <tr>
@@ -78,7 +81,7 @@ export function TherapistWeeklyAv() {
                 </Cell>
                 {days.map((day) => (
                   <Cell key={day}>
-                    <input
+                    <Checkbox
                       type="checkbox"
                       checked={
                         schedule[day.toLowerCase()].find(
@@ -96,13 +99,27 @@ export function TherapistWeeklyAv() {
         </ScheduleTable>
         <SubmitButton type="submit">Submit</SubmitButton>
       </TableWrapper>
-      {/* </ErrorBoundary> */}
     </ScheduleForm>
   );
 }
 
+const Checkbox = styled.input`
+  width: 15px;
+  height: 15px;
+  accent-color: var(--blue9);
+`;
+
+const Instructions = styled.p`
+  margin: 0px;
+  color: rgb(104, 112, 118);
+  font-size: 0.9rem;
+  line-height: 1.3;
+`;
+
 const TableWrapper = styled.div`
+  position: ;
   justify-self: center;
+  width: 80%;
 `;
 
 const Cell = styled.td`
@@ -116,25 +133,27 @@ const TableHeading = styled.th`
 const Wrapper = styled.div`
   position: relative;
   height: 100%;
+  width: 100%;
 `;
 
 const ScheduleForm = styled.form`
+  position: relative;
   display: grid;
   padding-top: 25px;
+  height: 100%;
 `;
 
 const ScheduleTable = styled.table`
-  border: 1px solid black;
+  /* border: 1px solid var(--blackA7); */
   background-color: white;
-  border-radius: 8px;
-  --shadow-color: 176deg 27% 46%;
-  box-shadow: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.34),
-    0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 0.34),
-    1px 2px 2.5px -2.5px hsl(var(--shadow-color) / 0.34);
+  /* border-radius: 8px; */
+  height: 60%;
+  width: 100%;
 `;
 
 const SubmitButton = styled(GreenButton)`
   margin-top: 25px;
-  margin-right: -25px;
+  width: 20%;
   float: right;
+  box-shadow: inset 0 0 0 2px var(--green7);
 `;

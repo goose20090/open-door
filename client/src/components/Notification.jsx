@@ -6,12 +6,14 @@ import { CheckIcon, QuestionMarkIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { relativeDate } from "../helpers/relativeDate";
 
 export default function Notification({ notification }) {
+  // debugger;
   const typeTitles = {
     confirm: "Appointment Confirmed",
     reject: "Appointment Rejected",
     reschedule_confirm: "Reschedule Confirmed",
     reschedule_reject: "Reschedule Rejected",
     reschedule_request: "Reschedule Requested",
+    delete: "Appointment Deleted",
   };
 
   const typeIcons = {
@@ -19,6 +21,7 @@ export default function Notification({ notification }) {
     reject: <Cross2Icon />,
     reschedule_confirm: <CheckIcon />,
     reschedule_reject: <Cross2Icon />,
+    delete: <Cross2Icon />,
     reschedule_request: <QuestionIcon />,
   };
   return (
@@ -56,6 +59,7 @@ const NotificationTitle = styled(Title)`
 const typeColors = {
   confirm: "green",
   reject: "red",
+  delete: "red",
   reschedule_confirm: "green",
   reschedule_reject: "red",
   reschedule_request: "violet",

@@ -49,7 +49,7 @@ function UserSpecificLinks({ user }) {
   if (user.user_type === "Client") {
     return (
       <>
-        <Link activeStyle={{ textDecoration: "underline" }} to="/appointments">
+        <Link activeStyle={{ textDecoration: "underline" }} to="/client-hub">
           My Appointments
         </Link>
       </>
@@ -57,7 +57,7 @@ function UserSpecificLinks({ user }) {
   } else {
     return (
       <>
-        <Link activeStyle={{ textDecoration: "underline" }} to="/therapist-appointments">
+        <Link activeStyle={{ textDecoration: "underline" }} to="/therapist-hub">
           Therapist Hub
         </Link>
       </>

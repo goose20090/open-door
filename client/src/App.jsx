@@ -31,10 +31,10 @@ function App() {
         <Route path="/signup">
           <Signup />
         </Route>
-        <Route path="/appointments">
+        <Route path="/client-hub">
           <ClientHub />
         </Route>
-        <Route path="/therapist-appointments">
+        <Route path="/therapist-hub">
           <TherapistsHub />
         </Route>
         <Route path="/">
@@ -52,8 +52,6 @@ const Wrapper = styled.div`
   background-color: white;
   background-image: url(${wave});
   background-repeat: no-repeat;
-  /* background-size: cover; // or "contain" depending on your needs */
-  /* background-position: center; // optional, to center the background image */
 `;
 
 export default App;

@@ -9,4 +9,7 @@ class TherapistSerializer < ActiveModel::Serializer
   def unread
     object.user.unread_notifications_count
   end
+  def notifications
+    object.notifications.order(created_at: :desc)
+  end
 end

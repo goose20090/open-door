@@ -1,7 +1,9 @@
 class AppointmentsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
+    before_action :authorize
     after_action :pass_to_notification_model, only: [:update]
+    before_action :pass_to_notification_model, only: [:destroy]
 
     def create
         # Only clients can create appointments
@@ -83,5 +85,9 @@ class AppointmentsController < ApplicationController
 
     def pass_to_notification_model
         Notification.create_notification(find_appointment, session[:user_id], params)
+    end
+
+    def authorize
+        return render json: {errors: ["Not authorised"]}, status: :unauthorized unless session.include? :user_id
     end
 end

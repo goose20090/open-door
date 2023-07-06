@@ -21,7 +21,7 @@ class Appointment < ApplicationRecord
 
     def recurring_slot_uniqueness
       # Find if there is any other recurring appointment with the same week_day and start_time
-      test_query = Appointment.where(recurring: true, week_day: week_day, start_time: start_time, therapist_id: therapist_id).where.not(id: id).exists?
+      test_query = Appointment.where(recurring: true, week_day: week_day, start_time: start_time, therapist_id: therapist_id, status: ['pending', 'confirmed']).where.not(id: id).exists?
   
       if test_query
         errors.add(:base, 'This therapist has a reccuring slot already booked at this time')
@@ -30,7 +30,7 @@ class Appointment < ApplicationRecord
      
     def single_slot_uniqueness
       # Find if there is any other non-recurring appointment with the same date and start_time
-      test_query = Appointment.where("date::date = ? AND start_time = ? AND recurring = ? AND therapist_id = ?", date.to_date, start_time, false, therapist_id).where.not(id: id).exists?
+      test_query = Appointment.where("date::date = ? AND start_time = ? AND recurring = ? AND therapist_id = ? AND status IN (?)", date.to_date, start_time, false, therapist_id, ['pending', 'confirmed']).where.not(id: id).exists?
   
       if test_query
         errors.add(:base, 'This therapist has an appointment already booked for this time')

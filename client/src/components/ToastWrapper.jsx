@@ -18,6 +18,7 @@ export function ToastWrapper() {
     reject: "Appointment Rejected",
     confirm: "Appointment Confirmed",
     rollback: "Reschedule Request Cancelled",
+    scheduleSuccess: "Schedule Updated",
     error: "Error",
   };
 
@@ -40,6 +41,9 @@ export function ToastWrapper() {
 
   function renderDescription(toast) {
     const { appointment, newAppointment, action } = toast;
+    if (action === "scheduleSuccess") {
+      return "Clients will not be able to book outside the times you've selected.";
+    }
 
     if (action === "error") {
       return "There was an error and this action did not complete. Please try again";
@@ -131,6 +135,7 @@ const Confirmation = styled(Toast.Close)`
 `;
 
 const Root = styled(Toast.Root)`
+  --viewport-padding: 25px;
   background-color: white;
   border-radius: 6px;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;

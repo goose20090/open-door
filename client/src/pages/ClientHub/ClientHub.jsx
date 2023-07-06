@@ -21,7 +21,7 @@ export default function ClientHub() {
   const { user } = useContext(UserContext);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  if (!user) return <Redirect to="/" />;
+  if (!user || user.user_type === "Therapist") return <Redirect to="/" />;
 
   // const { data: user, isLoading, isError } = authQuery;
   const { appointments } = user;

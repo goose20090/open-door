@@ -93,7 +93,7 @@ export const StyledUpdateIcon = styled(UpdateIcon)`
   animation-duration: 500ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  position: fixed;
+  position: absolute;
   top: 15px;
   right: 50px;
 
