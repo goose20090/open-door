@@ -9,54 +9,44 @@ class Appointment < ApplicationRecord
     validate :not_past_date_validation, unless: :recurring
     validate :not_today_validation, unless: :recurring
     validate :working_day_validation, unless: :recurring
-    # validate :recurring_slot_uniqueness, if: :recurring
-    # validate :single_slot_uniqueness, unless: :recurring
-    # validate :always_fail
+    validate :recurring_slot_uniqueness, if: :recurring
+    validate :single_slot_uniqueness, unless: :recurring
 
     def self.create_appointment(params)
-      debugger
       params[:recurring] = params[:recurring].present?
       params[:date] = Date.parse(params[:date])
       params[:status] = 'pending'
       self.create!(params)
-  end
-
-  def self.update_appointment(appointment, params)
-    debugger
-    # If a reschedule request has been rejected
-    if appointment[:status] == 'pending' && params[:status] == 'rejected' && appointment[:rescheduled_by].present? || params[:rollback]
-        # rollback the appointment
-        appointment.update!(
-            status: 'confirmed',
-            start_time: appointment[:rollback_start_time],
-            date: appointment[:rollback_date],
-            week_day: appointment[:rollback_week_day],
-            rescheduled_by: nil,
-            rollback_start_time: nil,
-            rollback_date: nil,
-            rollback_week_day: nil,
-        )
-    # If a reschedule request has been confirmed
-    elsif appointment[:status] == 'pending' && params[:status] == 'confirmed' && appointment[:rescheduled_by].present?
-        # delete rollback values and confirm appointment
-        appointment.update!(
-            status: 'confirmed',
-            rescheduled_by: nil,
-            rollback_start_time: nil,
-            rollback_date: nil,
-            rollback_week_day: nil,
-        )
-    # Otherwise update appointment as normal
-    else
-      debugger
-        appointment.update(params)
     end
-  end
 
-
-
-    def always_fail
-        errors.add(:base, "This is a custom error for testing purposes.")
+    def self.update_appointment(appointment, params)
+      # If a reschedule request has been rejected
+      if appointment[:status] == 'pending' && params[:status] == 'rejected' && appointment[:rescheduled_by].present? || params[:rollback]
+          # rollback the appointment
+          appointment.update!(
+              status: 'confirmed',
+              start_time: appointment[:rollback_start_time],
+              date: appointment[:rollback_date],
+              week_day: appointment[:rollback_week_day],
+              rescheduled_by: nil,
+              rollback_start_time: nil,
+              rollback_date: nil,
+              rollback_week_day: nil,
+          )
+      # If a reschedule request has been confirmed
+      elsif appointment[:status] == 'pending' && params[:status] == 'confirmed' && appointment[:rescheduled_by].present?
+          # delete rollback values and confirm appointment
+          appointment.update!(
+              status: 'confirmed',
+              rescheduled_by: nil,
+              rollback_start_time: nil,
+              rollback_date: nil,
+              rollback_week_day: nil,
+          )
+      # Otherwise update appointment as normal
+      else
+          appointment.update(params)
+      end
     end
 
 

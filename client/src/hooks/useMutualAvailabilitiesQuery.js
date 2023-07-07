@@ -64,6 +64,7 @@ export function useMutualAvailabilitiesQuery(
     {
       enabled: nonUserId != null && nonUserId != "false",
       useErrorBoundary: true,
+      refetchOnWindowFocus: true,
     }
   );
 }

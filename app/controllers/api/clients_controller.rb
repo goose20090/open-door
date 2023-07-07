@@ -1,15 +1,6 @@
 class Api::ClientsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
-    def show
-        client = Client.find_by(id: session[:client_id])
-        if client
-            render json: client, include: ['appointments', 'appointments.therapist']
-        else
-            render json: {error: "Not authorised"}, status: :unauthorized
-        end
-    end
-
     def create
       client = Client.new(client_params)
       user = User.new(user_params)
@@ -22,8 +13,8 @@ class Api::ClientsController < ApplicationController
   
       session[:user_id] = user.id
       render json: client, status: :created
-  
     end
+    
       private
     
       def client_params

@@ -2,8 +2,8 @@ class Api::AppointmentsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
     before_action :authorize
-    before_action :find_appointment, only: [:update, :destroy]
-    after_action :pass_to_notification_model, only: [:update, :destroy]
+    after_action :pass_to_notification_model, only: [:update]
+    before_action :pass_to_notification_model, only: [:destroy]
 
     def create
         user = User.includes(:userable).find(session[:user_id])
@@ -38,7 +38,7 @@ class Api::AppointmentsController < ApplicationController
     end
  
     def appointment_params
-        params.require(:appointment).permit(:start_time, :client_id, :therapist_id, :week_day, :date, :recurring, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day, :rollback)
+        params.permit(:start_time, :client_id, :therapist_id, :week_day, :date, :recurring, :status, :rescheduled_by, :rejected_by, :rollback_date, :rollback_start_time, :rollback_week_day, :rollback)
     end
 
     # Error responses

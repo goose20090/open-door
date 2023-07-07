@@ -13,6 +13,7 @@ class User < ApplicationRecord
   def unread_notifications_count
     self.notifications.where(read:false).count
   end
+  
   private
 
   def create_default_schedule

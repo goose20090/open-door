@@ -40,6 +40,9 @@ function App() {
         <Route path="/">
           <Home />
         </Route>
+        <Route path="*">
+          <h1>Not Found</h1>
+        </Route>
       </Switch>
     </Wrapper>
   );

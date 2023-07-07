@@ -3,10 +3,12 @@ import fetchWithError from "../helpers/fetchWithError";
 import { useContext } from "react";
 import { UserContext } from "../context/user";
 import { useToast } from "./useToast";
+import { useHistory } from "react-router-dom";
 
 export function useSignUpMutation(formData) {
   const queryClient = useQueryClient();
   const { setUser } = useContext(UserContext);
+  const history = useHistory();
 
   function attemptSignup() {
     return fetchWithError("api/signup", {
@@ -22,6 +24,7 @@ export function useSignUpMutation(formData) {
     onSuccess: (r) => {
       queryClient.setQueryData(["user", "authorisation"], () => r);
       setUser(r);
+      history.push("/client-hub");
     },
     onError: (r) => console.log(r),
   });

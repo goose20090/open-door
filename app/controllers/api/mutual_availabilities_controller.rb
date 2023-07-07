@@ -1,6 +1,5 @@
 class Api::MutualAvailabilitiesController < ApplicationController
   def show
-    # debugger
     client = User.find_by(userable_type: "Client", userable_id: params[:client_id]).userable
     therapist = User.find_by(userable_type: "Therapist", userable_id: params[:therapist_id]).userable
     recurring = ActiveRecord::Type::Boolean.new.cast(params[:recurring])

@@ -1,10 +1,10 @@
 import * as Toast from "@radix-ui/react-toast";
 import styled, { keyframes } from "styled-components";
 import { useToast } from "../hooks/useToast";
-import { Status as ConfirmButton } from "../assets/AppointmentCapsuleStyles";
 import { formatDetails } from "../helpers/formatDetails";
 import { useContext } from "react";
 import { UserContext } from "../context/user";
+import { Button } from "../assets/Buttons";
 
 export function ToastWrapper() {
   const { user } = useContext(UserContext);
@@ -20,6 +20,7 @@ export function ToastWrapper() {
     rollback: "Reschedule Request Cancelled",
     scheduleSuccess: "Schedule Updated",
     error: "Error",
+    unauthorised: "Unauthorised",
   };
 
   function renderTitle(toast) {
@@ -41,6 +42,9 @@ export function ToastWrapper() {
 
   function renderDescription(toast) {
     const { appointment, newAppointment, action } = toast;
+    if (action === "unauthorised") {
+      return "Please log in to view, book and alter appointments";
+    }
     if (action === "scheduleSuccess") {
       return "Clients will not be able to book outside the times you've selected.";
     }
@@ -94,9 +98,15 @@ export function ToastWrapper() {
           <Confirmation asChild altText="confirm button">
             <ConfirmButton
               onClick={() => removeToast(toast.id)}
-              status={toast.action === "reschedule" ? "reschedule" : toast.status}
+              status={
+                toast.action === "reschedule"
+                  ? "reschedule"
+                  : toast.action === "delete"
+                  ? "delete"
+                  : toast.status
+              }
             >
-              OK
+              Ok
             </ConfirmButton>
           </Confirmation>
         </Root>
@@ -105,6 +115,57 @@ export function ToastWrapper() {
     </>
   );
 }
+
+const statusColors = {
+  confirmed: {
+    backgroundColor: "--green2",
+    color: "--green11",
+    boxShadow: "--green7",
+  },
+  pending: {
+    backgroundColor: "--amber2",
+    color: "--amber11",
+    boxShadow: "--amber7",
+  },
+  reschedule: {
+    backgroundColor: "--violet2",
+    color: "--violet11",
+    boxShadow: "--violet7",
+  },
+  rejected: {
+    backgroundColor: "--red2",
+    color: "--red11",
+    boxShadow: "--red7",
+  },
+  default: {
+    backgroundColor: "--green2",
+    color: "--green11",
+    boxShadow: "--green7",
+  },
+  delete: {
+    backgroundColor: "--red2",
+    color: "--red11",
+    boxShadow: "--red7",
+  },
+};
+
+const ConfirmButton = styled(Button)`
+  margin-left: auto;
+  grid-area: status;
+  align-self: center;
+  justify-self: center;
+  font-size: 12px;
+  padding: 0 10px;
+  line-height: 25px;
+  height: 25px;
+  background-color: var(
+    ${({ status }) => statusColors[status]?.backgroundColor || statusColors.default.backgroundColor}
+  );
+  color: var(${({ status }) => statusColors[status]?.color || statusColors.default.color});
+  box-shadow: inset 0 0 0 1px
+    var(${({ status }) => statusColors[status]?.boxShadow || statusColors.default.boxShadow});
+`;
+
 const Title = styled(Toast.Title)`
   grid-area: title;
   margin-bottom: 5px;

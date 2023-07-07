@@ -14,23 +14,27 @@ import BookingDialogContent from "./BookingDialogContent";
 import { useDialog } from "../../hooks/useDialog";
 import NewAppointmentForm from "../../components/NewAppointmentForm";
 import AppointmentCapsule from "../../components/AppointmentCapsule/AppointmentCapsule";
+import { useHistory } from "react-router-dom";
+import { useToast } from "../../hooks/useToast";
 
 export default function ClientHub() {
   const { isLoading, isError } = useAuthQuery(false);
-
+  const history = useHistory();
   const { user } = useContext(UserContext);
+  const { addToast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  if (!user || user.user_type === "Therapist") return <Redirect to="/" />;
-
-  // const { data: user, isLoading, isError } = authQuery;
+  if (!user || user.user_type === "Therapist") {
+    history.push("/");
+    addToast("unauthorised");
+    return null;
+  }
   const { appointments } = user;
 
   const recurringAppointments = appointments
     .filter(
       (appointment) =>
         appointment.recurring && appointment.rejected_by !== user.user_type.toLowerCase()
-      // appointment.rescheduled_by !== user.user_type.toLowerCase() &&
     )
     .map((appointment) => <AppointmentCapsule key={appointment.id} appointment={appointment} />);
 
@@ -38,7 +42,6 @@ export default function ClientHub() {
     .filter(
       (appointment) =>
         !appointment.recurring && appointment.rejected_by !== user.user_type.toLowerCase()
-      // appointment.rescheduled_by !== user.user_type.toLowerCase() &&
     )
     .map((appointment) => <AppointmentCapsule key={appointment.id} appointment={appointment} />);
   return (

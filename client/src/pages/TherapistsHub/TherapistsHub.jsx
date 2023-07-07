@@ -6,14 +6,22 @@ import * as Tabs from "@radix-ui/react-tabs";
 import styled from "styled-components";
 import AppointmentRequests from "./Tabs/AppointmentRequests";
 import DateRangePickerComponent from "./DateRangePicker";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { Redirect } from "react-router-dom";
 import TherapistAppointments from "./Tabs/TherapistAppointments";
+import { useToast } from "../../hooks/useToast";
+import { useHistory } from "react-router-dom";
 
 function TherapistsHub() {
   const { isLoading } = useAuthQuery(false);
   const { user } = useContext(UserContext);
+  const { addToast } = useToast();
+  const history = useHistory();
   if (isLoading) return <p>Loading...</p>;
-  if (!user || user.user_type === "Client") return <Redirect to="/" />;
+  if (!user || user.user_type === "Client") {
+    history.push("/");
+    addToast("unauthorised");
+    return null;
+  }
   return (
     <Wrapper>
       <TabsRoot orientation="vertical" defaultValue="tab2">

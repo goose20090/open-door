@@ -2,8 +2,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :appointments
-    resources :therapists
-    resources :clients
+    resources :therapists, only: [:index]
+    resources :clients, only: [:create]
 
 
     post 'login', to: "sessions#create"
