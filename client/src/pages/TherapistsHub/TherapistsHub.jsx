@@ -5,7 +5,6 @@ import { UserContext } from "../../context/user";
 import * as Tabs from "@radix-ui/react-tabs";
 import styled from "styled-components";
 import AppointmentRequests from "./Tabs/AppointmentRequests";
-import DateRangePickerComponent from "./DateRangePicker";
 import { Redirect } from "react-router-dom";
 import TherapistAppointments from "./Tabs/TherapistAppointments";
 import { useToast } from "../../hooks/useToast";
