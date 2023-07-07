@@ -4,6 +4,8 @@ Open Door is a React and Rails-based application that utilizes React Query for e
 
 Open Door ensures only valid appointments are offered to both clients and therapists. In addition, it features a rollback functionality for cancelled reschedule requests, ensuring a smooth user experience and minimizing the potential for scheduling conflicts.
 
+The application is currently deployed at https://open-door.onrender.com.
+
 ## Features
 
 - **Client Features**
