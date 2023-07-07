@@ -5,7 +5,7 @@ export default async function fetchWithError(url, options) {
   // Allows 300 codes too, won't throw error messages attached to 200 responses
 
   if (response.status === 401) {
-    throw ["Unauthorised"];
+    throw results.errors || ["Unauthorised"];
   } else if (response.status >= 400) {
     throw results.errors || ["An error has occurred"];
   }

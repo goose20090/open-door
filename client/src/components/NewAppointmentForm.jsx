@@ -70,7 +70,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
     formData.recurring
   );
 
-  if (isSuccess && !formData.start_time) {
+  if (isSuccess && !formData.start_time && timeSlots.length > 0) {
     setFormData({ ...formData, start_time: timeSlots[0] });
   }
 
