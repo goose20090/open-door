@@ -47,13 +47,9 @@ The application is currently deployed at https://open-door.onrender.com.
    rails db:create db:migrate
    ```
 4. Start the Rails server and the frontend server:
-   `sh
-rails s
-`
+   `rails s`
    In a new terminal window:
-   `sh
-npm run dev --prefix client
-`
+   `npm run dev --prefix client`
 
 5. Navigate to `http://localhost:3000` in web browser.
 
