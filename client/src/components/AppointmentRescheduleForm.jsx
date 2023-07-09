@@ -180,7 +180,11 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                 </TooltipWrapper>
               ) : (
                 <>
-                  <SubmitButton type="submit" status={status}>
+                  <SubmitButton
+                    disabled={rescheduleAppointment.isLoading}
+                    type="submit"
+                    status={status}
+                  >
                     Submit
                   </SubmitButton>
                   {isError ? <ErrorList errors={rescheduleAppointment.error} /> : null}

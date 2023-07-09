@@ -12,6 +12,7 @@ import { UserContext } from "../context/user";
 import { useUpdateStatusMutation } from "../hooks/useUpdateStatusMutation";
 import { ka } from "date-fns/locale";
 import { GreenButton, RedButton } from "../assets/Buttons";
+import { StyledUpdateIcon } from "../assets/NewAppointmentStyles";
 
 export default function AppointmentStatusUpdateForm({ appointment, action }) {
   const queryClient = useQueryClient();
@@ -33,6 +34,7 @@ export default function AppointmentStatusUpdateForm({ appointment, action }) {
   }
   return (
     <FormWrapper onSubmit={handleSubmit}>
+      {statusMutation.isLoading ? <StyledUpdateIcon /> : null}
       <StatusUpdateTitle>
         {action} this {updateType}?
       </StatusUpdateTitle>
@@ -61,9 +63,9 @@ export default function AppointmentStatusUpdateForm({ appointment, action }) {
         )}
       </Appointment>
       {action === "Confirm" ? (
-        <ConfirmButton>{action}</ConfirmButton>
+        <ConfirmButton disabled={statusMutation.isLoading}>{action}</ConfirmButton>
       ) : (
-        <RejectButton>{action}</RejectButton>
+        <RejectButton disabled={statusMutation.isLoading}>{action}</RejectButton>
       )}
     </FormWrapper>
   );
@@ -96,6 +98,10 @@ const ConfirmButton = styled(GreenButton)`
   width: 100%;
   padding: 0;
   align-self: end;
+
+  &:disabled {
+    padding: unset;
+  }
 `;
 
 const RejectButton = styled(RedButton)`

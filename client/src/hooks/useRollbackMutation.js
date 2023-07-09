@@ -28,7 +28,8 @@ export function useRollbackMutation(appointment) {
 
       setUser(updatedUser);
       client.setQueryData(["user", "authorisation"], updatedUser);
-      addToast("rollback", res, res.status);
+      debugger;
+      addToast("rescheduleCancel", res, res.status);
     },
   });
 

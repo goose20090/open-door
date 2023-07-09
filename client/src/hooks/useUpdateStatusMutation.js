@@ -45,11 +45,21 @@ export function useUpdateStatusMutation(appointment, action) {
       };
       setUser(updatedUser);
       client.setQueryData(["user", "authorisation"], updatedUser);
-      if (res.status === "confirmed") {
-        addToast("confirm", res, res.status);
-      }
-      if (res.status === "rejected") {
-        addToast("reject", res, res.status);
+
+      if (!!appointment.rescheduled_by) {
+        if (action === "Confirm") {
+          addToast("rescheduleConfirm", res, res.status);
+        }
+        if (action === "Reject") {
+          addToast("rescheduleReject", res, res.status);
+        }
+      } else {
+        if (res.status === "confirmed") {
+          addToast("confirm", res, res.status);
+        }
+        if (res.status === "rejected") {
+          addToast("reject", res, res.status);
+        }
       }
     },
     onError: () => {

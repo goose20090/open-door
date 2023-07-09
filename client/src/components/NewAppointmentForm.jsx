@@ -159,7 +159,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
       <SubmitWrapper>
         {createApppointment.isError ? <ErrorList errors={errors} /> : null}
 
-        <SubmitButton>Request Appointment</SubmitButton>
+        <SubmitButton disabled={createApppointment.isLoading}>Request Appointment</SubmitButton>
       </SubmitWrapper>
       <TimeAndSubmitInputWrapper>
         <ErrorBoundary FallbackComponent={ErrorFallback}></ErrorBoundary>
@@ -223,6 +223,9 @@ const SubmitWrapper = styled.div`
 const SubmitButton = styled(GreenButton)`
   width: 100%;
   padding: 0;
+  &:disabled {
+    padding: unset;
+  }
 `;
 
 const NewAppointmentTitle = styled(DialogTitle)`

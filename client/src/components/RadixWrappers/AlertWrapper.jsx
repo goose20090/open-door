@@ -50,7 +50,13 @@ export default function AlertWrapper({ open, setOpen, appointment }) {
                   : deleteAppointment.mutate(appointment);
               }}
             >
-              <RedButton>{appointment.status === "pending" ? "Cancel" : "Delete"}</RedButton>
+              <RedButton>
+                {appointment.status !== "pending"
+                  ? "Delete"
+                  : !!appointment.rescheduled_by
+                  ? "Continue"
+                  : "Cancel"}
+              </RedButton>
             </AlertDialog.Action>
           </ButtonWrapper>
         </AlertContent>

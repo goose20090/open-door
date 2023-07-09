@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
@@ -22,11 +22,15 @@ export default function ClientHub() {
   const { addToast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  if (!user || user.user_type === "Therapist") {
-    history.push("/");
-    addToast("unauthorised");
-    return null;
-  }
+  useEffect(() => {
+    if (!user || user.user_type === "Therapist") {
+      history.push("/");
+      addToast("unauthorised");
+    }
+  }, [user, history, addToast]);
+
+  if (isLoading) return <p>Loading...</p>;
+
   const { appointments } = user;
 
   const recurringAppointments = appointments

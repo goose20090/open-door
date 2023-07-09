@@ -30,7 +30,7 @@ export const GreenButton = styled(Button)`
   &:disabled {
     background-color: var(--green1);
     color: var(--green7);
-    border: 1px solid var(--blackA6);
+    outline: 1px solid var(--blackA6);
     padding: 0 14px;
   }
 `;
@@ -47,6 +47,13 @@ export const RedButton = styled(Button)`
 
   &:focus {
     box-shadow: 0 0 0 2px var(--red7);
+  }
+
+  &:disabled {
+    background-color: var(--red1);
+    color: var(--red7);
+    outline: 1px solid var(--blackA6);
+    /* padding: 0 14px; */
   }
 `;
 

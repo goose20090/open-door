@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { TherapistWeeklyAv } from "./Tabs/TherapistWeeklyAv";
 import { useAuthQuery } from "../../hooks/useAuthQuery";
 import { UserContext } from "../../context/user";
@@ -15,12 +15,15 @@ function TherapistsHub() {
   const { user } = useContext(UserContext);
   const { addToast } = useToast();
   const history = useHistory();
+  useEffect(() => {
+    if (!user || user.user_type === "Client") {
+      history.push("/");
+      addToast("unauthorised");
+    }
+  }, [user, history, addToast]);
+
   if (isLoading) return <p>Loading...</p>;
-  if (!user || user.user_type === "Client") {
-    history.push("/");
-    addToast("unauthorised");
-    return null;
-  }
+
   return (
     <Wrapper>
       <TabsRoot orientation="vertical" defaultValue="tab2">

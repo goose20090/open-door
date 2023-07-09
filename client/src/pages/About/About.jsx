@@ -50,12 +50,14 @@ export default function About() {
                 <ProfileContainer>
                   <Profile />
                 </ProfileContainer>
-                <NameContainer>
-                  <Name>{therapist.name}</Name>
-                </NameContainer>
-                <BiographyContainer>
-                  <Bio>{therapist.biography}</Bio>
-                </BiographyContainer>
+                <TextContainer>
+                  <NameContainer>
+                    <Name>{therapist.name}</Name>
+                  </NameContainer>
+                  <BiographyContainer>
+                    <Bio>{therapist.biography}</Bio>
+                  </BiographyContainer>
+                </TextContainer>
               </TherapistContainer>
             );
           })
@@ -64,6 +66,11 @@ export default function About() {
     </>
   );
 }
+
+const TextContainer = styled.div`
+  grid-area: text;
+  margin-top: 4%;
+`;
 
 const Bio = styled(Time)`
   font-size 0.9rem;
@@ -81,7 +88,8 @@ const Heading = styled.h1`
 `;
 const BiographyContainer = styled.div`
   grid-area: biography;
-  padding: 8px;
+  padding: 0 8px;
+  /* justify-content: center; */
 `;
 const Wrapper = styled.div`
   margin-top: 5%;
@@ -91,11 +99,8 @@ const Wrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
   width: 60%;
-  grid-template-rows: repeat(
-    auto-fill,
-    minmax(250px, 1fr)
-  ); // This will create flexible grid columns
-  grid-gap: 20px; // Optional: provide some spacing between the grid items
+  grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 20px;
 `;
 
 const TherapistContainer = styled.div`
@@ -106,8 +111,8 @@ const TherapistContainer = styled.div`
   grid-template-columns: 1fr 2fr;
   grid-template-rows: 1.5rem 1fr;
   grid-template-areas:
-    "avatar name"
-    "avatar biography";
+    "avatar text"
+    "avatar text";
 `;
 
 const ProfileContainer = styled.div`

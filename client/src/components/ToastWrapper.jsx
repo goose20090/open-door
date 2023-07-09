@@ -9,7 +9,6 @@ import { Button } from "../assets/Buttons";
 export function ToastWrapper() {
   const { user } = useContext(UserContext);
   const { toasts, removeToast } = useToast();
-
   const actionTitles = {
     create: "Appointment Requested",
     alter: "Appointment Request Changed",
@@ -17,7 +16,9 @@ export function ToastWrapper() {
     delete: "Appointment Deleted",
     reject: "Appointment Rejected",
     confirm: "Appointment Confirmed",
-    rollback: "Reschedule Request Cancelled",
+    rescheduleCancel: "Reschedule Request Cancelled",
+    rescheduleReject: "Reschedule Request Denied",
+    rescheduleConfirm: "Reschedule Confirmed",
     scheduleSuccess: "Schedule Updated",
     error: "Error",
     unauthorised: "Unauthorised",
@@ -50,7 +51,7 @@ export function ToastWrapper() {
     }
 
     if (action === "error") {
-      return "There was an error and this action did not complete. Please try again";
+      return "There was an error and this action may not have completed. Please try again";
     }
 
     const otherPartyName =
@@ -58,12 +59,22 @@ export function ToastWrapper() {
     const details = formatDetails(appointment);
     const newDetails = newAppointment ? formatDetails(newAppointment) : null;
     const fullDetails = `${details}, with ${otherPartyName}`;
+    if (action === "rescheduleCancel" || action === "rescheduleReject") {
+      return (
+        <>
+          <b>Appointment rolled back to original time:</b>
+          <br />
+          {fullDetails}
+        </>
+      );
+    }
 
     if (
       action === "create" ||
       action === "confirm" ||
       action === "reject" ||
-      action === "rollback"
+      action === "rollback" ||
+      action === "rescheduleConfirm"
     ) {
       return fullDetails;
     }
