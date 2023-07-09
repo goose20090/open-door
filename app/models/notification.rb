@@ -2,9 +2,8 @@ class Notification < ApplicationRecord
     belongs_to :user
 
     def self.create_notification(appointment, user_id, params)
-
-        # Don't make a notification if the appointment hasn't been confirmed yet
-        if appointment[:status] === 'pending' && params[:status] === 'pending' && !appointment.rescheduled_by
+        # Don't make a notification if the appointment hasn't been confirmed yet or if it's a cancellation of a reschedule request
+        if appointment[:status] === 'pending' && params[:status] === 'pending' && !appointment.rescheduled_by || params[:rollback]
             return
         end
 
