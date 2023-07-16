@@ -36,7 +36,7 @@ The application is currently deployed at https://open-door.onrender.com.
 
 1. Clone the repository and navigate to it:
    ```sh
-   git clone https://github.com/yourusername/opendoor.git && cd opendoor
+   git clone https://github.com/goose20090/open-door.git && cd opendoor
    ```
 2. Install Rails and JavaScript dependencies:
    ```sh
