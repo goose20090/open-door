@@ -16,7 +16,6 @@ class Appointment < ApplicationRecord
       params[:recurring] = params[:recurring].present?
       params[:date] = Date.parse(params[:date])
       params[:status] = 'pending'
-      debugger
       self.create!(params)
     end
 
@@ -46,7 +45,8 @@ class Appointment < ApplicationRecord
           )
       # Otherwise update appointment as normal
       else
-          appointment.update(params)
+        params[:date] = Date.parse(params[:date])
+        appointment.update(params)
       end
     end
 

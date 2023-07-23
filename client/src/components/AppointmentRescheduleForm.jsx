@@ -22,10 +22,12 @@ import { useRescheduleMutation } from "../hooks/useRescheduleMutation";
 import { renderRescheduleTitle } from "../helpers/renderRescheduleTitle";
 import PlaceholderRadio from "./PlaceholderRadio";
 import ErrorList from "./Errors/ErrorList";
+import { formatStartingDate } from "../helpers/formatStartingDate";
+import { getNextWeekdayDate } from "../helpers/getNextWeekdayDate";
 
 function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
   const { user, setUser } = useContext(UserContext);
-  const { recurring } = appointment;
+  const { recurring, future_recurring } = appointment;
   const rescheduleAppointment = useRescheduleMutation(appointment, onCloseDialog);
   const { isError } = rescheduleAppointment;
   const status = !!appointment.rescheduled_by ? "reschedule" : appointment.status;
@@ -51,6 +53,10 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     rollback_date: appointment.date,
     rejected_by: null,
   });
+
+  useEffect(() => {
+    console.log(formData.date);
+  }, [formData]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -93,6 +99,10 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                   setFormData({
                     ...formData,
                     week_day: e.target.value,
+                    date:
+                      appointment.week_day === e.target.value
+                        ? appointment.date
+                        : getNextWeekdayDate(e.target.value),
                   })
                 }
               >
@@ -148,9 +158,14 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
               <div>
                 <AppointmentTitle>{requestRecipient}</AppointmentTitle>
                 <AppointmentTime>
-                  {appointment.recurring
+                  {recurring
                     ? formatRecurringTime(formData.start_time, formData.week_day)
                     : formatSingleDate(formData.start_time, formData.date)}
+                  {future_recurring ? (
+                    <StartingDate>
+                      Starting {formatStartingDate(getNextWeekdayDate(formData.week_day))}
+                    </StartingDate>
+                  ) : null}
                 </AppointmentTime>
               </div>
               {!!appointment.rescheduled_by || appointment.status === "confirmed" ? (
@@ -199,6 +214,10 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
 }
 
 export default AppointmenRescheduleForm;
+
+const StartingDate = styled(Time)`
+  font-style: italic;
+`;
 
 const DayWrapper = styled.div`
   grid-area: day;
