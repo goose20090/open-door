@@ -64,7 +64,11 @@ class MutualAvailability
   end
 
   def get_recurring_appointments_for_user(user)
-    user.appointments.where(recurring: true, week_day: weekday, status: ['confirmed', 'pending']).pluck(:start_time)
+    if recurring
+      user.appointments.where(recurring: true, week_day: weekday, status: ['confirmed', 'pending']).pluck(:start_time)
+    else
+      user.appointments.where(recurring: true, week_day: weekday, status: ['confirmed', 'pending']).where('date <= ?', date).pluck(:start_time)
+    end
   end
 
   def get_single_appointments_for_user(user)

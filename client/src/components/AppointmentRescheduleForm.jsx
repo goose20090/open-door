@@ -53,20 +53,9 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     rollback_date: appointment.date,
     rejected_by: null,
   });
-
-  useEffect(() => {
-    console.log(formData.date);
-  }, [formData]);
-
   function handleSubmit(e) {
     e.preventDefault();
     rescheduleAppointment.mutate(formData);
-  }
-  let weekDayOrDateQueryKey;
-  if (recurring) {
-    weekDayOrDateQueryKey = formData.week_day;
-  } else {
-    weekDayOrDateQueryKey = formData.date;
   }
 
   const {
@@ -74,12 +63,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
     isSuccess,
     isLoading,
     isFetching: availabilityFetching,
-  } = useMutualAvailabilitiesQuery(
-    nonUserId,
-    weekDayOrDateQueryKey,
-    appointment.recurring,
-    appointment.id
-  );
+  } = useMutualAvailabilitiesQuery(nonUserId, formData.date, appointment.recurring, appointment.id);
 
   return (
     <Form onSubmit={handleSubmit}>

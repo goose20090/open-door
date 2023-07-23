@@ -64,11 +64,7 @@ export default function NewAppointmentForm({ onCloseDialog }) {
     isSuccess,
     isFetching: availabilityFetching,
     isLoading: availabilityLoading,
-  } = useMutualAvailabilitiesQuery(
-    formData.therapist_id,
-    formData.recurring ? formData.week_day : formData.date,
-    formData.recurring
-  );
+  } = useMutualAvailabilitiesQuery(formData.therapist_id, formData.date, formData.recurring);
 
   if (isSuccess && !formData.start_time && timeSlots.length > 0) {
     setFormData({ ...formData, start_time: timeSlots[0] });
