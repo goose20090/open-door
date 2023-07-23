@@ -99,10 +99,7 @@ function AppointmenRescheduleForm({ appointment, onCloseDialog }) {
                   setFormData({
                     ...formData,
                     week_day: e.target.value,
-                    date:
-                      appointment.week_day === e.target.value
-                        ? appointment.date
-                        : getNextWeekdayDate(e.target.value),
+                    date: getNextWeekdayDate(e.target.value),
                   })
                 }
               >
