@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import styled from "styled-components";
 import * as Popover from "@radix-ui/react-popover";
 import { Title, Time, Status } from "../../assets/AppointmentCapsuleStyles";
 import { formatRecurringTime } from "../../helpers/formatRecurringTime";
@@ -8,6 +9,8 @@ import { PendingOptionsButtons } from "./AppointmentActions/PendingOptionsButton
 import OptionsPopover from "./AppointmentActions/OptionsPopover";
 import { Wrapper } from "../../assets/NewAppointmentStyles";
 import { UserContext } from "../../context/user";
+import { formatStartingDate } from "../../helpers/formatStartingDate";
+import { isFutureDate } from "../../helpers/isFutureDate";
 
 const integerToWeekday = (day) => {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -17,8 +20,17 @@ const integerToWeekday = (day) => {
 export default function AppointmentCapsule({ appointment }) {
   // getting variables
   const { user } = useContext(UserContext);
-  const { status, rescheduled_by, recurring, start_time, week_day, date, therapist, client } =
-    appointment;
+  const {
+    status,
+    rescheduled_by,
+    recurring,
+    start_time,
+    week_day,
+    date,
+    therapist,
+    client,
+    future_recurring,
+  } = appointment;
 
   // Creating booleans to check which options to display
   const userIsClient = user.user_type === "Client";
@@ -48,6 +60,7 @@ export default function AppointmentCapsule({ appointment }) {
       <div>
         <Title>{name}</Title>
         <Time>{time}</Time>
+        {future_recurring ? <StartingDate>Starting {formatStartingDate(date)}</StartingDate> : null}
       </div>
       <Status status={status} as={"div"}>
         {status}
@@ -57,3 +70,9 @@ export default function AppointmentCapsule({ appointment }) {
     </Wrapper>
   );
 }
+
+const StartingDate = styled(Time)`
+  font-style: italic;
+  margin-top: 2%;
+  /* float: right; */
+`;

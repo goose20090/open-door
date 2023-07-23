@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_07_195619) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_20_105801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_195619) do
     t.integer "rollback_start_time"
     t.datetime "rollback_date"
     t.integer "rollback_week_day"
+    t.datetime "recurring_start_date"
   end
 
   create_table "clients", force: :cascade do |t|

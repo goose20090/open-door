@@ -64,6 +64,7 @@ status_list = ['pending', 'confirmed', 'rejected']
       start_time: start_time,
       status: status,
       recurring: i.even?, # Alternating between recurring and non-recurring appointments
+      recurring_start_date: i.even? ? date : nil,
       date: date,
       week_day: week_day # week_day matches day of week of the date
     )
