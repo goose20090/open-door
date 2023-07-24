@@ -6,7 +6,6 @@ class Api::AppointmentsController < ApplicationController
     before_action :pass_to_notification_model, only: [:destroy]
 
     def create
-        debugger
         user = User.includes(:userable).find(session[:user_id])
         return render_not_found_response unless user&.userable_type == "Client"
     

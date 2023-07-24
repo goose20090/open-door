@@ -2,13 +2,15 @@ class Appointment < ApplicationRecord
 
     belongs_to :client
     belongs_to :therapist
+
+    attr_accessor :seeding
   
     validates :week_day, presence: true, if: :recurring
     validates :date, presence: true, unless: :recurring
     validates :status, inclusion: ['confirmed', 'pending', 'rejected']
-    validate :not_past_date_validation, unless: :recurring
-    validate :not_today_validation, unless: :recurring
-    validate :working_day_validation, unless: :recurring
+    validate :not_past_date_validation, unless: :seeding
+    validate :not_today_validation
+    validate :working_day_validation
     validate :recurring_slot_uniqueness, if: :recurring
     validate :single_slot_uniqueness, unless: :recurring
 
@@ -50,6 +52,8 @@ class Appointment < ApplicationRecord
       end
     end
 
+
+    private
 
     def recurring_slot_uniqueness
       # Find if there is any other recurring appointment with the same week_day and start_time

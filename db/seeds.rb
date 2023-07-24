@@ -58,16 +58,23 @@ status_list = ['pending', 'confirmed', 'rejected']
     # Adjust date for non-recurring appointments, ensuring they start in more than a week
     date += 1.week unless i.even?
 
-    Appointment.create!(
+    if i.even? # For recurring appointments
+      # Generate a random number of days between 1 and 30
+      days_in_past = rand(1..30)
+      date -= days_in_past.days
+    end
+
+    appointment = Appointment.new(
       client_id: clients[i % clients.size].id,
       therapist_id: therapists[i % therapists.size].id,
       start_time: start_time,
       status: status,
       recurring: i.even?, # Alternating between recurring and non-recurring appointments
-      recurring_start_date: i.even? ? date : nil,
       date: date,
-      week_day: week_day # week_day matches day of week of the date
-    )
+      week_day: week_day, # week_day matches day of week of the date
+      seeding: true
+    ).save!
+
   rescue ActiveRecord::RecordInvalid => invalid
     puts invalid.record.errors
     retry
