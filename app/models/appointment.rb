@@ -47,7 +47,7 @@ class Appointment < ApplicationRecord
           )
       # Otherwise update appointment as normal
       else
-        params[:date] = Date.parse(params[:date])
+        params[:date] = Date.parse(params[:date]) unless params[:date].nil?
         appointment.update(params)
       end
     end
