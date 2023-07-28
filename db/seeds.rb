@@ -6,7 +6,6 @@ Schedule.delete_all
 Notification.delete_all
 Therapist.delete_all
 
-debugger
 # Create clients
 clients = 10.times.map do |i|
   client = Client.create!(
