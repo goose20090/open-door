@@ -6,7 +6,7 @@ Open Door ensures only valid appointments are offered to both clients and therap
 
 The application is currently deployed at https://open-door.onrender.com.
 
-A walkthrough for this application can be found [here]([url](https://www.loom.com/share/9d206a9fbb194666bbd820fde90930e1))
+A walkthrough for this application can be found [here]([https://www.loom.com/share/9d206a9fbb194666bbd820fde90930e1]).
 
 ## Features
 
