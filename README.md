@@ -29,8 +29,8 @@ A walkthrough for this application can be found [here](https://www.loom.com/shar
 
 ### Prerequisites
 
-- Ruby 3.0
-- Rails 7.0
+- Ruby 2.7.4
+- Rails 6.0
 - Node.js 14+
 - Postgres 13+
 
